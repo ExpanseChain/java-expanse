@@ -4,14 +4,17 @@ import might.common.numeric.error.NumericException;
 import might.common.numeric.error.NumericNullException;
 import might.common.numeric.error.NumericValueException;
 
+import java.util.Arrays;
+
 class NumericUtil {
 
     /**
      * 检查字符是否符合条件
      * @param value 字符串值
      * @param radix 进制
+     * @param size 长度检查 -1 表示不检查
      */
-    static void checkChar(String value, int radix) {
+    static byte[] parse(String value, int radix, int size) {
         if (null == value) {
             throw new NumericNullException("value can not be null");
         }
@@ -24,6 +27,32 @@ class NumericUtil {
 
         // 检查长度是否符合字节标准
         checkLength(value.length(), radix);
+
+        byte[] bytes;
+        switch (radix) {
+            case 2:
+                bytes = new byte[value.length() / 8];
+                if (0 < size && size != bytes.length) {
+                    throw new NumericValueException("the length of value must be " + (8 * size));
+                }
+                for (int i = 0; i < bytes.length; i++) {
+                    bytes[i] = (byte) Integer.parseInt(value.substring(8 * i, 8 * i + 8), 2);
+                }
+                break;
+            case 16:
+                bytes = new byte[value.length() / 2];
+                if (0 < size && size != bytes.length) {
+                    throw new NumericValueException("the length of value must be " + (2 * size));
+                }
+                for (int i = 0; i < bytes.length; i++) {
+                    bytes[i] = (byte) Integer.parseInt(value.substring(2 * i, 2 * i + 2), 16);
+                }
+                break;
+            default:
+                throw new NumericValueException("radix is not support: " + radix);
+        }
+
+        return bytes;
     }
 
     private static void checkLength(int length, int radix) {
@@ -181,6 +210,9 @@ class NumericUtil {
         return count;
     }
 
+    /**
+     * 32位有符号数字转化为字节数组
+     */
     public static byte[] parseBytes(int value) {
         byte[] bytes = new byte[4];
         bytes[0] = (byte) (value >> 24);
@@ -190,6 +222,9 @@ class NumericUtil {
         return bytes;
     }
 
+    /**
+     * 64位有符号数字转化为字节数组
+     */
     public static byte[] parseBytes(long value) {
         byte[] bytes = new byte[8];
         bytes[0] = (byte) (value >> 56);
@@ -200,6 +235,17 @@ class NumericUtil {
         bytes[5] = (byte) (value >> 16);
         bytes[6] = (byte) (value >>  8);
         bytes[7] = (byte) (value);
+        return bytes;
+    }
+
+    static byte[] padding(byte value, int size, byte[] data) {
+        byte[] bytes = new byte[size];
+        if (size > data.length) {
+            System.arraycopy(data, 0, bytes, size - data.length, data.length);
+            Arrays.fill(bytes, 0, size - data.length, value);
+        } else {
+            System.arraycopy(data, data.length - size, bytes, 0, size);
+        }
         return bytes;
     }
 

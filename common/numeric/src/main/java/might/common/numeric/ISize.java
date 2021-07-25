@@ -18,7 +18,7 @@ public class ISize {
 
     private static final int MAX_LENGTH = 1024 * 1024; // 支持的最大字节数 这个数字也太大了
 
-    private final byte[] bytes;
+    protected final byte[] bytes;
 
     public ISize(byte[] bytes) {
         if (null == bytes) {
@@ -33,24 +33,7 @@ public class ISize {
     }
 
     private ISize(String value, int radix) {
-        NumericUtil.checkChar(value, radix);
-
-        switch (radix) {
-            case 2:
-                this.bytes = new byte[value.length() / 8];
-                for (int i = 0; i < this.bytes.length; i++) {
-                    this.bytes[i] = (byte) Integer.parseInt(value.substring(8 * i, 8 * i + 8), 2);
-                }
-                break;
-            case 16:
-                this.bytes = new byte[value.length() / 2];
-                for (int i = 0; i < this.bytes.length; i++) {
-                    this.bytes[i] = (byte) Integer.parseInt(value.substring(2 * i, 2 * i + 2), 16);
-                }
-                break;
-            default:
-                throw new NumericValueException("radix is not support: " + radix);
-        }
+        this.bytes = NumericUtil.parse(value, radix, 0);
     }
 
     public static ISize valueOf(byte[] bytes) { return new ISize(bytes); }
@@ -96,7 +79,7 @@ public class ISize {
     /**
      * 复制一份数字 不可变类型 clone一份
      */
-    public ISize value() {
+    public ISize copy() {
         return new ISize(this.bytes);
     }
 
@@ -146,5 +129,12 @@ public class ISize {
      * 1统计
      */
     public int popcnt() { return NumericUtil.popcnt(bytes); }
+
+    /**
+     * 按照有符号数字解析 是不是负数
+     */
+    public boolean isNegation() {
+        return (bytes[0] & 0b10000000) != 0;
+    }
 
 }
