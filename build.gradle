@@ -9,7 +9,7 @@ subprojects {
     group = 'might'
     version = '1.0.0'
     sourceCompatibility = '1.8'
-    /* java编译的时候缺省状态下会因为中文字符而失败 */
+
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
     repositories {
@@ -18,9 +18,9 @@ subprojects {
         mavenCentral()
     }
 
-    /* 添加通用依赖 */
     dependencies {
-        testCompile 'junit:junit:4.12'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
         annotationProcessor "org.projectlombok:lombok:1.18.20"
         compileOnly "org.projectlombok:lombok:1.18.20"
