@@ -32,15 +32,16 @@ public class ISize {
         System.arraycopy(bytes, 0, this.bytes, 0, bytes.length);
     }
 
-    private ISize(String value, int radix) {
+    public ISize(String value, int radix) {
         this.bytes = NumericUtil.parse(value, radix, 0);
     }
 
-    public static ISize valueOf(byte[] bytes) { return new ISize(bytes); }
-    public static ISize parseByBinary(String value) { return new ISize(value, 2); }
-    public static ISize parseByHex(String value) { return new ISize(value, 16); }
-    public static ISize valueOf(int value) { return new ISize(NumericUtil.parseBytes(value)); }
-    public static ISize valueOf(long value) { return new ISize(NumericUtil.parseBytes(value)); }
+    public ISize(int value) { this(NumericUtil.parseBytes(value)); }
+
+    public ISize(long value) { this(NumericUtil.parseBytes(value)); }
+
+    public static ISize parseISizeByBinary(String value) { return new ISize(value, 2); }
+    public static ISize parseISizeByHex(String value) { return new ISize(value, 16); }
 
     @Override
     public boolean equals(Object o) {

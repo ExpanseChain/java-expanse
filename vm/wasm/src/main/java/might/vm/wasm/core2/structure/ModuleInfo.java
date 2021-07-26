@@ -125,7 +125,7 @@ public class ModuleInfo {
                 default:
             }
         }
-        return typeSections[(int) blockType.s33];
+        return typeSections[blockType.s33.signed().intValue()];
     }
 
 }

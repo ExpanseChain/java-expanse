@@ -58,4 +58,5 @@ public class NumberType implements Type {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

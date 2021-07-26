@@ -1,6 +1,7 @@
 package might.vm.wasm.core2.structure;
 
 import might.common.numeric.I32;
+import might.common.numeric.I64;
 import might.vm.wasm.core2.instruction.Action;
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.core2.instruction.Instruction;
@@ -554,7 +555,7 @@ public class WasmReader {
 
     public BlockType readBlockType() {
         ValueType valueType = null;
-        long s33 = 0;
+        I64 s33 = null;
         byte b = data[0];
         if ((b & 0b10000000) == 0) {
             // TODO 这就很尴尬了
@@ -578,12 +579,12 @@ public class WasmReader {
                 case 0x6F: // externref
                     valueType = ValueType.of(b);
                     break;
-                default: s33 = b;
+                default: s33 = I64.valueOf(b);
             }
         } else {
             Leb128.Result s = Leb128.readLeb128S64(data);
             drop(s.length);
-            s33 = U64.valueOfS(s.bytes).longValue();
+            s33 = I64.valueOf(s.bytes);
         }
         return new BlockType(valueType, s33);
     }

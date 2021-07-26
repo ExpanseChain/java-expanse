@@ -18,4 +18,5 @@ public class Types implements Dump {
     public String dump() {
         return Stream.of(types).map(Type::dump).collect(Collectors.joining(","));
     }
+
 }

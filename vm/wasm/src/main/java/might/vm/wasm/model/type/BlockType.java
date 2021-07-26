@@ -1,14 +1,15 @@
 package might.vm.wasm.model.type;
 
+import might.common.numeric.I64;
 import might.vm.wasm.model.Type;
 
 public class BlockType implements Type {
 
     public final ValueType type;
 
-    public final long s33;
+    public final I64 s33;
 
-    public BlockType(ValueType type, long s33) {
+    public BlockType(ValueType type, I64 s33) {
         this.type = type;
         this.s33 = s33;
     }
@@ -20,11 +21,12 @@ public class BlockType implements Type {
 
     @Override
     public String name() {
-        return null == type ? "s33:" + s33 : type.name();
+        return null == type ? "s33:" + s33.signed().longValue() : type.name();
     }
 
     @Override
     public String dump() {
         return name();
     }
+
 }

@@ -49,4 +49,5 @@ public class ReferenceType implements Type, Dump {
     public String dump() {
         return name + "[0x" + toHex(value) + "]";
     }
+
 }
