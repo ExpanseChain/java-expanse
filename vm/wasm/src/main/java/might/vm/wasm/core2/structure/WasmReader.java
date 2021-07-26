@@ -20,6 +20,7 @@ import might.vm.wasm.model.tag.LimitsTag;
 import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.model.type.*;
 import might.vm.wasm.util.Leb128;
+import might.vm.wasm.util.ModuleConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,16 +38,16 @@ public class WasmReader {
     }
 
 
-    public static ModuleInfo read(byte[] data) {
-        return (new WasmReader(data)).readModuleInfo();
+    public static ModuleInfo read(byte[] data, ModuleConfig config) {
+        return (new WasmReader(data)).readModuleInfo(config);
     }
 
 
-    public ModuleInfo readModuleInfo() {
+    public ModuleInfo readModuleInfo(ModuleConfig config) {
         ModuleInfo moduleInfo = new ModuleInfo();
 
         moduleInfo.magic = new Magic(readByte(), readByte(), readByte(), readByte());
-        moduleInfo.version = new Version(readU32());
+        moduleInfo.version = new Version(new I32(readU32().getBytes()), config);
         moduleInfo.customSections = new CustomSection[0];
 
         byte previousSectionId = 0;

@@ -1,7 +1,10 @@
 package might.vm.wasm.model.section;
 
-import might.vm.wasm.core2.numeric.U16;
-import might.vm.wasm.core2.numeric.U32;
+import might.common.numeric.I16;
+import might.common.numeric.I32;
+import might.vm.wasm.error.Assertions;
+import might.vm.wasm.error.module.ModuleException;
+import might.vm.wasm.util.ModuleConfig;
 
 /**
  * Wasm定义是一个U32数字
@@ -15,26 +18,35 @@ import might.vm.wasm.core2.numeric.U32;
  */
 public class Version {
 
-    private final U16 v1;
-    private final U16 v2;
+    private final I16 main;
+    private final I16 sub;
 
-    private Version(U16 v1, U16 v2) {
-        this.v1 = v1;
-        this.v2 = v2;
-    }
+    public Version(I32 i32, ModuleConfig config) {
+        Assertions.requireNonNull(i32);
+        Assertions.requireNonNull(config);
 
-    public Version(U32 u32) {
-        this( U16.valueOfU(new byte[]{ u32.getBytes()[0], u32.getBytes()[1]}),
-              U16.valueOfU(new byte[]{ u32.getBytes()[2], u32.getBytes()[3]}));
+        this.main = I16.valueOf(new byte[]{ i32.bytes()[0], i32.bytes()[1]});
+        this.sub  = I16.valueOf(new byte[]{ i32.bytes()[2], i32.bytes()[3]});
+
+        // 版本怎么检查？
+        if (config.getMinMainVersion().lessOrEqualsU(main)
+                && main.lessOrEqualsU(config.getMaxMainVersion())
+                && config.getMinSubVersion().lessOrEqualsU(sub)
+                && sub.lessOrEqualsU(config.getMaxSubVersion())
+        ) {
+
+        } else {
+            throw new ModuleException("version is not acceptable: " + i32.toHexString());
+        }
     }
 
     public String value() {
-        return v1.toHexString() + v2.toHexString();
+        return main.toHexString() + sub.toHexString();
     }
 
     @Override
     public String toString() {
-        return "Version: " + ("0".equals(v1.toString()) ? "" : v1.toString()) + v2;
+        return "Version: " + main.toBinaryString() + sub.toBinaryString();
     }
 
 }

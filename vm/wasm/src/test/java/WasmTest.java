@@ -1,6 +1,8 @@
+import might.common.numeric.I16;
 import might.vm.wasm.core2.instance.Module;
 import might.vm.wasm.core2.structure.ModuleInfo;
 import might.vm.wasm.core2.structure.WasmReader;
+import might.vm.wasm.util.ModuleConfig;
 import org.junit.jupiter.api.Test;
 import util.FileReader;
 
@@ -9,7 +11,27 @@ public class WasmTest {
     public static ModuleInfo readByName(String name) {
         System.out.println("read file: " + name);
         WasmReader reader = new WasmReader(FileReader.readByName(name));
-        return reader.readModuleInfo();
+        return reader.readModuleInfo(new ModuleConfig() {
+            @Override
+            public I16 getMinMainVersion() {
+                return I16.valueOf(0);
+            }
+
+            @Override
+            public I16 getMaxMainVersion() {
+                return I16.valueOf(0);
+            }
+
+            @Override
+            public I16 getMinSubVersion() {
+                return I16.valueOf(1);
+            }
+
+            @Override
+            public I16 getMaxSubVersion() {
+                return I16.valueOf(1);
+            }
+        });
     }
     
     @Test
