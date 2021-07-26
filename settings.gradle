@@ -1,12 +1,12 @@
 rootProject.name = 'might'
 
-include ':common:common' // 一些基本工具
+include ':common:util' // 一些基本工具
 include ':common:numeric' // 需要用到的数字类型
 
-include ':frame' // 区块链基本运行框架
-
-include ':vm' // 各种虚拟机
+// 各种虚拟机
 include ':vm:wasm' // wasm
+
+include ':frame' // 区块链基本运行框架
 
 include ':mode' // 基本特性的实现
 
