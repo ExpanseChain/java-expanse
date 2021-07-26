@@ -2,10 +2,10 @@ package might.vm.wasm.core.structure;
 
 import might.vm.wasm.core.ControlFrame;
 import might.vm.wasm.core.ModuleInfo;
-import might.vm.wasm.core2.instruction.Action;
-import might.vm.wasm.core2.instruction.Expression;
-import might.vm.wasm.core2.instruction.Instruction;
-import might.vm.wasm.core2.instruction.dump.DumpMemory;
+import might.vm.wasm.instruction.Action;
+import might.vm.wasm.instruction.Expression;
+import might.vm.wasm.instruction.Instruction;
+import might.vm.wasm.instruction.dump.DumpMemory;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.GlobalIndex;
 import might.vm.wasm.model.index.MemoryIndex;
