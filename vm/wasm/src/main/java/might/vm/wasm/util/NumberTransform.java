@@ -27,8 +27,11 @@ public class NumberTransform {
      */
     public static String zeros(int length) {
         Assertions.requireTrue(0 <= length);
-        Assertions.requireTrue(length <= 64);
-        return ZEROS.get(length);
+        if (length <= 64) {
+            return ZEROS.get(length);
+        } else {
+            return ZEROS.get(length - 64) + zeros(64);
+        }
     }
 
     /**
@@ -36,8 +39,11 @@ public class NumberTransform {
      */
     public static String ones(int length) {
         Assertions.requireTrue(0 <= length);
-        Assertions.requireTrue(length <= 64);
-        return ONES.get(length);
+        if (length <= 64) {
+            return ONES.get(length);
+        } else {
+            return ONES.get(length - 64) + ones(64);
+        }
     }
 
 

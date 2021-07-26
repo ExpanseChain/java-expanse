@@ -17,7 +17,6 @@ import might.vm.wasm.core2.model.tag.PortTag;
 import might.vm.wasm.core2.model.type.*;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.numeric.U64;
-import might.vm.wasm.util.FileReader;
 import might.vm.wasm.util.Leb128;
 
 import java.util.ArrayList;
@@ -35,11 +34,6 @@ public class WasmReader {
         this.data = data;
     }
 
-    public static ModuleInfo readByName(String name) {
-        System.out.println("read file: " + name);
-        WasmReader reader = new WasmReader(FileReader.readByName(name));
-        return reader.readModuleInfo();
-    }
 
     public static ModuleInfo read(byte[] data) {
         return (new WasmReader(data)).readModuleInfo();
@@ -150,25 +144,25 @@ public class WasmReader {
     }
 
     public U32 readLeb128U32() {
-        Leb128.Result r = Leb128.decodeVarUint(data, 32);
+        Leb128.Result r = Leb128.readLeb128U32(data);
         drop(r.length);
         return U32.valueOfU(r.bytes);
     }
 
     public int readLeb128S32() {
-        Leb128.Result r = Leb128.decodeVarInt(data, 32);
+        Leb128.Result r = Leb128.readLeb128S32(data);
         drop(r.length);
         return U32.valueOfU(r.bytes).intValue();
     }
 
     public U64 readLeb128U64() {
-        Leb128.Result r = Leb128.decodeVarInt(data, 64);
+        Leb128.Result r = Leb128.readLeb128U64(data);
         drop(r.length);
         return U64.valueOfU(r.bytes);
     }
 
     public long readLeb128S64() {
-        Leb128.Result r = Leb128.decodeVarInt(data, 64);
+        Leb128.Result r = Leb128.readLeb128S64(data);
         drop(r.length);
         return U64.valueOfU(r.bytes).longValue();
     }
@@ -585,7 +579,7 @@ public class WasmReader {
                 default: s33 = b;
             }
         } else {
-            Leb128.Result s = Leb128.decodeVarInt(data, 33);
+            Leb128.Result s = Leb128.readLeb128S64(data);
             drop(s.length);
             s33 = U64.valueOfS(s.bytes).longValue();
         }

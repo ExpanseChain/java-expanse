@@ -1,9 +1,9 @@
 package might.vm.wasm.util;
 
+import might.common.numeric.NumericUtil;
 import might.vm.wasm.core.error.Assertions;
 
-import static might.vm.wasm.util.NumberTransform.parseByteByBinary;
-import static might.vm.wasm.util.NumberTransform.toBinary;
+import static might.vm.wasm.util.NumberTransform.*;
 
 /**
  * Leb128编码解析
@@ -22,21 +22,17 @@ public class Leb128 {
         }
 
         static Result of(String v, int length) {
-            byte[] bytes = new byte[8];
-            for (int j = 0; j < 8; j++) {
-                bytes[j] = parseByteByBinary(v.substring(j * 8, j * 8 + 8));
+            byte[] bytes = new byte[v.length() / 8];
+            for (int i = 0; i < bytes.length; i++) {
+                bytes[i] = parseByteByBinary(v.substring(8 * i, 8 * i + 8));
             }
             return new Result(bytes, length);
         }
     }
 
-    public static Result readLeb128U32(byte[] data) {
-        return decodeVarUint(data, 32);
-    }
+    public static Result readLeb128U32(byte[] data) { return decodeVarUint(data, 32); }
 
-    public static Result readLeb128U64(byte[] data) {
-        return decodeVarUint(data, 64);
-    }
+    public static Result readLeb128U64(byte[] data) { return decodeVarUint(data, 64); }
 
     /**
      * 读取无符号数字
@@ -44,6 +40,7 @@ public class Leb128 {
     private static Result decodeVarUint(byte[] data, int size) {
         Assertions.requireNonNull(data);
         Assertions.requireTrue(data.length > 0);
+        Assertions.requireTrue(size % 8 == 0);
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < data.length; i++) {
@@ -62,11 +59,17 @@ public class Leb128 {
             }
 
             // 每次只取后面7位数字
-            sb.insert(0, toBinary(b).substring(1));
+            sb.insert(0, NumericUtil.binaryString(b).substring(1));
 
             if ((b & 0x80) == 0) {
-                String v = "0000000000000000000000000000000000000000000000000000000000000000" + sb;
-                v = v.substring(v.length() - 64);
+                String v;
+                if (sb.length() > size) {
+                    v = sb.substring(sb.length() - size);
+                } else if (sb.length() < size){
+                    v = zeros(size - sb.length()) + sb;
+                } else {
+                    v = sb.toString();
+                }
                 return Result.of(v, i + 1);
             }
         }
@@ -75,13 +78,17 @@ public class Leb128 {
     }
 
 
+    public static Result readLeb128S32(byte[] data) { return decodeVarInt(data, 32); }
+
+    public static Result readLeb128S64(byte[] data) { return decodeVarInt(data, 64); }
+
     /**
      * 读取有符号数字
      */
-    public static Result decodeVarInt(byte[] data, int size) {
+    private static Result decodeVarInt(byte[] data, int size) {
         Assertions.requireNonNull(data);
         Assertions.requireTrue(data.length > 0);
-        Assertions.requireTrue(size == 32 || size == 64);
+        Assertions.requireTrue(size % 8 == 0);
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < data.length; i++) {
@@ -102,17 +109,22 @@ public class Leb128 {
             }
 
             // 每次只取后面7位数字
-            sb.insert(0, toBinary(b).substring(1));
+            sb.insert(0, NumericUtil.binaryString(b).substring(1));
 
             if ((b&0x80) == 0) {
-                String v = sb.toString();
-                if ((i * 7 < size) && ((b & 0x40) != 0)) {
-                    // 如果顶位是1 则填充满为1
-                    v = "1111111111111111111111111111111111111111111111111111111111111111" + v;
+                String v;
+                if (sb.length() > size) {
+                    v = sb.substring(sb.length() - size);
+                } else if (sb.length() < size){
+                    if ((i * 7 < size) && ((b & 0x40) != 0)) {
+                        // 如果顶位是1 则填充满为1
+                        v = ones(size - sb.length()) + sb;
+                    } else {
+                        v = zeros(size - sb.length()) + sb;
+                    }
                 } else {
-                    v = "0000000000000000000000000000000000000000000000000000000000000000" + v;
+                    v = sb.toString();
                 }
-                v = v.substring(v.length() - 64);
                 return Result.of(v, i + 1);
             }
         }

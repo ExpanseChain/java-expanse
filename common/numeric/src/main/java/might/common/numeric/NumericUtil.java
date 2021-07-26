@@ -6,7 +6,7 @@ import might.common.numeric.error.NumericValueException;
 
 import java.util.Arrays;
 
-class NumericUtil {
+public class NumericUtil {
 
     /**
      * 检查字符是否符合条件
@@ -99,7 +99,7 @@ class NumericUtil {
         throw new NumericException(String.format("what a value(%d)?", value));
     }
 
-    static String binaryString(byte value) {
+    public static String binaryString(byte value) {
         String v = Integer.toBinaryString(value);
         switch (v.length()) {
             case 1: return "0000000" + v;

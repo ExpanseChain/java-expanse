@@ -1,4 +1,4 @@
-package might.vm.wasm.util;
+package util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +12,7 @@ public class FileReader {
         if (null == url) {
             throw new RuntimeException("can not find file");
         }
-        File file = new File(url.getFile() + "../../../../../../../../resources/main/rust/target/wasm32-unknown-unknown/release/" + name);
+        File file = new File(url.getFile() + "../../../../resources/main/rust/target/wasm32-unknown-unknown/release/" + name);
 
         byte[] bytes = new byte[(int)file.length()];
 
