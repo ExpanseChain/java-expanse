@@ -13,7 +13,7 @@ extern "C" {
 
 #[no_mangle]
 pub extern "C" fn main() {
-    unsafe { print_i64(prime_count(5000)) }
+    unsafe { print_i64(prime_count(500000)) }
     unsafe { print_char('\n' as i32); }
 }
 
@@ -23,8 +23,8 @@ pub extern "C" fn prime_count(n: i64) -> i64 {
     let mut count = 0;
     for i in 0..n {
         if is_prime(i) {
-            // unsafe { print_i64(i); }
-            // unsafe { print_char('\n' as i32); }
+            unsafe { print_i64(i); }
+            unsafe { print_char('\n' as i32); }
             count += 1;
         }
     }
