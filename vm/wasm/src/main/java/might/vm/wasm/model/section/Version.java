@@ -29,13 +29,7 @@ public class Version {
         this.sub  = I16.valueOf(new byte[]{ i32.bytes()[2], i32.bytes()[3]});
 
         // 版本怎么检查？
-        if (config.getMinMainVersion().lessOrEqualsU(main)
-                && main.lessOrEqualsU(config.getMaxMainVersion())
-                && config.getMinSubVersion().lessOrEqualsU(sub)
-                && sub.lessOrEqualsU(config.getMaxSubVersion())
-        ) {
-
-        } else {
+        if (!config.checkVersion(main, sub)) {
             throw new ModuleException("version is not acceptable: " + i32.toHexString());
         }
     }

@@ -12,24 +12,10 @@ public class WasmTest {
         System.out.println("read file: " + name);
         WasmReader reader = new WasmReader(FileReader.readByName(name));
         return reader.readModuleInfo(new ModuleConfig() {
-            @Override
-            public I16 getMinMainVersion() {
-                return I16.valueOf(0);
-            }
 
             @Override
-            public I16 getMaxMainVersion() {
-                return I16.valueOf(0);
-            }
-
-            @Override
-            public I16 getMinSubVersion() {
-                return I16.valueOf(1);
-            }
-
-            @Override
-            public I16 getMaxSubVersion() {
-                return I16.valueOf(1);
+            public boolean checkVersion(I16 main, I16 min) {
+                return main.equals(I16.valueOf(0)) && min.equals(I16.valueOf(1));
             }
         });
     }

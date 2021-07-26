@@ -139,13 +139,14 @@ public class ISize {
     }
 
 
-    public boolean equalsU(ISize o) {
+    public boolean equals(ISize o) {
         return unsigned().compareTo(o.unsigned()) == 0;
     }
 
-    public boolean notEqualsU(ISize o) {
+    public boolean notEquals(ISize o) {
         return unsigned().compareTo(o.unsigned()) != 0;
     }
+
 
     public boolean lessThanU(ISize o) {
         return unsigned().compareTo(o.unsigned()) < 0;
@@ -163,13 +164,6 @@ public class ISize {
         return unsigned().compareTo(o.unsigned()) >= 0;
     }
 
-    public boolean equalsS(ISize o) {
-        return signed().compareTo(o.signed()) == 0;
-    }
-
-    public boolean notEqualsS(ISize o) {
-        return signed().compareTo(o.signed()) != 0;
-    }
 
     public boolean lessThanS(ISize o) {
         return signed().compareTo(o.signed()) < 0;
