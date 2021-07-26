@@ -1,6 +1,6 @@
-package might.vm.wasm.core.error.assertion;
+package might.vm.wasm.error.assertion;
 
-import might.vm.wasm.core.error.WasmException;
+import might.vm.wasm.error.WasmException;
 
 public class AssertionTrueException extends WasmException {
 
