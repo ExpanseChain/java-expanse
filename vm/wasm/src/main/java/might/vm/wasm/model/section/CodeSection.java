@@ -1,6 +1,7 @@
 package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Local;
 
@@ -8,7 +9,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CodeSection {
+public class CodeSection implements Valid {
 
     public final I32 size;                // 代码大小
     public final Local[] locals;          // 本地变量组
@@ -44,6 +45,11 @@ public class CodeSection {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public void valid(ModuleInfo info) {
+        expression.valid(info);
     }
 
 }

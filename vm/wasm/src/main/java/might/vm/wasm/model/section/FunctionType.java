@@ -1,12 +1,13 @@
 package might.vm.wasm.model.section;
 
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.model.tag.FunctionTypeTag;
 import might.vm.wasm.model.type.ValueType;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class FunctionType {
+public class FunctionType implements Valid {
 
     public final FunctionTypeTag tag;       // 函数标识
     public final ValueType[] parameters;    // 参数列表
@@ -52,6 +53,11 @@ public class FunctionType {
             }
         }
         return true;
+    }
+
+    @Override
+    public void valid(ModuleInfo info) {
+        // 类型段 能构造成功就通过了
     }
 
 }

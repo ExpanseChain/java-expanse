@@ -11,7 +11,7 @@ public class Slice<T> implements Iterable<T> {
 
     private static final int MAX_CAPACITY = 1024 * 1024; // 最大容量
 
-    private final ArrayList<T> data;
+    protected final ArrayList<T> data;
 
     public Slice() { data = new ArrayList<>(); }
 
@@ -84,4 +84,5 @@ public class Slice<T> implements Iterable<T> {
         }
         return n;
     }
+
 }

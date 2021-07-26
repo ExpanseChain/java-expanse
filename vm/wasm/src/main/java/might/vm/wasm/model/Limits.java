@@ -5,9 +5,9 @@ import might.vm.wasm.model.tag.LimitsTag;
 
 public class Limits {
 
-    private final LimitsTag tag;    // 0x00 只有min  如果是I0x01 还要读取max值
-    private final I32 min;          // 最小值
-    private final I32 max;          // 最大值
+    protected final LimitsTag tag;    // 0x00 只有min  如果是I0x01 还要读取max值
+    protected final I32 min;          // 最小值
+    protected final I32 max;          // 最大值
 
     public Limits(LimitsTag tag, I32 min, I32 max) {
         this.tag = tag;

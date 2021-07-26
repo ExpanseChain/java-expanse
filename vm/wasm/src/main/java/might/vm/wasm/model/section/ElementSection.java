@@ -1,13 +1,17 @@
 package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.execute.ExecutionException;
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.describe.ImportDescribe;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.TableIndex;
 import might.vm.wasm.model.type.ReferenceType;
+import might.vm.wasm.util.Slice;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,12 +21,17 @@ import static might.vm.wasm.util.NumberTransform.toHex;
 /**
  * 这部分貌似有更新，以后再修改
  */
-public class ElementSection {
+public class ElementSection implements Valid {
 
     public final byte tag;    // 0x00 ~ 0x07 元素段好多种
     public final Value value; // 元素段内容
 
-    public static abstract class Value implements Dump {
+    @Override
+    public void valid(ModuleInfo info) {
+        value.valid(info);
+    }
+
+    public static abstract class Value implements Dump, Valid {
         public abstract boolean isActive();
         public abstract void init(ModuleInstance mi);
     }
@@ -59,6 +68,22 @@ public class ElementSection {
                 mi.getTable(TableIndex.of(I32.valueOf(0))).setElement(offset.add(I32.valueOf(i)), mi.getFunction(functionIndices[i]));
             }
         }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            expression.valid(info);
+
+            // 计算函数集合大小
+            long max = info.importSections.stream().filter(i -> i.describe.value instanceof ImportDescribe.Function).count();
+            max += info.functionSections.size();
+            for (int i = 0; i < functionIndices.length; i++) {
+                int j = functionIndices[i].unsigned().intValue();
+                Slice.checkArrayIndex(j);
+                if (max <= j) {
+                    throw new ModuleException("can not find function by index: " + j);
+                }
+            }
+        }
     }
     public static class Value1 extends Value {
         // 𝟶𝚡𝟶𝟷  et:𝚎𝚕𝚎𝚖𝚔𝚒𝚗𝚍  𝑦∗:𝚟𝚎𝚌(𝚏𝚞𝚗𝚌𝚒𝚍𝚡) => {𝗍𝗒𝗉𝖾 et,𝗂𝗇𝗂𝗍 ((𝗋𝖾𝖿.𝖿𝗎𝗇𝖼 𝑦) 𝖾𝗇𝖽)∗,𝗆𝗈𝖽𝖾 𝗉𝖺𝗌𝗌𝗂𝗏𝖾}
@@ -83,6 +108,11 @@ public class ElementSection {
         @Override
         public void init(ModuleInstance mi) {
             throw new ExecutionException("how to init?");
+        }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            throw new ModuleException("how to valid?");
         }
     }
     public static class Value2 extends Value {
@@ -113,6 +143,11 @@ public class ElementSection {
         public void init(ModuleInstance mi) {
             throw new ExecutionException("how to init?");
         }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            throw new ModuleException("how to valid?");
+        }
     }
     public static class Value3 extends Value {
         // 𝟶𝚡𝟶𝟹  et:𝚎𝚕𝚎𝚖𝚔𝚒𝚗𝚍  𝑦∗:𝚟𝚎𝚌(𝚏𝚞𝚗𝚌𝚒𝚍𝚡) => {𝗍𝗒𝗉𝖾 et,𝗂𝗇𝗂𝗍 ((𝗋𝖾𝖿.𝖿𝗎𝗇𝖼 𝑦) 𝖾𝗇𝖽)∗,𝗆𝗈𝖽𝖾 𝖽𝖾𝖼𝗅𝖺𝗋𝖺𝗍𝗂𝗏𝖾}
@@ -137,19 +172,24 @@ public class ElementSection {
         public void init(ModuleInstance mi) {
             throw new ExecutionException("how to init?");
         }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            throw new ModuleException("how to valid?");
+        }
     }
     public static class Value4 extends Value {
         // 𝟶𝚡𝟶𝟺  𝑒:𝚎𝚡𝚙𝚛  el∗:𝚟𝚎𝚌(𝚎𝚡𝚙𝚛) => {𝗍𝗒𝗉𝖾 𝖿𝗎𝗇𝖼𝗋𝖾𝖿,𝗂𝗇𝗂𝗍 el∗,𝗆𝗈𝖽𝖾 𝖺𝖼𝗍𝗂𝗏𝖾 {𝗍𝖺𝖻𝗅𝖾 0,𝗈𝖿𝖿𝗌𝖾𝗍 𝑒}}
         public Expression expression;
-        public Expression[] expressionsArray;
+        public Expression[] expressionArray;
 
-        public Value4(Expression expression, Expression[] expressionsArray) {
+        public Value4(Expression expression, Expression[] expressionArray) {
             this.expression = expression;
-            this.expressionsArray = expressionsArray;
+            this.expressionArray = expressionArray;
         }
         @Override
         public String dump() {
-            return "0x04 " + expression.dump() + " [" + Stream.of(expressionsArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
+            return "0x04 " + expression.dump() + " [" + Stream.of(expressionArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -164,12 +204,20 @@ public class ElementSection {
             I32 offset = mi.popI32();
 
             // 初始化
-            for (int i = 0; i < expressionsArray.length; i++) {
-                mi.executeExpression(expressionsArray[i]);
+            for (int i = 0; i < expressionArray.length; i++) {
+                mi.executeExpression(expressionArray[i]);
                 I32 index = mi.popI32();
                 // 默认是0 从初始化的函数表中取出对应的函数
                 mi.getTable(TableIndex.of(I32.valueOf(0)))
                         .setElement(offset.add(I32.valueOf(i)), mi.getFunction(FunctionIndex.of(index)));
+            }
+        }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            expression.valid(info);
+            for (Expression actions : expressionArray) {
+                actions.valid(info);
             }
         }
     }
@@ -195,6 +243,11 @@ public class ElementSection {
         @Override
         public void init(ModuleInstance mi) {
             throw new ExecutionException("how to init?");
+        }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            throw new ModuleException("how to valid?");
         }
     }
     public static class Value6 extends Value {
@@ -224,6 +277,11 @@ public class ElementSection {
         public void init(ModuleInstance mi) {
             throw new ExecutionException("how to init?");
         }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            throw new ModuleException("how to valid?");
+        }
     }
     public static class Value7 extends Value {
         // 𝟶𝚡𝟶𝟽  et:𝚛𝚎𝚏𝚝𝚢𝚙𝚎  el∗:𝚟𝚎𝚌(𝚎𝚡𝚙𝚛) => {𝗍𝗒𝗉𝖾 𝑒𝑡,𝗂𝗇𝗂𝗍 el∗,𝗆𝗈𝖽𝖾 𝖽𝖾𝖼𝗅𝖺𝗋𝖺𝗍𝗂𝗏𝖾}
@@ -247,6 +305,11 @@ public class ElementSection {
         @Override
         public void init(ModuleInstance mi) {
             throw new ExecutionException("how to init?");
+        }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            throw new ModuleException("how to valid?");
         }
     }
 

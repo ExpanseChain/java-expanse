@@ -10,7 +10,10 @@ import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.model.type.BlockType;
 import might.vm.wasm.model.type.ValueType;
 import might.vm.wasm.nav.function.NativeInstance;
-import might.vm.wasm.util.Slice;
+import might.vm.wasm.util.ValidSlice;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class ModuleInfo {
@@ -22,19 +25,21 @@ public class ModuleInfo {
     public Magic magic;         // 魔数
     public Version version;     // 版本
 
-    public Slice<CustomSection> customSections;                     //  0 自定义段
-    public Slice<FunctionType> typeSections = new Slice<>();        //  1 类型段 函数签名
-    public Slice<ImportSection> importSections = new Slice<>();     //  2 导入 导入函数部分指向类型段的函数签名
-    public Slice<TypeIndex> functionSections = new Slice<>();       //  3 函数段 指向类型段函数索引
-    public Slice<TableType> tableSections = new Slice<>();          //  4 表
-    public Slice<MemoryType> memorySections = new Slice<>();        //  5 内存
-    public Slice<GlobalSection> globalSections = new Slice<>();     //  6 全局
-    public Slice<ExportSection> exportSections = new Slice<>();     //  7 导出
-    public FunctionIndex startFunctionIndex;                        //  8 起始函数索引 uint32 应当是函数段的索引
-    public Slice<ElementSection> elementSections = new Slice<>();   //  9 元素
-    public DataCountIndex dataCountIndex;                           // 12 数据计数段 memory.init data.drop 需要数据
-    public Slice<CodeSection> codeSections = new Slice<>();         // 10 代码
-    public Slice<DataSection> dataSections = new Slice<>();         // 11 数据
+    public final ValidSlice<CustomSection> customSections = new ValidSlice<>();     //  0 自定义段
+    public ValidSlice<FunctionType> typeSections = new ValidSlice<>();        //  1 类型段 函数签名
+    public ValidSlice<ImportSection> importSections = new ValidSlice<>();     //  2 导入 导入函数部分指向类型段的函数签名
+    public ValidSlice<TypeIndex> functionSections = new ValidSlice<>();       //  3 函数段 指向类型段函数索引
+    public ValidSlice<TableType> tableSections = new ValidSlice<>();          //  4 表
+    public ValidSlice<MemoryType> memorySections = new ValidSlice<>();        //  5 内存
+    public ValidSlice<GlobalSection> globalSections = new ValidSlice<>();     //  6 全局
+    public ValidSlice<ExportSection> exportSections = new ValidSlice<>();     //  7 导出
+    public FunctionIndex startFunctionIndex;                                  //  8 起始函数索引 uint32 应当是函数段的索引
+    public ValidSlice<ElementSection> elementSections = new ValidSlice<>();   //  9 元素
+    public DataCountIndex dataCountIndex;                                     // 12 数据计数段 memory.init data.drop 需要数据
+    public ValidSlice<CodeSection> codeSections = new ValidSlice<>();         // 10 代码
+    public ValidSlice<DataSection> dataSections = new ValidSlice<>();         // 11 数据
+
+    public final Set<String> EXPORT_NAMES = new HashSet<>(); // 导出模块名称记录
 
     ModuleInfo() {}
 

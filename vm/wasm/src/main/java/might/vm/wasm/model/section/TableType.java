@@ -1,10 +1,11 @@
 package might.vm.wasm.model.section;
 
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.Limits;
 import might.vm.wasm.model.type.ReferenceType;
 
-public class TableType implements Dump {
+public class TableType implements Dump, Valid {
 
     public final ReferenceType type;    // 引用类型
     public final Limits limits;         // 表限制
@@ -29,5 +30,10 @@ public class TableType implements Dump {
     @Override
     public String dump() {
         return type.dump() + " " + limits.dump();
+    }
+
+    @Override
+    public void valid(ModuleInfo info) {
+        // 表类型 验证 ？
     }
 }

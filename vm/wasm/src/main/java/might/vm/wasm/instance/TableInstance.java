@@ -3,6 +3,7 @@ package might.vm.wasm.instance;
 import might.common.numeric.I32;
 import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.core.structure.Table;
+import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.section.TableType;
 import might.vm.wasm.util.Slice;
@@ -49,12 +50,22 @@ public class TableInstance implements Table {
 
     @Override
     public Function getElement(I32 index) {
-        return elements.get(index);
+        int i = index.unsigned().intValue();
+        Slice.checkArrayIndex(i);
+        if (elements.size() <= i) {
+            throw new ExecutionException("wrong index: " + i);
+        }
+        return elements.get(i);
     }
 
     @Override
     public void setElement(I32 index, Function element) {
-        elements.set(index.unsigned().intValue(), element);
+        int i = index.unsigned().intValue();
+        Slice.checkArrayIndex(i);
+        if (elements.size() <= i) {
+            throw new ExecutionException("wrong index: " + i);
+        }
+        elements.set(i, element);
     }
 
 }

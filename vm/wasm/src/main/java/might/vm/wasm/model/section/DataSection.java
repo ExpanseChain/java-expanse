@@ -1,20 +1,28 @@
 package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.structure.ModuleInstance;
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.MemoryIndex;
 import might.vm.wasm.util.NumberTransform;
+import might.vm.wasm.util.Slice;
 
 import static might.vm.wasm.util.NumberTransform.toHexArray;
 
-public class DataSection {
+public class DataSection implements Valid {
 
     public byte tag;    // 数据标签
     public Value value; // 数据内容
 
-    public static abstract class Value implements Dump {
+    @Override
+    public void valid(ModuleInfo info) {
+        value.valid(info);
+    }
+
+    public static abstract class Value implements Dump, Valid {
         public abstract void initMemory(ModuleInstance mi);
     }
 
@@ -41,6 +49,10 @@ public class DataSection {
             mi.write(MemoryIndex.of(I32.valueOf(0)), offset.u64(), bytes);
         }
 
+        @Override
+        public void valid(ModuleInfo info) {
+            expression.valid(info);
+        }
     }
     public static class Value1 extends Value {
         // 𝟶𝚡𝟶𝟷  𝑏∗:𝚟𝚎𝚌(𝚋𝚢𝚝𝚎) => {𝗂𝗇𝗂𝗍 𝑏∗,𝗆𝗈𝖽𝖾 𝗉𝖺𝗌𝗌𝗂𝗏𝖾}
@@ -58,6 +70,10 @@ public class DataSection {
         // 非主动初始化内存
         @Override
         public void initMemory(ModuleInstance mi) { }
+
+        @Override
+        public void valid(ModuleInfo info) { }
+
     }
     public static class Value2 extends Value {
         // 𝟶𝚡𝟶𝟸  𝑥:𝚖𝚎𝚖𝚒𝚍𝚡  𝑒:𝚎𝚡𝚙𝚛  𝑏∗:𝚟𝚎𝚌(𝚋𝚢𝚝𝚎) => {𝗂𝗇𝗂𝗍 𝑏∗,𝗆𝗈𝖽𝖾 𝖺𝖼𝗍𝗂𝗏𝖾 {𝗆𝖾𝗆𝗈𝗋𝗒 𝑥,𝗈𝖿𝖿𝗌𝖾𝗍 𝑒}}
@@ -84,6 +100,18 @@ public class DataSection {
             I32 offset = mi.popI32();
 
             mi.write(MemoryIndex.of(I32.valueOf(index)), offset.u64(), bytes);
+        }
+
+        @Override
+        public void valid(ModuleInfo info) {
+            // 检查memory
+            int mi = memoryIndex.unsigned().intValue();
+            Slice.checkArrayIndex(mi);
+            int max = info.memorySections.size();
+            if (max <= mi) {
+                throw new ModuleException("can not find memory by index: " + mi);
+            }
+            expression.valid(info);
         }
     }
 
