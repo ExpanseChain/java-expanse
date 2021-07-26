@@ -44,8 +44,8 @@ public class Module implements ModuleInstance {
         if (null != EXPORTS) { return EXPORTS.get(name); }
 
         EXPORTS = new HashMap<>();
-        for (int i = 0; i < moduleInfo.exportSections.length; i++) {
-            ExportSection exportSection = moduleInfo.exportSections[i];
+        for (int i = 0; i < moduleInfo.exportSections.size(); i++) {
+            ExportSection exportSection = moduleInfo.exportSections.get(i);
 
             if (EXPORTS.containsKey(exportSection.name)) {
                 throw new RuntimeException("already exist item: " + exportSection.name);
@@ -380,8 +380,8 @@ public class Module implements ModuleInstance {
 
     @Override
     public void linkImports() {
-        for (int i = 0; i < moduleInfo.importSections.length; i++) {
-            ImportSection importSection = moduleInfo.importSections[i];
+        for (int i = 0; i < moduleInfo.importSections.size(); i++) {
+            ImportSection importSection = moduleInfo.importSections.get(i);
 
             ModuleInstance instance = ModuleInstance.MODULES.get(importSection.module);
 
@@ -411,21 +411,21 @@ public class Module implements ModuleInstance {
 
     @Override
     public void initFunctions() {
-        for (int i = 0; i < moduleInfo.functionSections.length; i++) {
-            TypeIndex index = moduleInfo.functionSections[i];
-            FunctionType type = moduleInfo.typeSections[index.unsigned().intValue()];
-            CodeSection codeSection = moduleInfo.codeSections[i];
+        for (int i = 0; i < moduleInfo.functionSections.size(); i++) {
+            TypeIndex index = moduleInfo.functionSections.get(i);
+            FunctionType type = moduleInfo.typeSections.get(index.unsigned().intValue());
+            CodeSection codeSection = moduleInfo.codeSections.get(i);
             this.functions.add(new FunctionInstance(type, codeSection, this));
         }
     }
 
     @Override
     public void initTables() {
-        for (int i = 0; i < moduleInfo.tableSections.length; i++) {
-            this.tables.add(new TableInstance(moduleInfo.tableSections[i]));
+        for (int i = 0; i < moduleInfo.tableSections.size(); i++) {
+            this.tables.add(new TableInstance(moduleInfo.tableSections.get(i)));
         }
-        for (int i = 0; i < moduleInfo.elementSections.length; i++) {
-            ElementSection elementSection = moduleInfo.elementSections[i];
+        for (int i = 0; i < moduleInfo.elementSections.size(); i++) {
+            ElementSection elementSection = moduleInfo.elementSections.get(i);
             if (elementSection.value.isActive()) {
                 elementSection.value.init(this);
             }
@@ -434,8 +434,8 @@ public class Module implements ModuleInstance {
 
     @Override
     public void initMemories() {
-        for (int i = 0; i < moduleInfo.memorySections.length; i++) {
-            this.memories.add(new MemoryInstance(moduleInfo.memorySections[i]));
+        for (int i = 0; i < moduleInfo.memorySections.size(); i++) {
+            this.memories.add(new MemoryInstance(moduleInfo.memorySections.get(i)));
         }
         for (DataSection d : moduleInfo.dataSections) {
             d.value.initMemory(this);
@@ -444,11 +444,11 @@ public class Module implements ModuleInstance {
 
     @Override
     public void initGlobals() {
-        for (int i = 0; i < moduleInfo.globalSections.length; i++) {
+        for (int i = 0; i < moduleInfo.globalSections.size(); i++) {
             // 执行初始化指令
-            executeExpression(moduleInfo.globalSections[i].init);
+            executeExpression(moduleInfo.globalSections.get(i).init);
             // 将执行结果存到对应位置
-            this.globals.add(new GlobalInstance(moduleInfo.globalSections[i].type, popUSize()));
+            this.globals.add(new GlobalInstance(moduleInfo.globalSections.get(i).type, popUSize()));
         }
     }
 

@@ -37,7 +37,7 @@ public class CallIndirect implements Operate {
         Function function = mi.getTable(TableIndex.of(I32.valueOf(0))).getElement(U32.valueOf(i));
 
         TypeIndex typeIndex = d.typeIndex;
-        FunctionType functionType = mi.getModuleInfo().typeSections[typeIndex.unsigned().intValue()];
+        FunctionType functionType = mi.getModuleInfo().typeSections.get(typeIndex.unsigned().intValue());
         if (!function.type().same(functionType)) {
             throw new RuntimeException("indirect call type mismatch");
         }
