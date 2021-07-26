@@ -17,7 +17,7 @@ public class DumpCallIndirect implements Dump {
 
     @Override
     public String dump() {
-        return "typeidx: " +  typeIndex.dump() + "  tableidx: " + tableIndex.dump();
+        return "typeidx: " +  typeIndex.unsigned() + "  tableidx: " + tableIndex.unsigned();
     }
 
 }

@@ -76,14 +76,14 @@ public class ModuleInfo {
             sb.append("  ").append(exportSections[i].dump(i)).append("\n");
         }
 
-        sb.append("Start: ").append(null == startFunctionIndex ? "none" : startFunctionIndex.dump()).append("\n");
+        sb.append("Start: ").append(null == startFunctionIndex ? "none" : startFunctionIndex.unsigned().toString()).append("\n");
 
         sb.append("Element[").append(elementSections.length).append("]:").append("\n");
         for (int i = 0; i < elementSections.length; i++) {
             sb.append("  ").append(elementSections[i].dump(i).replace("\n", "\n  ")).append("\n");
         }
 
-        sb.append("DataCount: ").append(null == dataCountIndex ? "none" : dataCountIndex.dump()).append("\n");
+        sb.append("DataCount: ").append(null == dataCountIndex ? "none" : dataCountIndex.unsigned().toString()).append("\n");
 
         int importFunctionCount = (int) Stream.of(importSections).filter(i -> i.describe.tag == PortTag.FUNCTION).count();
         sb.append("Code[").append(codeSections.length).append("]:").append("\n");

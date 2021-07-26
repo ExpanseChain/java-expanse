@@ -23,7 +23,7 @@ public class ImportDescribe {
         }
 
         @Override
-        public String dump() { return typeIndex.dump(); }
+        public String dump() { return typeIndex.unsigned().toString(); }
 
     }
     public static class Table extends Value {

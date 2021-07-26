@@ -21,7 +21,7 @@ public class Br implements Operate {
         Assertions.requireNonNull(args);
         Assertions.requireType(args, LabelIndex.class);
 
-        int index = ((LabelIndex) args).intValue();
+        int index = ((LabelIndex) args).unsigned().intValue();
 
         for (int i = 0; i < index; i++) {
             mi.popFrame();

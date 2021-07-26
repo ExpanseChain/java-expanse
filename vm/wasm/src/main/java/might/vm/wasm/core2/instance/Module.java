@@ -1,5 +1,6 @@
 package might.vm.wasm.core2.instance;
 
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Action;
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.core2.instruction.Instruction;
@@ -218,23 +219,23 @@ public class Module implements ModuleInstance {
 
     @Override
     public Memory getMemory(MemoryIndex index) {
-        return memories.get(index.intValue());
+        return memories.get(index.unsigned().intValue());
     }
 
     @Override
     public void setMemory(MemoryIndex index, Memory value) {
-        while (memories.size() <= index.intValue()) { memories.add(null); }
-        memories.set(index.intValue(), value);
+        while (memories.size() <= index.unsigned().intValue()) { memories.add(null); }
+        memories.set(index.unsigned().intValue(), value);
     }
 
     @Override
     public void write(MemoryIndex index, U64 offset, byte[] data) {
-        memories.get(index.intValue()).write(offset, data);
+        memories.get(index.unsigned().intValue()).write(offset, data);
     }
 
     @Override
     public void read(MemoryIndex index, U64 offset, byte[] buffer) {
-        memories.get(index.intValue()).read(offset, buffer);
+        memories.get(index.unsigned().intValue()).read(offset, buffer);
     }
 
 
@@ -247,59 +248,59 @@ public class Module implements ModuleInstance {
     @Override
     public void writeBytes(MemoryIndex index, DumpMemory args, byte[] data) {
         U64 offset = getOffset(args);
-        this.memories.get(index.intValue()).write(offset, data);
+        this.memories.get(index.unsigned().intValue()).write(offset, data);
     }
 
     @Override
     public byte[] readBytes(MemoryIndex index, DumpMemory args, int size) {
         byte[] bytes = new byte[size];
         U64 offset = getOffset(args);
-        this.memories.get(index.intValue()).read(offset, bytes);
+        this.memories.get(index.unsigned().intValue()).read(offset, bytes);
         return bytes;
     }
 
     @Override
     public U32 memorySize(MemoryIndex index) {
-        return memories.get(index.intValue()).size();
+        return memories.get(index.unsigned().intValue()).size();
     }
 
     @Override
     public U32 memoryGrow(MemoryIndex index, U32 grow) {
-        return memories.get(index.intValue()).grow(grow);
+        return memories.get(index.unsigned().intValue()).grow(grow);
     }
 
 
     @Override
     public Global getGlobal(GlobalIndex index) {
-        return globals.get(index.intValue());
+        return globals.get(index.unsigned().intValue());
     }
 
     @Override
     public void setGlobal(GlobalIndex index, Global value) {
-        while (globals.size() <= index.intValue()) { globals.add(null); }
-        globals.set(index.intValue(), value);
+        while (globals.size() <= index.unsigned().intValue()) { globals.add(null); }
+        globals.set(index.unsigned().intValue(), value);
     }
 
     @Override
     public Function getFunction(FunctionIndex index) {
-        return functions.get(index.intValue());
+        return functions.get(index.unsigned().intValue());
     }
 
     @Override
     public void setFunction(FunctionIndex index, Function function) {
-        while (functions.size() <= index.intValue()) { functions.add(null); }
-        functions.set(index.intValue(), function);
+        while (functions.size() <= index.unsigned().intValue()) { functions.add(null); }
+        functions.set(index.unsigned().intValue(), function);
     }
 
     @Override
     public Table getTable(TableIndex index) {
-        return tables.get(index.intValue());
+        return tables.get(index.unsigned().intValue());
     }
 
     @Override
     public void setTable(TableIndex index, Table table) {
-        while (tables.size() <= index.intValue()) { tables.add(null); }
-        tables.set(index.intValue(), table);
+        while (tables.size() <= index.unsigned().intValue()) { tables.add(null); }
+        tables.set(index.unsigned().intValue(), table);
     }
 
     @Override
@@ -391,13 +392,13 @@ public class Module implements ModuleInstance {
             }
 
             if (member instanceof Function) {
-                this.setFunction(FunctionIndex.of(i), (Function) member);
+                this.setFunction(FunctionIndex.of(I32.valueOf(i)), (Function) member);
             } else if (member instanceof Table) {
-                this.setTable(TableIndex.of(i), (Table) member);
+                this.setTable(TableIndex.of(I32.valueOf(i)), (Table) member);
             } else if (member instanceof Memory) {
-                this.setMemory(MemoryIndex.of(i), (Memory) member);
+                this.setMemory(MemoryIndex.of(I32.valueOf(i)), (Memory) member);
             } else if (member instanceof Global) {
-                this.setGlobal(GlobalIndex.of(i), (Global) member);
+                this.setGlobal(GlobalIndex.of(I32.valueOf(i)), (Global) member);
             } else {
                 throw new RuntimeException("what a member: " + member);
             }
@@ -408,7 +409,7 @@ public class Module implements ModuleInstance {
     public void initFunctions() {
         for (int i = 0; i < moduleInfo.functionSections.length; i++) {
             TypeIndex index = moduleInfo.functionSections[i];
-            FunctionType type = moduleInfo.typeSections[index.intValue()];
+            FunctionType type = moduleInfo.typeSections[index.unsigned().intValue()];
             CodeSection codeSection = moduleInfo.codeSections[i];
             this.functions.add(new FunctionInstance(type, codeSection, this));
         }

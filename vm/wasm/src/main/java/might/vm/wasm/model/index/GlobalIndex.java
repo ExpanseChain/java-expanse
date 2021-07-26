@@ -1,23 +1,23 @@
 package might.vm.wasm.model.index;
 
-import might.vm.wasm.core2.numeric.U32;
+import might.common.numeric.I32;
+import might.vm.wasm.model.Dump;
 
-public class GlobalIndex extends U32 {
+public class GlobalIndex extends I32 implements Dump {
 
-    private GlobalIndex(U32 u32) {
-        super(u32);
+    private GlobalIndex(I32 i32) {
+        super(i32.bytes());
     }
 
-    public GlobalIndex(int value) {
-        super(value);
-    }
-
-    public static GlobalIndex of(U32 value) { return new GlobalIndex(value); }
-
-    public static GlobalIndex of(int value) { return new GlobalIndex(value); }
+    public static GlobalIndex of(I32 value) { return new GlobalIndex(value); }
 
     public String dump(int index) {
-        return "global[" + index + "]: " + "value=" + super.toString();
+        return "global[" + index + "]: " + "value=" + unsigned();
+    }
+
+    @Override
+    public String dump() {
+        return unsigned().toString();
     }
 
 }

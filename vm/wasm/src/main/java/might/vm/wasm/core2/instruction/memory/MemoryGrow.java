@@ -1,5 +1,6 @@
 package might.vm.wasm.core2.instruction.memory;
 
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Operate;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.MemoryIndex;
@@ -18,7 +19,7 @@ public class MemoryGrow implements Operate {
     public void operate(ModuleInstance mi, Dump args) {
         U32 grow = mi.popU32();
         // System.err.println("So, which memory ?");
-        U32 old = mi.memoryGrow(MemoryIndex.of(0), grow);
+        U32 old = mi.memoryGrow(MemoryIndex.of(I32.valueOf(0)), grow);
         mi.pushU32(old);
     }
     

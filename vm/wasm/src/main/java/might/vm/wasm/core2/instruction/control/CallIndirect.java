@@ -1,5 +1,6 @@
 package might.vm.wasm.core2.instruction.control;
 
+import might.common.numeric.I32;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.core2.instruction.Instruction;
 import might.vm.wasm.core2.instruction.Operate;
@@ -29,14 +30,14 @@ public class CallIndirect implements Operate {
 
         int i = mi.popU32().intValue();
         // which table ?
-        if (i >= mi.getTable(TableIndex.of(0)).size().intValue()) {
+        if (i >= mi.getTable(TableIndex.of(I32.valueOf(0))).size().intValue()) {
             throw new RuntimeException("to large");
         }
 
-        Function function = mi.getTable(TableIndex.of(0)).getElement(U32.valueOf(i));
+        Function function = mi.getTable(TableIndex.of(I32.valueOf(0))).getElement(U32.valueOf(i));
 
         TypeIndex typeIndex = d.typeIndex;
-        FunctionType functionType = mi.getModuleInfo().typeSections[typeIndex.intValue()];
+        FunctionType functionType = mi.getModuleInfo().typeSections[typeIndex.unsigned().intValue()];
         if (!function.type().same(functionType)) {
             throw new RuntimeException("indirect call type mismatch");
         }

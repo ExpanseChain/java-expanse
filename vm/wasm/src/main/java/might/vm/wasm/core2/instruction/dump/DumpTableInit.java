@@ -17,7 +17,7 @@ public class DumpTableInit implements Dump {
 
     @Override
     public String dump() {
-        return elementIndex.dump() + " " + tableIndex.dump();
+        return elementIndex.unsigned() + " " + tableIndex.unsigned();
     }
 
 }

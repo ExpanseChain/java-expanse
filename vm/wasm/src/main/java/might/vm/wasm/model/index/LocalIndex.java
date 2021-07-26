@@ -1,17 +1,23 @@
 package might.vm.wasm.model.index;
 
-import might.vm.wasm.core2.numeric.U32;
+import might.common.numeric.I32;
+import might.vm.wasm.model.Dump;
 
-public class LocalIndex extends U32 {
+public class LocalIndex extends I32 implements Dump {
 
-    protected LocalIndex(U32 u32) {
-        super(u32);
+    protected LocalIndex(I32 i32) {
+        super(i32.bytes());
     }
 
-    public static LocalIndex of(U32 value) { return new LocalIndex(value); }
+    public static LocalIndex of(I32 value) { return new LocalIndex(value); }
 
     public String dump(int index) {
-        return "local[" + index + "]: " + "value=" + super.toString();
+        return "local[" + index + "]: " + "value=" + unsigned();
+    }
+
+    @Override
+    public String dump() {
+        return unsigned().toString();
     }
 
 }

@@ -1,23 +1,23 @@
 package might.vm.wasm.model.index;
 
-import might.vm.wasm.core2.numeric.U32;
+import might.common.numeric.I32;
+import might.vm.wasm.model.Dump;
 
-public class TableIndex extends U32 {
+public class TableIndex extends I32 implements Dump {
 
-    private TableIndex(U32 u32) {
-        super(u32);
+    private TableIndex(I32 i32) {
+        super(i32.bytes());
     }
 
-    private TableIndex(int value) {
-        super(value);
-    }
-
-    public static TableIndex of(U32 value) { return new TableIndex(value); }
-
-    public static TableIndex of(int value) { return new TableIndex(value); }
+    public static TableIndex of(I32 value) { return new TableIndex(value); }
 
     public String dump(int index) {
-        return "table[" + index + "]: " + "value=" + super.toString();
+        return "table[" + index + "]: " + "value=" + unsigned();
+    }
+
+    @Override
+    public String dump() {
+        return unsigned().toString();
     }
 
 }

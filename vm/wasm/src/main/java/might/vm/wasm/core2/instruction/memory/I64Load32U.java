@@ -1,13 +1,14 @@
 package might.vm.wasm.core2.instruction.memory;
 
-import might.vm.wasm.error.Assertions;
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Operate;
 import might.vm.wasm.core2.instruction.dump.DumpMemory;
-import might.vm.wasm.model.Dump;
-import might.vm.wasm.model.index.MemoryIndex;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.core2.structure.WasmReader;
+import might.vm.wasm.error.Assertions;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.index.MemoryIndex;
 
 public class I64Load32U implements Operate {
 
@@ -23,7 +24,7 @@ public class I64Load32U implements Operate {
         DumpMemory a = (DumpMemory) args;
 
         // System.err.println("So, which memory ?");
-        byte[] bytes = mi.readBytes(MemoryIndex.of(U32.valueOf(0)), a, 4);
+        byte[] bytes = mi.readBytes(MemoryIndex.of(I32.valueOf(0)), a, 4);
 
         mi.pushU64(U32.valueOfU(new byte[] {
             bytes[3],

@@ -1,5 +1,6 @@
 package might.vm.wasm.model.section;
 
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.MemoryIndex;
@@ -38,7 +39,7 @@ public class DataSection {
             mi.executeExpression(expression);
             U32 offset = mi.popU32();
 
-            mi.write(MemoryIndex.of(0), offset.u64(), bytes);
+            mi.write(MemoryIndex.of(I32.valueOf(0)), offset.u64(), bytes);
         }
 
     }
@@ -78,12 +79,12 @@ public class DataSection {
 
         @Override
         public void initMemory(ModuleInstance mi) {
-            int index = memoryIndex.intValue();
+            int index = memoryIndex.unsigned().intValue();
 
             mi.executeExpression(expression);
             U32 offset = mi.popU32();
 
-            mi.write(MemoryIndex.of(index), offset.u64(), bytes);
+            mi.write(MemoryIndex.of(I32.valueOf(index)), offset.u64(), bytes);
         }
     }
 

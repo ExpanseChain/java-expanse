@@ -1,12 +1,13 @@
 package might.vm.wasm.model.section;
 
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.core2.numeric.U32;
+import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.TableIndex;
 import might.vm.wasm.model.type.ReferenceType;
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core2.structure.ModuleInstance;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -38,7 +39,7 @@ public class ElementSection {
 
         @Override
         public String dump() {
-            return "0x00 " + expression.dump() + " [" + Stream.of(functionIndices).map(U32::dump).collect(Collectors.joining(",")) + "]";
+            return "0x00 " + expression.dump() + " [" + Stream.of(functionIndices).map(i -> i.unsigned().toString()).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -55,7 +56,7 @@ public class ElementSection {
             // 初始化
             for (int i = 0; i < functionIndices.length; i++) {
                 // 默认是0 从初始化的函数表中取出对应的函数
-                mi.getTable(TableIndex.of(0)).setElement(U32.valueOf(offset + i), mi.getFunction(functionIndices[i]));
+                mi.getTable(TableIndex.of(I32.valueOf(0))).setElement(U32.valueOf(offset + i), mi.getFunction(functionIndices[i]));
             }
         }
     }
@@ -71,7 +72,7 @@ public class ElementSection {
 
         @Override
         public String dump() {
-            return "0x01 " + toHex(elementKind) + " [" + Stream.of(functionIndices).map(U32::dump).collect(Collectors.joining(",")) + "]";
+            return "0x01 " + toHex(elementKind) + " [" + Stream.of(functionIndices).map(i -> i.unsigned().toString()).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -100,7 +101,7 @@ public class ElementSection {
 
         @Override
         public String dump() {
-            return "0x02 " + tableIndex + " " + expression.dump() + " " + toHex(elementKind) + " [" + Stream.of(functionIndices).map(U32::dump).collect(Collectors.joining(",")) + "]";
+            return "0x02 " + tableIndex + " " + expression.dump() + " " + toHex(elementKind) + " [" + Stream.of(functionIndices).map(i -> i.unsigned().toString()).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -124,7 +125,7 @@ public class ElementSection {
         }
         @Override
         public String dump() {
-            return "0x03 " + toHex(elementKind) + " [" + Stream.of(functionIndices).map(U32::dump).collect(Collectors.joining(",")) + "]";
+            return "0x03 " + toHex(elementKind) + " [" + Stream.of(functionIndices).map(i -> i.unsigned().toString()).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -167,7 +168,7 @@ public class ElementSection {
                 mi.executeExpression(expressionsArray[i]);
                 U32 index = mi.popU32();
                 // 默认是0 从初始化的函数表中取出对应的函数
-                mi.getTable(TableIndex.of(0)).setElement(U32.valueOf(offset + i), mi.getFunction(FunctionIndex.of(index)));
+                mi.getTable(TableIndex.of(I32.valueOf(0))).setElement(U32.valueOf(offset + i), mi.getFunction(FunctionIndex.of(I32.valueOf(index.getBytes()))));
             }
         }
     }

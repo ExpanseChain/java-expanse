@@ -1,13 +1,14 @@
 package might.vm.wasm.core2.instruction.memory;
 
-import might.vm.wasm.error.Assertions;
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Operate;
 import might.vm.wasm.core2.instruction.dump.DumpMemory;
-import might.vm.wasm.model.Dump;
-import might.vm.wasm.model.index.MemoryIndex;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.core2.structure.WasmReader;
+import might.vm.wasm.error.Assertions;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.index.MemoryIndex;
 
 public class I32Store implements Operate {
 
@@ -26,7 +27,7 @@ public class I32Store implements Operate {
         byte[] bytes = v.getBytes();
 
         // System.err.println("So, which memory ?");
-        mi.writeBytes(MemoryIndex.of(U32.valueOf(0)), a,
+        mi.writeBytes(MemoryIndex.of(I32.valueOf(0)), a,
                 new byte[] {bytes[3], bytes[2], bytes[1], bytes[0]});
     }
 

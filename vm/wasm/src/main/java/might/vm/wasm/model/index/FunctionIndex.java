@@ -1,23 +1,23 @@
 package might.vm.wasm.model.index;
 
-import might.vm.wasm.core2.numeric.U32;
+import might.common.numeric.I32;
+import might.vm.wasm.model.Dump;
 
-public class FunctionIndex extends U32 {
+public class FunctionIndex extends I32 implements Dump {
 
-    private FunctionIndex(U32 u32) {
-        super(u32);
+    private FunctionIndex(I32 i32) {
+        super(i32.bytes());
     }
 
-    private FunctionIndex(int value) {
-        super(value);
-    }
-
-    public static FunctionIndex of(U32 value) { return new FunctionIndex(value); }
-
-    public static FunctionIndex of(int value) { return new FunctionIndex(value); }
+    public static FunctionIndex of(I32 value) { return new FunctionIndex(value); }
 
     public String dump(int index) {
-        return "FunctionIndex[" + index + "]: " + "value=" + super.toString();
+        return "FunctionIndex[" + index + "]: " + "value=" + unsigned();
+    }
+
+    @Override
+    public String dump() {
+        return unsigned().toString();
     }
 
 }

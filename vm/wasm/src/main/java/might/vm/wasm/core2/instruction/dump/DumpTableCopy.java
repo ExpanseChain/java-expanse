@@ -16,7 +16,7 @@ public class DumpTableCopy implements Dump {
 
     @Override
     public String dump() {
-        return tableIndex1.dump() + " " + tableIndex2.dump();
+        return tableIndex1.unsigned() + " " + tableIndex2.unsigned();
     }
 
 }

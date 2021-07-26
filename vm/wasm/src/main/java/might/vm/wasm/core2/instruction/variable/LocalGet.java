@@ -22,7 +22,7 @@ public class LocalGet implements Operate {
 
         LocalIndex a = (LocalIndex) args;
 
-        int index = mi.getFrameOffset() + a.intValue();
+        int index = mi.getFrameOffset() + a.unsigned().intValue();
 
         USize value = mi.getOperand(index, USize.class);
 
