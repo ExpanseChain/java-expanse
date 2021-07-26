@@ -2,6 +2,7 @@ package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
 import might.vm.wasm.core.structure.ModuleInstance;
+import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.FunctionIndex;
@@ -81,7 +82,7 @@ public class ElementSection {
 
         @Override
         public void init(ModuleInstance mi) {
-            throw new RuntimeException("how to init?");
+            throw new ExecutionException("how to init?");
         }
     }
     public static class Value2 extends Value {
@@ -110,7 +111,7 @@ public class ElementSection {
 
         @Override
         public void init(ModuleInstance mi) {
-            throw new RuntimeException("how to init?");
+            throw new ExecutionException("how to init?");
         }
     }
     public static class Value3 extends Value {
@@ -134,7 +135,7 @@ public class ElementSection {
 
         @Override
         public void init(ModuleInstance mi) {
-            throw new RuntimeException("how to init?");
+            throw new ExecutionException("how to init?");
         }
     }
     public static class Value4 extends Value {
@@ -193,7 +194,7 @@ public class ElementSection {
 
         @Override
         public void init(ModuleInstance mi) {
-            throw new RuntimeException("how to init?");
+            throw new ExecutionException("how to init?");
         }
     }
     public static class Value6 extends Value {
@@ -221,7 +222,7 @@ public class ElementSection {
 
         @Override
         public void init(ModuleInstance mi) {
-            throw new RuntimeException("how to init?");
+            throw new ExecutionException("how to init?");
         }
     }
     public static class Value7 extends Value {
@@ -245,7 +246,7 @@ public class ElementSection {
 
         @Override
         public void init(ModuleInstance mi) {
-            throw new RuntimeException("how to init?");
+            throw new ExecutionException("how to init?");
         }
     }
 

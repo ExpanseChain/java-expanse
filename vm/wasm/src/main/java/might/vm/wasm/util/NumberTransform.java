@@ -1,6 +1,7 @@
 package might.vm.wasm.util;
 
 import might.vm.wasm.error.Assertions;
+import might.vm.wasm.error.module.ModuleException;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -69,7 +70,7 @@ public class NumberTransform {
             case 'E': return "1110";
             case 'F': return "1111";
         }
-        throw new RuntimeException("wrong char: " + c);
+        throw new ModuleException("wrong char: " + c);
     }
 
     /**

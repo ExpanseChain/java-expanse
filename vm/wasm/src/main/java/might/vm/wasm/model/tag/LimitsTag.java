@@ -1,5 +1,6 @@
 package might.vm.wasm.model.tag;
 
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Type;
 
 import static might.vm.wasm.util.NumberTransform.toHex;
@@ -23,7 +24,7 @@ public class LimitsTag implements Type {
             case 0x00: return ZERO;
             case 0x01: return ONE;
         }
-        throw new RuntimeException("wrong value: 0x" + toHex(value));
+        throw new ModuleException("wrong value: 0x" + toHex(value));
     }
 
     @Override

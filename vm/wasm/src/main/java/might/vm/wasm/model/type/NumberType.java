@@ -1,5 +1,6 @@
 package might.vm.wasm.model.type;
 
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Type;
 
 import static might.vm.wasm.util.NumberTransform.toHex;
@@ -33,7 +34,7 @@ public class NumberType implements Type {
 //            case 0x7C:
 //                throw new RuntimeException("float number is forbid");
         }
-        throw new RuntimeException("wrong value: 0x" + toHex(value));
+        throw new ModuleException("wrong value: 0x" + toHex(value));
     }
 
     @Override

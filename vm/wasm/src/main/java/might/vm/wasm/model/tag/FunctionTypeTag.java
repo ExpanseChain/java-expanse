@@ -1,5 +1,6 @@
 package might.vm.wasm.model.tag;
 
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Type;
 
 import static might.vm.wasm.util.NumberTransform.toHex;
@@ -24,7 +25,7 @@ public class FunctionTypeTag implements Type {
         switch (value) {
             case 0x60: return FUNCTION_TYPE;
         }
-        throw new RuntimeException("wrong value: 0x" + toHex(value));
+        throw new ModuleException("wrong value: 0x" + toHex(value));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package might.vm.wasm.model.type;
 
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.Type;
 
@@ -34,7 +35,7 @@ public class ValueType implements Type, Dump {
             case 0x70: return FUNCTION_REFERENCE;
             case 0x6F: return EXTERN_REFERENCE;
         }
-        throw new RuntimeException("wrong value: 0x" + toHex(value));
+        throw new ModuleException("wrong value: 0x" + toHex(value));
     }
 
     public byte value() {

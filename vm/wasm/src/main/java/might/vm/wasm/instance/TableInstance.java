@@ -3,6 +3,7 @@ package might.vm.wasm.instance;
 import might.common.numeric.I32;
 import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.core.structure.Table;
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.section.TableType;
 import might.vm.wasm.util.Slice;
 
@@ -34,13 +35,13 @@ public class TableInstance implements Table {
         int g = grow.unsigned().intValue();
 
         if (g <= 0) {
-            throw new RuntimeException("wrong grow: " + grow);
+            throw new ModuleException("wrong grow: " + grow);
         }
 
         int wanna = elements.size() + g;
 
         if (!type.limits.isValid(I32.valueOf(wanna))) {
-            throw new RuntimeException("too large for: " + type.limits);
+            throw new ModuleException("too large for: " + type.limits);
         }
 
         elements.set(wanna - 1, null);

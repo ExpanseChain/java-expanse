@@ -1,5 +1,6 @@
 package might.vm.wasm.model.section;
 
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.describe.ImportDescribe;
 
 public class ImportSection {
@@ -48,7 +49,7 @@ public class ImportSection {
                         .append(", sig=").append(describe.value.toString());
                 break;
             default:
-                throw new RuntimeException("what type?");
+                throw new ModuleException("what a tag: " + describe.tag.value());
         }
 
         return sb.toString();

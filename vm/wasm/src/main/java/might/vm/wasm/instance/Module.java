@@ -6,6 +6,8 @@ import might.vm.wasm.core.ControlStack;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.OperandStack;
 import might.vm.wasm.core.structure.*;
+import might.vm.wasm.error.execute.ExecutionException;
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
@@ -46,7 +48,7 @@ public class Module implements ModuleInstance {
             ExportSection exportSection = moduleInfo.exportSections.get(i);
 
             if (EXPORTS.containsKey(exportSection.name)) {
-                throw new RuntimeException("already exist item: " + exportSection.name);
+                throw new ExecutionException("already exist item: " + exportSection.name);
             }
 
             ExportDescribe d = exportSection.describe;
@@ -61,7 +63,7 @@ public class Module implements ModuleInstance {
                 case 0x03: // GLOBAL
                     EXPORTS.put(exportSection.name, globals.get(d.index.unsigned().intValue())); break;
                 default:
-                    throw new RuntimeException("what a tag: " + d.tag);
+                    throw new ModuleException("what a tag: " + d.tag);
             }
 
         }
@@ -76,7 +78,7 @@ public class Module implements ModuleInstance {
             Function f = (Function) member;
 
             if (args.length != f.type().parameters.length) {
-                throw new RuntimeException("args is mismatch.");
+                throw new ExecutionException("args is mismatch.");
             }
 
             // 启动一个新的函数，清除栈
@@ -85,7 +87,7 @@ public class Module implements ModuleInstance {
 
             return f.call(args);
         }
-        throw new RuntimeException("can not find function: " + name);
+        throw new ExecutionException("can not find function: " + name);
     }
 
     @Override
@@ -448,13 +450,13 @@ public class Module implements ModuleInstance {
             ModuleInstance instance = ModuleInstance.MODULES.get(importSection.module);
 
             if (null == instance) {
-                throw new RuntimeException("module instance: " + importSection.module + " is not exist");
+                throw new ModuleException("module instance: " + importSection.module + " is not exist");
             }
 
             Object member = instance.getMember(importSection.name);
 
             if (null == member) {
-                throw new RuntimeException("can not find export member: " + importSection.name + " in module instance:" + importSection.module);
+                throw new ModuleException("can not find export member: " + importSection.name + " in module instance:" + importSection.module);
             }
 
             if (member instanceof Function) {
@@ -466,7 +468,7 @@ public class Module implements ModuleInstance {
             } else if (member instanceof Global) {
                 this.setGlobal(GlobalIndex.of(I32.valueOf(i)), (Global) member);
             } else {
-                throw new RuntimeException("what a member: " + member);
+                throw new ModuleException("what a member: " + member);
             }
         }
     }

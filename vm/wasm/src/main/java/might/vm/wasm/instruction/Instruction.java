@@ -1,6 +1,9 @@
 package might.vm.wasm.instruction;
 
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.control.*;
 import might.vm.wasm.instruction.memory.*;
 import might.vm.wasm.instruction.numeric.*;
@@ -19,8 +22,6 @@ import might.vm.wasm.instruction.reference.RefNull;
 import might.vm.wasm.instruction.table.*;
 import might.vm.wasm.instruction.variable.*;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 import static might.vm.wasm.util.NumberTransform.toHex;
 
@@ -261,7 +262,7 @@ public enum Instruction {
                 return instruction;
             }
         }
-        throw new RuntimeException("unknown code: 0x" + toHex(value));
+        throw new ModuleException("unknown code: 0x" + toHex(value));
     }
 
 }

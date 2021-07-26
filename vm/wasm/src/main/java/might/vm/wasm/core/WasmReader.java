@@ -2,6 +2,7 @@ package might.vm.wasm.core;
 
 import might.common.numeric.I32;
 import might.common.numeric.I64;
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
@@ -67,17 +68,17 @@ public class WasmReader {
 
             // 编号顺序检查
             if (sectionId > SECTION_ID_DATA_COUNT) {
-                throw new RuntimeException(String.format("malformed section id: %d", sectionId));
+                throw new ModuleException(String.format("malformed section id: %d", sectionId));
             }
             if (sectionId <= previousSectionId) {
                 switch (previousSectionId) {
                     case SECTION_ID_DATA_COUNT:
                         if (SECTION_ID_CODE <= sectionId) { break; }
-                        throw new RuntimeException(String.format("junk after last section, id: %d", sectionId));
+                        throw new ModuleException(String.format("junk after last section, id: %d", sectionId));
                     case SECTION_ID_CODE:
                     case SECTION_ID_DATA: break;
                     default:
-                        throw new RuntimeException(String.format("junk after last section, id: %d", sectionId));
+                        throw new ModuleException(String.format("junk after last section, id: %d", sectionId));
                 }
             }
 
@@ -106,7 +107,7 @@ public class WasmReader {
 
             if (this.remaining() + n != remaining) {
                 // 剩下的长度 + 本次段的长度 != 读取段之前剩下的长度
-                throw new RuntimeException(String.format("section size mismatch, id: %d", sectionId));
+                throw new ModuleException(String.format("section size mismatch, id: %d", sectionId));
             }
         }
 
@@ -116,8 +117,9 @@ public class WasmReader {
     // =========================== tool ===========================
 
     private void drop(int length) {
-        Assertions.requireTrue(length <= data.length);
-
+        if (length > data.length) {
+            throw new ModuleException("no more bytes. Incorrect module.");
+        }
         byte[] d = new byte[data.length - length];
         System.arraycopy(data, length, d, 0, d.length);
         this.data = d;
@@ -129,7 +131,7 @@ public class WasmReader {
 
     public byte readByte(boolean remove) {
         if (data.length < 1) {
-            throw new RuntimeException("unexpected end of section or function");
+            throw new ModuleException("no more bytes. Incorrect module.");
         }
         byte b = data[0];
         if (remove) { drop(1); }
@@ -138,7 +140,7 @@ public class WasmReader {
 
     public I32 readU32() {
         if (data.length < 4) {
-            throw new RuntimeException("unexpected end of section or function");
+            throw new ModuleException("no more bytes. Incorrect module.");
         }
         I32 u32 = I32.valueOf(new byte[]{data[3], data[2], data[1], data[0]});
         drop(4);
@@ -454,7 +456,7 @@ public class WasmReader {
         byte end = readByte(false);
         if (end != EXPRESSION_END && end != EXPRESSION_ELSE) {
             // 读取完表达式后，末尾应该有结尾
-            throw new RuntimeException(String.format("invalid expr end: %d", end));
+            throw new ModuleException(String.format("invalid expr end: %d", end));
         }
         if (end == EXPRESSION_END) {
             readByte(); // 如果是else留给IfBlock处理
@@ -508,7 +510,7 @@ public class WasmReader {
                     // 5 => i64.trunc_sat_f32_u
                     // 6 => i64.trunc_sat_f64_s
                     // 7 => i64.trunc_sat_f64_u
-                    default: throw new RuntimeException("what ?");
+                    default: throw new ModuleException("what ?");
                 }
                 break;
         }
@@ -545,7 +547,7 @@ public class WasmReader {
     private byte readZero() {
         byte zero = readByte();
         if (zero != 0) {
-            throw new RuntimeException(String.format("zero flag expected, got %d", zero));
+            throw new ModuleException(String.format("zero flag expected, got %d", zero));
         }
         return 0x0;
     }

@@ -1,5 +1,6 @@
 package might.vm.wasm.model.tag;
 
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Type;
 
 import static might.vm.wasm.util.NumberTransform.toHex;
@@ -27,7 +28,7 @@ public class PortTag implements Type {
             case 0x02: return MEMORY;
             case 0x03: return GLOBAL;
         }
-        throw new RuntimeException("wrong value: 0x" + toHex(value));
+        throw new ModuleException("wrong value: 0x" + toHex(value));
     }
 
     @Override
