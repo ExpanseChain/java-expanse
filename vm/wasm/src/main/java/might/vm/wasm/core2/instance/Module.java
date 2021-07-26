@@ -50,13 +50,13 @@ public class Module implements ModuleInstance {
 
             switch (d.tag.value()) {
                 case 0x00: // FUNCTION
-                    EXPORTS.put(exportSection.name, functions.get(d.index.intValue())); break;
+                    EXPORTS.put(exportSection.name, functions.get(d.index.unsigned().intValue())); break;
                 case 0x01: // TABLE
-                    EXPORTS.put(exportSection.name, tables.get(d.index.intValue())); break;
+                    EXPORTS.put(exportSection.name, tables.get(d.index.unsigned().intValue())); break;
                 case 0x02: // MEMORY
-                    EXPORTS.put(exportSection.name, memories.get(d.index.intValue())); break;
+                    EXPORTS.put(exportSection.name, memories.get(d.index.unsigned().intValue())); break;
                 case 0x03: // GLOBAL
-                    EXPORTS.put(exportSection.name, globals.get(d.index.intValue())); break;
+                    EXPORTS.put(exportSection.name, globals.get(d.index.unsigned().intValue())); break;
                 default:
                     throw new RuntimeException("what a tag: " + d.tag);
             }
@@ -467,13 +467,13 @@ public class Module implements ModuleInstance {
         module.initMemories();
         module.initGlobals();
 
-//        System.out.println("========================= ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ =========================");
-//        System.out.print(info.dump());
-//        System.out.println("========================= ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ =========================");
+        System.out.println("========================= ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ =========================");
+        System.out.print(info.dump());
+        System.out.println("========================= ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ =========================");
 
         module.execStartFunction();
 
-//        System.out.println();
+        System.out.println();
 
         return module;
     }

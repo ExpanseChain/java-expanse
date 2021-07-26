@@ -339,7 +339,7 @@ public class WasmReader {
         ExportSection[] exportSections = new ExportSection[n];
         for (int i = 0; i < exportSections.length; i++) {
             exportSections[i] = new ExportSection(this.readName(),
-                    new ExportDescribe(PortTag.of(this.readByte()), this.readLeb128U32()));
+                    new ExportDescribe(PortTag.of(this.readByte()), I32.valueOf(this.readLeb128U32().getBytes())));
         }
         return exportSections;
     }

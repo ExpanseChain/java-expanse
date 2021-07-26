@@ -1,14 +1,14 @@
 package might.vm.wasm.model.describe;
 
+import might.common.numeric.I32;
 import might.vm.wasm.model.tag.PortTag;
-import might.vm.wasm.core2.numeric.U32;
 
 public class ExportDescribe {
 
     public final PortTag tag;   // 导出标识4种类型
-    public final U32 index;     // funcidx tableidx memidx globalidx
+    public final I32 index;     // funcidx tableidx memidx globalidx
 
-    public ExportDescribe(PortTag tag, U32 index) {
+    public ExportDescribe(PortTag tag, I32 index) {
         this.tag = tag;
         this.index = index;
     }
@@ -17,7 +17,7 @@ public class ExportDescribe {
     public String toString() {
         return "ExportDescribe{" +
                 "tag=" + tag +
-                ", index=" + index +
+                ", index=" + index.unsigned() +
                 '}';
     }
 
