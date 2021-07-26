@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.nav.function;
 
-import might.vm.wasm.core2.model.section.FunctionType;
-import might.vm.wasm.core2.model.tag.FunctionTypeTag;
-import might.vm.wasm.core2.model.type.ValueType;
+import might.vm.wasm.model.section.FunctionType;
+import might.vm.wasm.model.tag.FunctionTypeTag;
+import might.vm.wasm.model.type.ValueType;
 import might.vm.wasm.core2.numeric.USize;
 import might.vm.wasm.core2.structure.Function;
 

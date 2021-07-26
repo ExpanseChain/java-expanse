@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.structure;
 
-import might.vm.wasm.core2.model.section.MemoryType;
+import might.vm.wasm.model.section.MemoryType;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.numeric.U64;
 

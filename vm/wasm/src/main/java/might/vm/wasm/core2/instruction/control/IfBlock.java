@@ -1,13 +1,13 @@
 package might.vm.wasm.core2.instruction.control;
 
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.core2.instruction.Instruction;
 import might.vm.wasm.core2.instruction.Operate;
 import might.vm.wasm.core2.instruction.dump.DumpIfBlock;
-import might.vm.wasm.core2.model.Dump;
-import might.vm.wasm.core2.model.section.FunctionType;
-import might.vm.wasm.core2.model.type.BlockType;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.section.FunctionType;
+import might.vm.wasm.model.type.BlockType;
 import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.core2.structure.WasmReader;
 

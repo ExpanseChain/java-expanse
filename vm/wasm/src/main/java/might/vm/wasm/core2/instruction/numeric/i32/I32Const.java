@@ -1,9 +1,9 @@
 package might.vm.wasm.core2.instruction.numeric.i32;
 
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 import might.vm.wasm.core2.instruction.Operate;
 import might.vm.wasm.core2.instruction.dump.DumpI32;
-import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.model.Dump;
 import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.core2.structure.WasmReader;
 

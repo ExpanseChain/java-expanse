@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.instance;
 
-import might.vm.wasm.core2.model.section.TableType;
+import might.vm.wasm.model.section.TableType;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.structure.Function;
 import might.vm.wasm.core2.structure.Table;

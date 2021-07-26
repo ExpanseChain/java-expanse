@@ -1,7 +1,7 @@
 package might.vm.wasm.core2.instance;
 
-import might.vm.wasm.core.error.Assertions;
-import might.vm.wasm.core2.model.section.MemoryType;
+import might.vm.wasm.error.Assertions;
+import might.vm.wasm.model.section.MemoryType;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.numeric.U64;
 import might.vm.wasm.core2.structure.Memory;

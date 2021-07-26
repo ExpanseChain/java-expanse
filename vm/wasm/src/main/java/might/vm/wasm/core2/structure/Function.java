@@ -1,7 +1,7 @@
 package might.vm.wasm.core2.structure;
 
-import might.vm.wasm.core2.model.section.CodeSection;
-import might.vm.wasm.core2.model.section.FunctionType;
+import might.vm.wasm.model.section.CodeSection;
+import might.vm.wasm.model.section.FunctionType;
 import might.vm.wasm.core2.numeric.USize;
 
 public interface Function {

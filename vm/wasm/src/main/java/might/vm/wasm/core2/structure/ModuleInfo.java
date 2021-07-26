@@ -1,13 +1,13 @@
 package might.vm.wasm.core2.structure;
 
-import might.vm.wasm.core2.model.index.DataCountIndex;
-import might.vm.wasm.core2.model.index.FunctionIndex;
-import might.vm.wasm.core2.model.index.TypeIndex;
-import might.vm.wasm.core2.model.section.*;
-import might.vm.wasm.core2.model.tag.FunctionTypeTag;
-import might.vm.wasm.core2.model.tag.PortTag;
-import might.vm.wasm.core2.model.type.BlockType;
-import might.vm.wasm.core2.model.type.ValueType;
+import might.vm.wasm.model.index.DataCountIndex;
+import might.vm.wasm.model.index.FunctionIndex;
+import might.vm.wasm.model.index.TypeIndex;
+import might.vm.wasm.model.section.*;
+import might.vm.wasm.model.tag.FunctionTypeTag;
+import might.vm.wasm.model.tag.PortTag;
+import might.vm.wasm.model.type.BlockType;
+import might.vm.wasm.model.type.ValueType;
 
 import java.util.stream.Stream;
 

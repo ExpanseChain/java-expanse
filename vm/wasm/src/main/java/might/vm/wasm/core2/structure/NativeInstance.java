@@ -4,11 +4,11 @@ import might.vm.wasm.core2.instruction.Action;
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.core2.instruction.Instruction;
 import might.vm.wasm.core2.instruction.dump.DumpMemory;
-import might.vm.wasm.core2.model.index.FunctionIndex;
-import might.vm.wasm.core2.model.index.GlobalIndex;
-import might.vm.wasm.core2.model.index.MemoryIndex;
-import might.vm.wasm.core2.model.index.TableIndex;
-import might.vm.wasm.core2.model.section.FunctionType;
+import might.vm.wasm.model.index.FunctionIndex;
+import might.vm.wasm.model.index.GlobalIndex;
+import might.vm.wasm.model.index.MemoryIndex;
+import might.vm.wasm.model.index.TableIndex;
+import might.vm.wasm.model.section.FunctionType;
 import might.vm.wasm.core2.nav.function.NativeFunctions;
 import might.vm.wasm.core2.numeric.*;
 

@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.instruction;
 
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 import might.vm.wasm.core2.instruction.control.*;
 import might.vm.wasm.core2.instruction.memory.*;
 import might.vm.wasm.core2.instruction.numeric.*;
@@ -18,7 +18,7 @@ import might.vm.wasm.core2.instruction.reference.RefIsNull;
 import might.vm.wasm.core2.instruction.reference.RefNull;
 import might.vm.wasm.core2.instruction.table.*;
 import might.vm.wasm.core2.instruction.variable.*;
-import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.model.Dump;
 import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.core2.structure.WasmReader;
 

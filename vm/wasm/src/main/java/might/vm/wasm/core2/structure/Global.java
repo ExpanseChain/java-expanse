@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.structure;
 
-import might.vm.wasm.core2.model.type.GlobalType;
+import might.vm.wasm.model.type.GlobalType;
 import might.vm.wasm.core2.numeric.USize;
 
 public interface Global {

@@ -1,7 +1,7 @@
 package might.vm.wasm.core2.instance;
 
-import might.vm.wasm.core2.model.type.GlobalType;
-import might.vm.wasm.core2.model.type.MutableType;
+import might.vm.wasm.model.type.GlobalType;
+import might.vm.wasm.model.type.MutableType;
 import might.vm.wasm.core2.numeric.USize;
 import might.vm.wasm.core2.structure.Global;
 

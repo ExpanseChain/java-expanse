@@ -1,7 +1,7 @@
 package might.vm.wasm.util;
 
 import might.common.numeric.NumericUtil;
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 
 import static might.vm.wasm.util.NumberTransform.*;
 

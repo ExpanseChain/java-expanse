@@ -1,10 +1,10 @@
 package might.vm.wasm.core2.instruction.memory;
 
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 import might.vm.wasm.core2.instruction.Operate;
 import might.vm.wasm.core2.instruction.dump.DumpMemory;
-import might.vm.wasm.core2.model.Dump;
-import might.vm.wasm.core2.model.index.MemoryIndex;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.index.MemoryIndex;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.numeric.U64;
 import might.vm.wasm.core2.structure.ModuleInstance;

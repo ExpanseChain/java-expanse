@@ -1,7 +1,7 @@
 package might.vm.wasm.core2.numeric;
 
-import might.vm.wasm.core.error.Assertions;
-import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.error.Assertions;
+import might.vm.wasm.model.Dump;
 
 import java.math.BigInteger;
 

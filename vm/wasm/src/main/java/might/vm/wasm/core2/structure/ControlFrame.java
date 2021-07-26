@@ -2,7 +2,7 @@ package might.vm.wasm.core2.structure;
 
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.core2.instruction.Instruction;
-import might.vm.wasm.core2.model.section.FunctionType;
+import might.vm.wasm.model.section.FunctionType;
 
 public class ControlFrame {
 

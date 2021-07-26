@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.structure;
 
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 import might.vm.wasm.core2.numeric.*;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.instruction.parametric;
 
 import might.vm.wasm.core2.instruction.Operate;
-import might.vm.wasm.core2.model.Dump;
-import might.vm.wasm.core2.model.type.Types;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.type.Types;
 import might.vm.wasm.core2.structure.WasmReader;
 
 public class SelectC implements Operate {

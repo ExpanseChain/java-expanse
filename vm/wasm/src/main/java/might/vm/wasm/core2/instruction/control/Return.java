@@ -2,8 +2,8 @@ package might.vm.wasm.core2.instruction.control;
 
 import might.vm.wasm.core2.instruction.Instruction;
 import might.vm.wasm.core2.instruction.Operate;
-import might.vm.wasm.core2.model.Dump;
-import might.vm.wasm.core2.model.index.LabelIndex;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.index.LabelIndex;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.core2.structure.WasmReader;

@@ -1,10 +1,10 @@
 package might.vm.wasm.core2.instance;
 
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 import might.vm.wasm.core2.instruction.Instruction;
 import might.vm.wasm.core2.instruction.control.Call;
-import might.vm.wasm.core2.model.section.CodeSection;
-import might.vm.wasm.core2.model.section.FunctionType;
+import might.vm.wasm.model.section.CodeSection;
+import might.vm.wasm.model.section.FunctionType;
 import might.vm.wasm.core2.numeric.U64;
 import might.vm.wasm.core2.numeric.USize;
 import might.vm.wasm.core2.structure.Function;

@@ -1,6 +1,6 @@
 package might.vm.wasm.util;
 
-import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.error.Assertions;
 
 import java.math.BigInteger;
 import java.util.HashMap;

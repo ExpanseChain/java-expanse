@@ -1,13 +1,13 @@
 package might.vm.wasm.core2.instruction.control;
 
-import might.vm.wasm.core.error.Assertions;
-import might.vm.wasm.core.error.WasmException;
+import might.vm.wasm.error.Assertions;
+import might.vm.wasm.error.WasmException;
 import might.vm.wasm.core2.instruction.Instruction;
 import might.vm.wasm.core2.instruction.Operate;
-import might.vm.wasm.core2.model.Dump;
-import might.vm.wasm.core2.model.Local;
-import might.vm.wasm.core2.model.index.FunctionIndex;
-import might.vm.wasm.core2.model.section.CodeSection;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.Local;
+import might.vm.wasm.model.index.FunctionIndex;
+import might.vm.wasm.model.section.CodeSection;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.numeric.U64;
 import might.vm.wasm.core2.numeric.USize;

@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.instruction;
 
-import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.model.Dump;
 
 public class Action implements Dump {
 
