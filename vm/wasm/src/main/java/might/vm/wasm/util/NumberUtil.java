@@ -1,7 +1,7 @@
 package might.vm.wasm.util;
 
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core2.numeric.U64;
+import might.common.numeric.I32;
+import might.common.numeric.I64;
 
 import java.math.BigInteger;
 
@@ -14,31 +14,6 @@ public class NumberUtil {
 
 
 
-    public static U32 add(U32 a, U32 b) {
-        return U32.valueOfU(parse(a.sBidInteger().add(b.sBidInteger()), 4));
-    }
-
-    public static U64 add(U64 a, U64 b) {
-        return U64.valueOfU(parse(a.sBidInteger().add(b.sBidInteger()), 8));
-    }
-
-    public static U32 sub(U32 a, U32 b) {
-        return U32.valueOfU(parse(a.sBidInteger().subtract(b.sBidInteger()), 4));
-    }
-
-    public static U64 sub(U64 a, U64 b) {
-        return U64.valueOfU(parse(a.sBidInteger().subtract(b.sBidInteger()), 8));
-    }
-
-    public static U32 mul(U32 a, U32 b) {
-        return U32.valueOfU(parse(a.sBidInteger().multiply(b.sBidInteger()), 4));
-    }
-
-    public static U64 mul(U64 a, U64 b) {
-        return U64.valueOfU(parse(a.sBidInteger().multiply(b.sBidInteger()), 8));
-    }
-
-
     public static int divS(int a, int b) {
         return a / b;
     }
@@ -47,12 +22,12 @@ public class NumberUtil {
         return a / b;
     }
 
-    public static U32 divU(U32 a, U32 b) {
-        return U32.valueOfU(parse(a.uBidInteger().divide(b.uBidInteger()), 4));
+    public static I32 divU(I32 a, I32 b) {
+        return I32.valueOf(parse(a.unsigned().divide(b.unsigned()), 4));
     }
 
-    public static U64 divU(U64 a, U64 b) {
-        return U64.valueOfU(parse(a.uBidInteger().divide(b.uBidInteger()), 8));
+    public static I64 divU(I64 a, I64 b) {
+        return I64.valueOf(parse(a.unsigned().divide(b.unsigned()), 8));
     }
 
     public static int remS(int a, int b) {
@@ -64,147 +39,147 @@ public class NumberUtil {
     }
 
 
-    public static U32 remU(U32 a, U32 b) {
-        return U32.valueOfU(parse(a.uBidInteger().remainder(b.uBidInteger()), 4));
+    public static I32 remU(I32 a, I32 b) {
+        return I32.valueOf(parse(a.unsigned().remainder(b.unsigned()), 4));
     }
 
-    public static U64 remU(U64 a, U64 b) {
-        return U64.valueOfU(parse(a.uBidInteger().remainder(b.uBidInteger()), 8));
+    public static I64 remU(I64 a, I64 b) {
+        return I64.valueOf(parse(a.unsigned().remainder(b.unsigned()), 8));
     }
 
-    public static U32 and(U32 a, U32 b) {
-        return U32.valueOfU(new byte[] {
-            (byte) (a.getBytes()[0] & b.getBytes()[0]),
-            (byte) (a.getBytes()[1] & b.getBytes()[1]),
-            (byte) (a.getBytes()[2] & b.getBytes()[2]),
-            (byte) (a.getBytes()[3] & b.getBytes()[3])
+    public static I32 and(I32 a, I32 b) {
+        return I32.valueOf(new byte[] {
+            (byte) (a.bytes()[0] & b.bytes()[0]),
+            (byte) (a.bytes()[1] & b.bytes()[1]),
+            (byte) (a.bytes()[2] & b.bytes()[2]),
+            (byte) (a.bytes()[3] & b.bytes()[3])
         });
     }
 
-    public static U64 and(U64 a, U64 b) {
-        return U64.valueOfU(new byte[] {
-            (byte) (a.getBytes()[0] & b.getBytes()[0]),
-            (byte) (a.getBytes()[1] & b.getBytes()[1]),
-            (byte) (a.getBytes()[2] & b.getBytes()[2]),
-            (byte) (a.getBytes()[3] & b.getBytes()[3]),
-            (byte) (a.getBytes()[4] & b.getBytes()[4]),
-            (byte) (a.getBytes()[5] & b.getBytes()[5]),
-            (byte) (a.getBytes()[6] & b.getBytes()[6]),
-            (byte) (a.getBytes()[7] & b.getBytes()[7])
+    public static I64 and(I64 a, I64 b) {
+        return I64.valueOf(new byte[] {
+            (byte) (a.bytes()[0] & b.bytes()[0]),
+            (byte) (a.bytes()[1] & b.bytes()[1]),
+            (byte) (a.bytes()[2] & b.bytes()[2]),
+            (byte) (a.bytes()[3] & b.bytes()[3]),
+            (byte) (a.bytes()[4] & b.bytes()[4]),
+            (byte) (a.bytes()[5] & b.bytes()[5]),
+            (byte) (a.bytes()[6] & b.bytes()[6]),
+            (byte) (a.bytes()[7] & b.bytes()[7])
         });
     }
 
-    public static U32 or(U32 a, U32 b) {
-        return U32.valueOfU(new byte[] {
-                (byte) (a.getBytes()[0] | b.getBytes()[0]),
-                (byte) (a.getBytes()[1] | b.getBytes()[1]),
-                (byte) (a.getBytes()[2] | b.getBytes()[2]),
-                (byte) (a.getBytes()[3] | b.getBytes()[3])
+    public static I32 or(I32 a, I32 b) {
+        return I32.valueOf(new byte[] {
+                (byte) (a.bytes()[0] | b.bytes()[0]),
+                (byte) (a.bytes()[1] | b.bytes()[1]),
+                (byte) (a.bytes()[2] | b.bytes()[2]),
+                (byte) (a.bytes()[3] | b.bytes()[3])
         });
     }
 
-    public static U64 or(U64 a, U64 b) {
-        return U64.valueOfU(new byte[] {
-                (byte) (a.getBytes()[0] | b.getBytes()[0]),
-                (byte) (a.getBytes()[1] | b.getBytes()[1]),
-                (byte) (a.getBytes()[2] | b.getBytes()[2]),
-                (byte) (a.getBytes()[3] | b.getBytes()[3]),
-                (byte) (a.getBytes()[4] | b.getBytes()[4]),
-                (byte) (a.getBytes()[5] | b.getBytes()[5]),
-                (byte) (a.getBytes()[6] | b.getBytes()[6]),
-                (byte) (a.getBytes()[7] | b.getBytes()[7])
-        });
-    }
-
-
-    public static U32 xor(U32 a, U32 b) {
-        return U32.valueOfU(new byte[] {
-                (byte) (a.getBytes()[0] ^ b.getBytes()[0]),
-                (byte) (a.getBytes()[1] ^ b.getBytes()[1]),
-                (byte) (a.getBytes()[2] ^ b.getBytes()[2]),
-                (byte) (a.getBytes()[3] ^ b.getBytes()[3])
-        });
-    }
-
-    public static U64 xor(U64 a, U64 b) {
-        return U64.valueOfU(new byte[] {
-                (byte) (a.getBytes()[0] ^ b.getBytes()[0]),
-                (byte) (a.getBytes()[1] ^ b.getBytes()[1]),
-                (byte) (a.getBytes()[2] ^ b.getBytes()[2]),
-                (byte) (a.getBytes()[3] ^ b.getBytes()[3]),
-                (byte) (a.getBytes()[4] ^ b.getBytes()[4]),
-                (byte) (a.getBytes()[5] ^ b.getBytes()[5]),
-                (byte) (a.getBytes()[6] ^ b.getBytes()[6]),
-                (byte) (a.getBytes()[7] ^ b.getBytes()[7])
+    public static I64 or(I64 a, I64 b) {
+        return I64.valueOf(new byte[] {
+                (byte) (a.bytes()[0] | b.bytes()[0]),
+                (byte) (a.bytes()[1] | b.bytes()[1]),
+                (byte) (a.bytes()[2] | b.bytes()[2]),
+                (byte) (a.bytes()[3] | b.bytes()[3]),
+                (byte) (a.bytes()[4] | b.bytes()[4]),
+                (byte) (a.bytes()[5] | b.bytes()[5]),
+                (byte) (a.bytes()[6] | b.bytes()[6]),
+                (byte) (a.bytes()[7] | b.bytes()[7])
         });
     }
 
 
-
-
-
-
-    public static U32 shl(U32 a, U32 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(32)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U32.valueOf(v.substring(length) + zeros(length), 2);
+    public static I32 xor(I32 a, I32 b) {
+        return I32.valueOf(new byte[] {
+                (byte) (a.bytes()[0] ^ b.bytes()[0]),
+                (byte) (a.bytes()[1] ^ b.bytes()[1]),
+                (byte) (a.bytes()[2] ^ b.bytes()[2]),
+                (byte) (a.bytes()[3] ^ b.bytes()[3])
+        });
     }
 
-    public static U64 shl(U64 a, U64 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(64)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U64.valueOf(v.substring(length) + zeros(length), 2);
+    public static I64 xor(I64 a, I64 b) {
+        return I64.valueOf(new byte[] {
+                (byte) (a.bytes()[0] ^ b.bytes()[0]),
+                (byte) (a.bytes()[1] ^ b.bytes()[1]),
+                (byte) (a.bytes()[2] ^ b.bytes()[2]),
+                (byte) (a.bytes()[3] ^ b.bytes()[3]),
+                (byte) (a.bytes()[4] ^ b.bytes()[4]),
+                (byte) (a.bytes()[5] ^ b.bytes()[5]),
+                (byte) (a.bytes()[6] ^ b.bytes()[6]),
+                (byte) (a.bytes()[7] ^ b.bytes()[7])
+        });
     }
 
-    public static U32 shrS(U32 a, U32 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(32)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U32.valueOf((v.charAt(0) == '1' ? ones(length) : zeros(length))
+
+
+
+
+
+    public static I32 shl(I32 a, I32 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(32)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I32.valueOf(v.substring(length) + zeros(length), 2);
+    }
+
+    public static I64 shl(I64 a, I64 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(64)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I64.valueOf(v.substring(length) + zeros(length), 2);
+    }
+
+    public static I32 shrS(I32 a, I32 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(32)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I32.valueOf((v.charAt(0) == '1' ? ones(length) : zeros(length))
                 +  v.substring(0, v.length() - length), 2);
     }
 
-    public static U64 shrS(U64 a, U64 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(64)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U64.valueOf((v.charAt(0) == '1' ? ones(length) : zeros(length))
+    public static I64 shrS(I64 a, I64 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(64)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I64.valueOf((v.charAt(0) == '1' ? ones(length) : zeros(length))
                 +  v.substring(0, v.length() - length), 2);
     }
 
-    public static U32 shrU(U32 a, U32 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(32)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U32.valueOf(zeros(length) +  v.substring(0, v.length() - length), 2);
+    public static I32 shrU(I32 a, I32 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(32)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I32.valueOf(zeros(length) +  v.substring(0, v.length() - length), 2);
     }
 
-    public static U64 shrU(U64 a, U64 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(64)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U64.valueOf(zeros(length) +  v.substring(0, v.length() - length), 2);
+    public static I64 shrU(I64 a, I64 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(64)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I64.valueOf(zeros(length) +  v.substring(0, v.length() - length), 2);
     }
 
-    public static U32 rotl(U32 a, U32 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(32)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U32.valueOf(v.substring(length) + v.substring(0, length), 2);
+    public static I32 rotl(I32 a, I32 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(32)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I32.valueOf(v.substring(length) + v.substring(0, length), 2);
     }
 
-    public static U64 rotl(U64 a, U64 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(64)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U64.valueOf(v.substring(length) + v.substring(0, length), 2);
+    public static I64 rotl(I64 a, I64 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(64)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I64.valueOf(v.substring(length) + v.substring(0, length), 2);
     }
 
 
-    public static U32 rotr(U32 a, U32 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(32)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U32.valueOf(v.substring(v.length() - length) + v.substring(0, v.length() - length), 2);
+    public static I32 rotr(I32 a, I32 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(32)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I32.valueOf(v.substring(v.length() - length) + v.substring(0, v.length() - length), 2);
     }
 
-    public static U64 rotr(U64 a, U64 b) {
-        int length = b.sBidInteger().remainder(BigInteger.valueOf(64)).intValue();
-        String v = toBinaryArray(a.getBytes());
-        return U64.valueOf(v.substring(v.length() - length) + v.substring(0, v.length() - length), 2);
+    public static I64 rotr(I64 a, I64 b) {
+        int length = b.signed().remainder(BigInteger.valueOf(64)).intValue();
+        String v = toBinaryArray(a.bytes());
+        return I64.valueOf(v.substring(v.length() - length) + v.substring(0, v.length() - length), 2);
     }
 
 }

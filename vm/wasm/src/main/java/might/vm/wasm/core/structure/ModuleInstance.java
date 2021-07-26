@@ -1,5 +1,6 @@
 package might.vm.wasm.core.structure;
 
+import might.common.numeric.*;
 import might.vm.wasm.core.ControlFrame;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.instruction.Action;
@@ -11,7 +12,6 @@ import might.vm.wasm.model.index.GlobalIndex;
 import might.vm.wasm.model.index.MemoryIndex;
 import might.vm.wasm.model.index.TableIndex;
 import might.vm.wasm.model.section.FunctionType;
-import might.vm.wasm.core2.numeric.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,7 @@ public interface ModuleInstance {
     /**
      * 直接调用导出的函数
      */
-    USize[] invoke(String name, USize... args);
+    ISize[] invoke(String name, ISize... args);
 
 
     // =================== 操作数栈操作 ===================
@@ -45,35 +45,49 @@ public interface ModuleInstance {
     void clearOperandStack();
 
     /** 向栈上推入值 */
-    void pushUSize(USize value);
-    void pushU8(U8 value);
-    void pushU16(U16 value);
-    void pushU32(U32 value);
-    void pushU64(U64 value);
+    void pushISize(ISize value);
+    void pushI8(I8 value);
+    void pushI16(I16 value);
+    void pushI32(I32 value);
+    void pushI64(I64 value);
     void pushBool(boolean value);
     void pushS32(int value);
     void pushS64(long value);
-    void pushUSizes(USize[] values);
+    void pushISizes(ISize[] values);
 
     /** 弹出值 */
-    USize popUSize();
-    U8 popU8();
-    U16 popU16();
-    U32 popU32();
-    U64 popU64();
+    ISize popISize();
+    I8 popI8();
+    I16 popI16();
+    I32 popI32();
+    I64 popI64();
     boolean popBool();
     int popS32();
     long popS64();
-    USize[] popUSizes(int size);
+    ISize[] popISizes(int size);
 
     /**
      * 获取操作数栈某个值
      */
-    <T extends USize> T getOperand(int index, Class<T> c);
+    ISize getOperandISize(int index);
+    I8 getOperandI8(int index);
+    I16 getOperandI16(int index);
+    I32 getOperandI32(int index);
+    I64 getOperandI64(int index);
+    boolean getOperandBoolean(int index);
+    int getOperandInt(int index);
+    long getOperandLong(int index);
     /**
      * 设置操作数栈某个值
      */
-    void setOperand(int index, USize value);
+    void setOperand(int index, ISize value);
+    void setOperand(int index, I8 value);
+    void setOperand(int index, I16 value);
+    void setOperand(int index, I32 value);
+    void setOperand(int index, I64 value);
+    void setOperand(int index, boolean value);
+    void setOperand(int index, int value);
+    void setOperand(int index, long value);
 
     /**
      * 获取当前控制栈帧操作数起始位置，也就是第一个函数参数位置
@@ -100,7 +114,7 @@ public interface ModuleInstance {
     /**
      * 顶部函数帧 index是计数
      */
-    ControlFrame topCallFrame(int[] index);
+    ControlFrame topCallFrame();
 
     // =================== 内存操作 ===================
 
@@ -117,12 +131,12 @@ public interface ModuleInstance {
     /**
      * 写入内存
      */
-    void write(MemoryIndex index, U64 offset, byte[] data);
+    void write(MemoryIndex index, I64 offset, byte[] data);
 
     /**
      * 读取内存
      */
-    void read(MemoryIndex index, U64 offset, byte[] buffer);
+    void read(MemoryIndex index, I64 offset, byte[] buffer);
 
     /**
      * 写入内存
@@ -137,12 +151,12 @@ public interface ModuleInstance {
     /**
      * 内存页大小
      */
-    U32 memorySize(MemoryIndex index);
+    I32 memorySize(MemoryIndex index);
 
     /**
      * 内存扩页
      */
-    U32 memoryGrow(MemoryIndex index, U32 grow);
+    I32 memoryGrow(MemoryIndex index, I32 grow);
 
     // =================== 全局变量操作 ===================
 

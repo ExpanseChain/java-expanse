@@ -1,12 +1,12 @@
 package might.vm.wasm.instruction.control;
 
-import might.vm.wasm.instruction.Instruction;
-import might.vm.wasm.instruction.Operate;
-import might.vm.wasm.core2.numeric.USize;
+import might.common.numeric.ISize;
+import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.error.Assertions;
+import might.vm.wasm.instruction.Instruction;
+import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.Local;
 import might.vm.wasm.model.index.FunctionIndex;
@@ -52,9 +52,9 @@ public class Call implements Operate {
     }
 
     private void callExternalFunction(ModuleInstance mi, Function function) {
-        USize[] args = mi.popUSizes(function.type().parameters.length);
-        USize[] results = function.call(args);
-        mi.pushUSizes(results);
+        ISize[] args = mi.popISizes(function.type().parameters.length);
+        ISize[] results = function.call(args);
+        mi.pushISizes(results);
     }
 
 }

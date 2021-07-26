@@ -1,10 +1,10 @@
 package might.vm.wasm.instruction.numeric;
 
+import might.common.numeric.I8;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.core2.numeric.U64;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 public class I64Extend8S implements Operate {
     @Override
@@ -14,11 +14,11 @@ public class I64Extend8S implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        byte[] bytes = mi.popU64().getBytes();
+        byte[] bytes = mi.popI64().bytes();
 
-        mi.pushS64(U64.valueOfS(new byte[]{
+        mi.pushS64(I8.valueOf(new byte[]{
             bytes[7]
-        }).longValue());
+        }).s64().signed().longValue());
     }
 
 }

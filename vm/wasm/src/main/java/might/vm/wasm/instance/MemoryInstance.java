@@ -1,11 +1,10 @@
 package might.vm.wasm.instance;
 
 import might.common.numeric.I32;
+import might.common.numeric.I64;
+import might.vm.wasm.core.structure.Memory;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.model.section.MemoryType;
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core2.numeric.U64;
-import might.vm.wasm.core.structure.Memory;
 
 import static might.vm.wasm.util.ConstNumber.MEMORY_MAX_PAGE_COUNT;
 import static might.vm.wasm.util.ConstNumber.MEMORY_PAGE_SIZE;
@@ -34,25 +33,25 @@ public class MemoryInstance implements Memory {
     }
 
     @Override
-    public U32 size() {
-        return U32.valueOf(this.data.length / MEMORY_PAGE_SIZE);
+    public I32 size() {
+        return I32.valueOf(this.data.length / MEMORY_PAGE_SIZE);
     }
 
     @Override
-    public U32 grow(U32 grow) {
-        U32 old = size();
+    public I32 grow(I32 grow) {
+        I32 old = size();
 
-        int wanna = old.intValue() + grow.intValue();
+        I32 wanna = old.add(grow);
 
-        if (!type.isValid(I32.valueOf(wanna))) {
-            return U32.valueOf(-1);
+        if (!type.isValid(wanna)) {
+            return I32.valueOf(-1);
         }
 
-        if (wanna > MEMORY_MAX_PAGE_COUNT) {
-            return U32.valueOf(-1);
+        if (wanna.unsigned().intValue() > MEMORY_MAX_PAGE_COUNT) {
+            return I32.valueOf(-1);
         }
 
-        byte[] data = new byte[MEMORY_PAGE_SIZE * wanna];
+        byte[] data = new byte[MEMORY_PAGE_SIZE * wanna.unsigned().intValue()];
 
         System.arraycopy(this.data, 0, data, 0, this.data.length);
 
@@ -62,13 +61,14 @@ public class MemoryInstance implements Memory {
     }
 
     @Override
-    public void read(U64 offset, byte[] buffer) {
+    public void read(I64 offset, byte[] buffer) {
         Assertions.requireNonNull(buffer);
+
         if (buffer.length == 0) { return; }
 
         int max = this.data.length;
 
-        int start = offset.intValue();
+        int start = offset.unsigned().intValue();
 
         if (start < 0 || max <= start) {
             throw new RuntimeException("start position is invalid: " + start + " for max " + max);
@@ -84,13 +84,14 @@ public class MemoryInstance implements Memory {
     }
 
     @Override
-    public void write(U64 offset, byte[] data) {
+    public void write(I64 offset, byte[] data) {
         Assertions.requireNonNull(data);
+        
         if (data.length == 0) { return; }
 
         int max = this.data.length;
 
-        int start = offset.intValue();
+        int start = offset.unsigned().intValue();
 
         if (start < 0 || max <= start) {
             throw new RuntimeException("start position is invalid: " + start + " for max " + max);

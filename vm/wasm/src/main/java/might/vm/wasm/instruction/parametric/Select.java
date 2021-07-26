@@ -1,10 +1,10 @@
 package might.vm.wasm.instruction.parametric;
 
+import might.common.numeric.ISize;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.core2.numeric.USize;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 public class Select implements Operate {
 
@@ -16,12 +16,12 @@ public class Select implements Operate {
     @Override
     public void operate(ModuleInstance mi, Dump args) {
         boolean v3 = mi.popBool();
-        USize v2 = mi.popUSize();
-        USize v1 = mi.popUSize();
+        ISize v2 = mi.popISize();
+        ISize v1 = mi.popISize();
         if (v3) {
-            mi.pushUSize(v1);
+            mi.pushISize(v1);
         } else {
-            mi.pushUSize(v2);
+            mi.pushISize(v2);
         }
     }
 

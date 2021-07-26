@@ -2,6 +2,8 @@ package might.common.numeric;
 
 import might.common.numeric.error.NumericValueException;
 
+import java.util.Arrays;
+
 public class I8 extends ISize {
 
     public I8(byte[] bytes) {
@@ -33,5 +35,10 @@ public class I8 extends ISize {
 
     @Override public I8 copy() { return new I8(bytes); }
 
-
+    @Override
+    public String toString() {
+        return "I8{" +
+                "bytes=" + Arrays.toString(bytes) +
+                '}';
+    }
 }

@@ -1,12 +1,12 @@
 package might.vm.wasm.instruction.variable;
 
+import might.common.numeric.ISize;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.GlobalIndex;
-import might.vm.wasm.core2.numeric.USize;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 public class GlobalSet implements Operate {
 
@@ -20,11 +20,11 @@ public class GlobalSet implements Operate {
         Assertions.requireNonNull(args);
         Assertions.requireType(args, GlobalIndex.class);
 
-        GlobalIndex a = (GlobalIndex) args;
+        GlobalIndex index = (GlobalIndex) args;
 
-        USize value = mi.popUSize();
+        ISize value = mi.popISize();
 
-        mi.getGlobal(a).set(value);
+        mi.getGlobal(index).set(value);
     }
 
 }

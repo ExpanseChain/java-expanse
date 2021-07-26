@@ -1,16 +1,14 @@
 package might.vm.wasm.core;
 
 import might.vm.wasm.instruction.Instruction;
-
-import java.util.ArrayList;
-import java.util.List;
+import might.vm.wasm.util.Slice;
 
 public class ControlStack {
 
-    public final List<ControlFrame> frames = new ArrayList<>();
+    public final Slice<ControlFrame> frames = new Slice<>();
 
     public void push(ControlFrame frame) {
-        frames.add(frame);
+        frames.append(frame);
     }
 
     public ControlFrame pop() {
@@ -25,14 +23,13 @@ public class ControlStack {
         return frames.get(frames.size() - 1);
     }
 
-    public ControlFrame topCallFrame(int[] index) {
+    public ControlFrame topCallFrame() {
         for (int i = frames.size() - 1; 0 <= i; i--) {
             if (frames.get(i).instruction == Instruction.CALL) {
-                index[0] = frames.size() - 1 - i; // 返回距离顶部的距离
+                frames.get(i).setDepth(frames.size() - 1 - i); // 返回距离顶部的距离
                 return frames.get(i);
             }
         }
-        index[0] = -1;
         return null;
     }
 

@@ -2,6 +2,8 @@ package might.common.numeric;
 
 import might.common.numeric.error.NumericValueException;
 
+import java.util.Arrays;
+
 public class I64 extends ISize {
 
     public I64(byte[] bytes) {
@@ -29,5 +31,15 @@ public class I64 extends ISize {
 
     @Override public I64 copy() { return new I64(bytes); }
 
+    public I64 add(I64 b) { return I64.valueOf(signed().longValue() + b.signed().longValue()); }
+    public I64 sub(I64 b) { return I64.valueOf(signed().longValue() - b.signed().longValue()); }
+    public I64 mul(I64 b) { return I64.valueOf(signed().longValue() * b.signed().longValue()); }
+
+    @Override
+    public String toString() {
+        return "I64{" +
+                "bytes=" + Arrays.toString(bytes) +
+                '}';
+    }
 
 }

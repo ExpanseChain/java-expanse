@@ -1,5 +1,6 @@
 package might.vm.wasm.util;
 
+import might.common.numeric.I32;
 import might.vm.wasm.error.module.IndexOutOfBoundsException;
 
 import java.util.ArrayList;
@@ -52,6 +53,28 @@ public class Slice<T> implements Iterable<T> {
         return data.get(index);
     }
 
+    public T get(I32 index) {
+        return get(index.unsigned().intValue());
+    }
 
+    public T remove(int index) {
+        checkIndex(index);
+        return data.remove(index);
+    }
+
+    public void set(int index, T value) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("try set item where index is negation: " + index);
+        }
+        if (MAX_CAPACITY - 1 < index) {
+            throw new IndexOutOfBoundsException("capacity limit: " + MAX_CAPACITY);
+        }
+        if (data.size() - 1 < index) { data.add(null); }
+        data.set(index, value);
+    }
+
+    public void clear() {
+        data.clear();
+    }
 
 }

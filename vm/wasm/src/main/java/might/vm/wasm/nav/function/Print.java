@@ -1,10 +1,10 @@
 package might.vm.wasm.nav.function;
 
+import might.common.numeric.ISize;
+import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.model.section.FunctionType;
 import might.vm.wasm.model.tag.FunctionTypeTag;
 import might.vm.wasm.model.type.ValueType;
-import might.vm.wasm.core2.numeric.USize;
-import might.vm.wasm.core.structure.Function;
 
 class Print {
 
@@ -15,10 +15,10 @@ class Print {
         }
 
         @Override
-        public USize[] call(USize... args) {
-            int v = args[0].intValue();
+        public ISize[] call(ISize... args) {
+            int v = args[0].signed().intValue();
             System.out.print(new String(new byte[]{(byte) v}));
-            return new USize[0];
+            return new ISize[0];
         }
     }
 
@@ -29,9 +29,9 @@ class Print {
         }
 
         @Override
-        public USize[] call(USize... args) {
-            System.out.print(args[0].longValue());
-            return new USize[0];
+        public ISize[] call(ISize... args) {
+            System.out.print(args[0].unsigned().longValue());
+            return new ISize[0];
         }
     }
 
@@ -42,9 +42,9 @@ class Print {
         }
 
         @Override
-        public USize[] call(USize... args) {
-            System.out.print(args[0].intValue());
-            return new USize[0];
+        public ISize[] call(ISize... args) {
+            System.out.print(args[0].signed().intValue());
+            return new ISize[0];
         }
     }
 

@@ -1,5 +1,6 @@
 package might.vm.wasm.nav.function;
 
+import might.common.numeric.*;
 import might.vm.wasm.core.ControlFrame;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.structure.*;
@@ -7,7 +8,6 @@ import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.dump.DumpMemory;
-import might.vm.wasm.core2.numeric.*;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.GlobalIndex;
 import might.vm.wasm.model.index.MemoryIndex;
@@ -38,7 +38,7 @@ public class NativeInstance implements ModuleInstance {
     }
 
     @Override
-    public USize[] invoke(String name, USize... args) {
+    public ISize[] invoke(String name, ISize... args) {
         throw new RuntimeException("not for native module");
     }
 
@@ -48,27 +48,27 @@ public class NativeInstance implements ModuleInstance {
     }
 
     @Override
-    public void pushUSize(USize value) {
+    public void pushISize(ISize value) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public void pushU8(U8 value) {
+    public void pushI8(I8 value) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public void pushU16(U16 value) {
+    public void pushI16(I16 value) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public void pushU32(U32 value) {
+    public void pushI32(I32 value) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public void pushU64(U64 value) {
+    public void pushI64(I64 value) {
         throw new RuntimeException("not for native module");
     }
 
@@ -88,32 +88,32 @@ public class NativeInstance implements ModuleInstance {
     }
 
     @Override
-    public void pushUSizes(USize[] values) {
+    public void pushISizes(ISize[] values) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public USize popUSize() {
+    public ISize popISize() {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public U8 popU8() {
+    public I8 popI8() {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public U16 popU16() {
+    public I16 popI16() {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public U32 popU32() {
+    public I32 popI32() {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public U64 popU64() {
+    public I64 popI64() {
         throw new RuntimeException("not for native module");
     }
 
@@ -132,19 +132,88 @@ public class NativeInstance implements ModuleInstance {
         throw new RuntimeException("not for native module");
     }
 
-
     @Override
-    public USize[] popUSizes(int size) {
+    public ISize[] popISizes(int size) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public <T extends USize> T getOperand(int index, Class<T> c) {
+    public ISize getOperandISize(int index) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public void setOperand(int index, USize value) {
+    public I8 getOperandI8(int index) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public I16 getOperandI16(int index) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public I32 getOperandI32(int index) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public I64 getOperandI64(int index) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public boolean getOperandBoolean(int index) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public int getOperandInt(int index) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public long getOperandLong(int index) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, ISize value) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, I8 value) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, I16 value) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, I32 value) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, I64 value) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, boolean value) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, int value) {
+        throw new RuntimeException("not for native module");
+    }
+
+    @Override
+    public void setOperand(int index, long value) {
         throw new RuntimeException("not for native module");
     }
 
@@ -169,7 +238,7 @@ public class NativeInstance implements ModuleInstance {
     }
 
     @Override
-    public ControlFrame topCallFrame(int[] index) {
+    public ControlFrame topCallFrame() {
         throw new RuntimeException("not for native module");
     }
 
@@ -184,12 +253,12 @@ public class NativeInstance implements ModuleInstance {
     }
 
     @Override
-    public void write(MemoryIndex index, U64 offset, byte[] data) {
+    public void write(MemoryIndex index, I64 offset, byte[] data) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public void read(MemoryIndex index, U64 offset, byte[] buffer) {
+    public void read(MemoryIndex index, I64 offset, byte[] buffer) {
         throw new RuntimeException("not for native module");
     }
 
@@ -204,12 +273,12 @@ public class NativeInstance implements ModuleInstance {
     }
 
     @Override
-    public U32 memorySize(MemoryIndex index) {
+    public I32 memorySize(MemoryIndex index) {
         throw new RuntimeException("not for native module");
     }
 
     @Override
-    public U32 memoryGrow(MemoryIndex index, U32 grow) {
+    public I32 memoryGrow(MemoryIndex index, I32 grow) {
         throw new RuntimeException("not for native module");
     }
 

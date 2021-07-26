@@ -1,14 +1,13 @@
 package might.vm.wasm.instance;
 
+import might.common.numeric.ISize;
+import might.vm.wasm.core.structure.Function;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.control.Call;
 import might.vm.wasm.model.section.CodeSection;
 import might.vm.wasm.model.section.FunctionType;
-import might.vm.wasm.core2.numeric.U64;
-import might.vm.wasm.core2.numeric.USize;
-import might.vm.wasm.core.structure.Function;
-import might.vm.wasm.core.structure.ModuleInstance;
 
 public class FunctionInstance implements Function {
 
@@ -38,7 +37,7 @@ public class FunctionInstance implements Function {
         return type;
     }
 
-    public USize[] call(USize... args) {
+    public ISize[] call(ISize... args) {
         if (null != function) {
             return function.call(args);
         }
@@ -55,25 +54,25 @@ public class FunctionInstance implements Function {
         return codeSection;
     }
 
-    protected USize[] safeCall(ModuleInstance instance, USize[] args) {
+    protected ISize[] safeCall(ModuleInstance instance, ISize[] args) {
         pushArgs(instance, args);
         ((Call) Instruction.CALL.operate).callFunction(instance, this);
         if (null == function) { instance.loop(); }
         return popResults(instance);
     }
 
-    private void pushArgs(ModuleInstance instance, USize[] args) {
+    private void pushArgs(ModuleInstance instance, ISize[] args) {
         Assertions.requireTrue(args.length == type.parameters.length);
 
-        for (USize arg : args) {
-            instance.pushUSize(arg);
+        for (ISize arg : args) {
+            instance.pushISize(arg);
         }
     }
 
-    protected U64[] popResults(ModuleInstance instance) {
-        U64[] results = new U64[type.results.length];
+    protected ISize[] popResults(ModuleInstance instance) {
+        ISize[] results = new ISize[type.results.length];
         for (int i = results.length - 1; 0 <= i; i--) {
-            results[i] = instance.popU64();
+            results[i] = instance.popISize();
         }
         return results;
     }

@@ -1,10 +1,10 @@
 package might.vm.wasm.instruction.numeric.i32.operate;
 
+import might.common.numeric.I32;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 public class I32Popcnt implements Operate {
 
@@ -15,8 +15,8 @@ public class I32Popcnt implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        U32 v = mi.popU32();
-        mi.pushU32(U32.valueOf(v.popcnt()));
+        I32 v = mi.popI32();
+        mi.pushI32(I32.valueOf(v.popcnt()));
     }
 
 }

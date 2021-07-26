@@ -14,7 +14,7 @@ public class I32Eqz implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        mi.pushBool(mi.popU32().intValue() == 0);
+        mi.pushBool(!mi.popI32().booleanValue());
     }
 
 }

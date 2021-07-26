@@ -1,8 +1,8 @@
 package might.vm.wasm.core.structure;
 
+import might.common.numeric.ISize;
 import might.vm.wasm.model.section.CodeSection;
 import might.vm.wasm.model.section.FunctionType;
-import might.vm.wasm.core2.numeric.USize;
 
 public interface Function {
 
@@ -14,7 +14,7 @@ public interface Function {
     /**
      * 调用函数
      */
-    USize[] call(USize... args);
+    ISize[] call(ISize... args);
 
     /**
      * 是否内部函数

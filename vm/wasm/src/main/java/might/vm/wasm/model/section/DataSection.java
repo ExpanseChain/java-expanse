@@ -1,11 +1,10 @@
 package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.MemoryIndex;
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.util.NumberTransform;
 
 import static might.vm.wasm.util.NumberTransform.toHexArray;
@@ -37,7 +36,7 @@ public class DataSection {
         @Override
         public void initMemory(ModuleInstance mi) {
             mi.executeExpression(expression);
-            U32 offset = mi.popU32();
+            I32 offset = mi.popI32();
 
             mi.write(MemoryIndex.of(I32.valueOf(0)), offset.u64(), bytes);
         }
@@ -82,7 +81,7 @@ public class DataSection {
             int index = memoryIndex.unsigned().intValue();
 
             mi.executeExpression(expression);
-            U32 offset = mi.popU32();
+            I32 offset = mi.popI32();
 
             mi.write(MemoryIndex.of(I32.valueOf(index)), offset.u64(), bytes);
         }

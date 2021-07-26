@@ -1,9 +1,8 @@
 package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
-import might.vm.wasm.instruction.Expression;
-import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core.structure.ModuleInstance;
+import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.TableIndex;
@@ -51,12 +50,12 @@ public class ElementSection {
         public void init(ModuleInstance mi) {
             // 计算偏移
             mi.executeExpression(expression);
-            int offset = mi.popU32().intValue();
+            I32 offset = mi.popI32();
 
             // 初始化
             for (int i = 0; i < functionIndices.length; i++) {
                 // 默认是0 从初始化的函数表中取出对应的函数
-                mi.getTable(TableIndex.of(I32.valueOf(0))).setElement(U32.valueOf(offset + i), mi.getFunction(functionIndices[i]));
+                mi.getTable(TableIndex.of(I32.valueOf(0))).setElement(offset.add(I32.valueOf(i)), mi.getFunction(functionIndices[i]));
             }
         }
     }
@@ -161,14 +160,15 @@ public class ElementSection {
         public void init(ModuleInstance mi) {
             // 计算偏移
             mi.executeExpression(expression);
-            int offset = mi.popU32().intValue();
+            I32 offset = mi.popI32();
 
             // 初始化
             for (int i = 0; i < expressionsArray.length; i++) {
                 mi.executeExpression(expressionsArray[i]);
-                U32 index = mi.popU32();
+                I32 index = mi.popI32();
                 // 默认是0 从初始化的函数表中取出对应的函数
-                mi.getTable(TableIndex.of(I32.valueOf(0))).setElement(U32.valueOf(offset + i), mi.getFunction(FunctionIndex.of(I32.valueOf(index.getBytes()))));
+                mi.getTable(TableIndex.of(I32.valueOf(0)))
+                        .setElement(offset.add(I32.valueOf(i)), mi.getFunction(FunctionIndex.of(index)));
             }
         }
     }

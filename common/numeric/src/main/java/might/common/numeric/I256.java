@@ -2,6 +2,8 @@ package might.common.numeric;
 
 import might.common.numeric.error.NumericValueException;
 
+import java.util.Arrays;
+
 public class I256 extends ISize {
 
     public I256(byte[] bytes) {
@@ -26,5 +28,11 @@ public class I256 extends ISize {
 
     @Override public I256 copy() { return new I256(bytes); }
 
+    @Override
+    public String toString() {
+        return "I256{" +
+                "bytes=" + Arrays.toString(bytes) +
+                '}';
+    }
 
 }

@@ -1,6 +1,6 @@
 package might.vm.wasm.instance;
 
-import might.common.numeric.I32;
+import might.common.numeric.*;
 import might.vm.wasm.core.ControlFrame;
 import might.vm.wasm.core.ControlStack;
 import might.vm.wasm.core.ModuleInfo;
@@ -13,10 +13,8 @@ import might.vm.wasm.instruction.dump.DumpMemory;
 import might.vm.wasm.model.describe.ExportDescribe;
 import might.vm.wasm.model.index.*;
 import might.vm.wasm.model.section.*;
-import might.vm.wasm.core2.numeric.*;
-import might.vm.wasm.util.NumberUtil;
+import might.vm.wasm.util.Slice;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,10 +22,10 @@ public class Module implements ModuleInstance {
 
     private final ModuleInfo moduleInfo;                            // 模块信息
 
-    private final ArrayList<Memory> memories = new ArrayList<>();   // 内存实例
-    private final ArrayList<Global> globals = new ArrayList<>();    // 存放全局变量
-    private final ArrayList<Function> functions = new ArrayList<>();// 整个模块的函数集合
-    private final ArrayList<Table> tables = new ArrayList<>();      // 表
+    private final Slice<Memory> memories = new Slice<>();   // 内存实例
+    private final Slice<Global> globals = new Slice<>();    // 存放全局变量
+    private final Slice<Function> functions = new Slice<>();// 整个模块的函数集合
+    private final Slice<Table> tables = new Slice<>();      // 表
 
     private final OperandStack operandStack = new OperandStack();   // 操作数栈
     private final ControlStack controlStack = new ControlStack();   // 控制块栈
@@ -72,7 +70,7 @@ public class Module implements ModuleInstance {
     }
 
     @Override
-    public USize[] invoke(String name, USize... args) {
+    public ISize[] invoke(String name, ISize... args) {
         Object member = getMember(name);
         if (member instanceof Function) {
             Function f = (Function) member;
@@ -96,28 +94,28 @@ public class Module implements ModuleInstance {
     }
 
     @Override
-    public void pushUSize(USize value) {
-        operandStack.pushUSize(value);
+    public void pushISize(ISize value) {
+        operandStack.pushISize(value);
     }
 
     @Override
-    public void pushU8(U8 value) {
-        operandStack.pushU8(value);
+    public void pushI8(I8 value) {
+        operandStack.pushI8(value);
     }
 
     @Override
-    public void pushU16(U16 value) {
-        operandStack.pushU16(value);
+    public void pushI16(I16 value) {
+        operandStack.pushI16(value);
     }
 
     @Override
-    public void pushU32(U32 value) {
-        operandStack.pushU32(value);
+    public void pushI32(I32 value) {
+        operandStack.pushI32(value);
     }
 
     @Override
-    public void pushU64(U64 value) {
-        operandStack.pushU64(value);
+    public void pushI64(I64 value) {
+        operandStack.pushI64(value);
     }
 
     @Override
@@ -136,33 +134,33 @@ public class Module implements ModuleInstance {
     }
 
     @Override
-    public void pushUSizes(USize[] values) {
+    public void pushISizes(ISize[] values) {
         operandStack.pushUSizes(values);
     }
 
     @Override
-    public USize popUSize() {
-        return operandStack.popUSize();
+    public ISize popISize() {
+        return operandStack.popISize();
     }
 
     @Override
-    public U8 popU8() {
-        return operandStack.popU8();
+    public I8 popI8() {
+        return operandStack.popI8();
     }
 
     @Override
-    public U16 popU16() {
-        return operandStack.popU16();
+    public I16 popI16() {
+        return operandStack.popI16();
     }
 
     @Override
-    public U32 popU32() {
-        return operandStack.popU32();
+    public I32 popI32() {
+        return operandStack.popI32();
     }
 
     @Override
-    public U64 popU64() {
-        return operandStack.popU64();
+    public I64 popI64() {
+        return operandStack.popI64();
     }
 
     @Override
@@ -181,17 +179,87 @@ public class Module implements ModuleInstance {
     }
 
     @Override
-    public USize[] popUSizes(int size) {
+    public ISize[] popISizes(int size) {
         return operandStack.popUSizes(size);
     }
 
     @Override
-    public <T extends USize> T getOperand(int index, Class<T> c) {
-        return operandStack.getOperand(index, c);
+    public ISize getOperandISize(int index) {
+        return operandStack.getOperandISize(index);
     }
 
     @Override
-    public void setOperand(int index, USize value) {
+    public I8 getOperandI8(int index) {
+        return operandStack.getOperandI8(index);
+    }
+
+    @Override
+    public I16 getOperandI16(int index) {
+        return operandStack.getOperandI16(index);
+    }
+
+    @Override
+    public I32 getOperandI32(int index) {
+        return operandStack.getOperandI32(index);
+    }
+
+    @Override
+    public I64 getOperandI64(int index) {
+        return operandStack.getOperandI64(index);
+    }
+
+    @Override
+    public boolean getOperandBoolean(int index) {
+        return operandStack.getOperandBoolean(index);
+    }
+
+    @Override
+    public int getOperandInt(int index) {
+        return operandStack.getOperandInt(index);
+    }
+
+    @Override
+    public long getOperandLong(int index) {
+        return operandStack.getOperandLong(index);
+    }
+
+    @Override
+    public void setOperand(int index, ISize value) {
+        operandStack.setOperand(index, value);
+    }
+
+    @Override
+    public void setOperand(int index, I8 value) {
+        operandStack.setOperand(index, value);
+    }
+
+    @Override
+    public void setOperand(int index, I16 value) {
+        operandStack.setOperand(index, value);
+    }
+
+    @Override
+    public void setOperand(int index, I32 value) {
+        operandStack.setOperand(index, value);
+    }
+
+    @Override
+    public void setOperand(int index, I64 value) {
+        operandStack.setOperand(index, value);
+    }
+
+    @Override
+    public void setOperand(int index, boolean value) {
+        operandStack.setOperand(index, value);
+    }
+
+    @Override
+    public void setOperand(int index, int value) {
+        operandStack.setOperand(index, value);
+    }
+
+    @Override
+    public void setOperand(int index, long value) {
         operandStack.setOperand(index, value);
     }
 
@@ -217,8 +285,8 @@ public class Module implements ModuleInstance {
     }
 
     @Override
-    public ControlFrame topCallFrame(int[] index) {
-        return controlStack.topCallFrame(index);
+    public ControlFrame topCallFrame() {
+        return controlStack.topCallFrame();
     }
 
     @Override
@@ -228,51 +296,48 @@ public class Module implements ModuleInstance {
 
     @Override
     public void setMemory(MemoryIndex index, Memory value) {
-        while (memories.size() <= index.unsigned().intValue()) { memories.add(null); }
         memories.set(index.unsigned().intValue(), value);
     }
 
     @Override
-    public void write(MemoryIndex index, U64 offset, byte[] data) {
-        memories.get(index.unsigned().intValue()).write(offset, data);
+    public void write(MemoryIndex index, I64 offset, byte[] data) {
+        memories.get(index).write(offset, data);
     }
 
     @Override
-    public void read(MemoryIndex index, U64 offset, byte[] buffer) {
-        memories.get(index.unsigned().intValue()).read(offset, buffer);
+    public void read(MemoryIndex index, I64 offset, byte[] buffer) {
+        memories.get(index).read(offset, buffer);
     }
 
-
-    private U64 getOffset(DumpMemory args) {
-        U32 offset = args.getOffset();
-        U32 immediate = popU32();
-        return NumberUtil.add(U64.valueOfU(offset), U64.valueOfU(immediate));
+    private I64 getOffset(DumpMemory args) {
+        I32 offset = args.getOffset();
+        I32 immediate = popI32();
+        return offset.u64().add(immediate.u64());
     }
 
     @Override
     public void writeBytes(MemoryIndex index, DumpMemory args, byte[] data) {
-        U64 offset = getOffset(args);
+        I64 offset = getOffset(args);
         this.memories.get(index.unsigned().intValue()).write(offset, data);
     }
 
     @Override
     public byte[] readBytes(MemoryIndex index, DumpMemory args, int size) {
         byte[] bytes = new byte[size];
-        U64 offset = getOffset(args);
+        I64 offset = getOffset(args);
         this.memories.get(index.unsigned().intValue()).read(offset, bytes);
         return bytes;
     }
 
     @Override
-    public U32 memorySize(MemoryIndex index) {
+    public I32 memorySize(MemoryIndex index) {
         return memories.get(index.unsigned().intValue()).size();
     }
 
     @Override
-    public U32 memoryGrow(MemoryIndex index, U32 grow) {
+    public I32 memoryGrow(MemoryIndex index, I32 grow) {
         return memories.get(index.unsigned().intValue()).grow(grow);
     }
-
 
     @Override
     public Global getGlobal(GlobalIndex index) {
@@ -281,7 +346,6 @@ public class Module implements ModuleInstance {
 
     @Override
     public void setGlobal(GlobalIndex index, Global value) {
-        while (globals.size() <= index.unsigned().intValue()) { globals.add(null); }
         globals.set(index.unsigned().intValue(), value);
     }
 
@@ -292,7 +356,6 @@ public class Module implements ModuleInstance {
 
     @Override
     public void setFunction(FunctionIndex index, Function function) {
-        while (functions.size() <= index.unsigned().intValue()) { functions.add(null); }
         functions.set(index.unsigned().intValue(), function);
     }
 
@@ -303,7 +366,6 @@ public class Module implements ModuleInstance {
 
     @Override
     public void setTable(TableIndex index, Table table) {
-        while (tables.size() <= index.unsigned().intValue()) { tables.add(null); }
         tables.set(index.unsigned().intValue(), table);
     }
 
@@ -353,22 +415,22 @@ public class Module implements ModuleInstance {
 
     private void clearBlock(ControlFrame frame) {
         // 取出结果
-        USize[] results = popUSizes(frame.functionType.results.length);
+        ISize[] results = popISizes(frame.functionType.results.length);
         // 弹出参数
-        popUSizes(operandStack.size() - frame.bp);
+        popISizes(operandStack.size() - frame.bp);
         // 装入结果
-        pushUSizes(results);
+        pushISizes(results);
         if (frame.instruction == Instruction.CALL && controlStack.depth() > 0) {
-            ControlFrame callFrame = controlStack.topCallFrame(new int[1]);
+            ControlFrame callFrame = controlStack.topCallFrame();
             frameOffset = callFrame.bp;
         }
     }
 
     @Override
     public void resetBlock(ControlFrame frame) {
-        USize[] results = popUSizes(frame.functionType.parameters.length);
-        popUSizes(operandStack.size() - frame.bp);
-        pushUSizes(results);
+        ISize[] results = popISizes(frame.functionType.parameters.length);
+        popISizes(operandStack.size() - frame.bp);
+        pushISizes(results);
     }
 
 
@@ -415,14 +477,14 @@ public class Module implements ModuleInstance {
             TypeIndex index = moduleInfo.functionSections.get(i);
             FunctionType type = moduleInfo.typeSections.get(index.unsigned().intValue());
             CodeSection codeSection = moduleInfo.codeSections.get(i);
-            this.functions.add(new FunctionInstance(type, codeSection, this));
+            this.functions.append(new FunctionInstance(type, codeSection, this));
         }
     }
 
     @Override
     public void initTables() {
         for (int i = 0; i < moduleInfo.tableSections.size(); i++) {
-            this.tables.add(new TableInstance(moduleInfo.tableSections.get(i)));
+            this.tables.append(new TableInstance(moduleInfo.tableSections.get(i)));
         }
         for (int i = 0; i < moduleInfo.elementSections.size(); i++) {
             ElementSection elementSection = moduleInfo.elementSections.get(i);
@@ -435,7 +497,7 @@ public class Module implements ModuleInstance {
     @Override
     public void initMemories() {
         for (int i = 0; i < moduleInfo.memorySections.size(); i++) {
-            this.memories.add(new MemoryInstance(moduleInfo.memorySections.get(i)));
+            this.memories.append(new MemoryInstance(moduleInfo.memorySections.get(i)));
         }
         for (DataSection d : moduleInfo.dataSections) {
             d.value.initMemory(this);
@@ -448,7 +510,7 @@ public class Module implements ModuleInstance {
             // 执行初始化指令
             executeExpression(moduleInfo.globalSections.get(i).init);
             // 将执行结果存到对应位置
-            this.globals.add(new GlobalInstance(moduleInfo.globalSections.get(i).type, popUSize()));
+            this.globals.append(new GlobalInstance(moduleInfo.globalSections.get(i).type, popISize()));
         }
     }
 

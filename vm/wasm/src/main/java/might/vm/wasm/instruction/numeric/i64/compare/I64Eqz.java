@@ -14,7 +14,7 @@ public class I64Eqz implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        mi.pushBool(mi.popU64().longValue() == 0);
+        mi.pushBool(!mi.popI64().booleanValue());
     }
 
 }

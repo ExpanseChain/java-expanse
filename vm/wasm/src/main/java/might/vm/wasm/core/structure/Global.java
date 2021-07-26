@@ -1,7 +1,7 @@
 package might.vm.wasm.core.structure;
 
+import might.common.numeric.ISize;
 import might.vm.wasm.model.type.GlobalType;
-import might.vm.wasm.core2.numeric.USize;
 
 public interface Global {
 
@@ -13,11 +13,11 @@ public interface Global {
     /**
      * 获取全局参数
      */
-    USize get();
+    ISize get();
 
     /**
      * 设置全局参数
      */
-    void set(USize value);
+    void set(ISize value);
 
 }

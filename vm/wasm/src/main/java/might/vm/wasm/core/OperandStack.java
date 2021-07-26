@@ -1,64 +1,72 @@
 package might.vm.wasm.core;
 
-import might.vm.wasm.error.Assertions;
-import might.vm.wasm.core2.numeric.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import might.common.numeric.*;
+import might.vm.wasm.error.module.OperandTypeException;
+import might.vm.wasm.util.Slice;
 
 public class OperandStack {
 
-    private final List<USize> slots = new ArrayList<>();
+    private final Slice<ISize> slots = new Slice<>();
 
-    public void pushUSize(USize value) { slots.add(value); }
-    public USize popUSize() { return slots.remove(slots.size() - 1); }
+    public void pushISize(ISize value) { slots.append(value); }
+    public ISize popISize() { return slots.remove(slots.size() - 1); }
 
-    public void pushU8(U8 value) { pushUSize(value); }
-    public void pushU16(U16 value) { pushUSize(value); }
-    public void pushU32(U32 value) { pushUSize(value); }
-    public void pushU64(U64 value) { pushUSize(value); }
-    public void pushBool(boolean value) { pushUSize(U32.valueOf(value ? 1 : 0)); }
-    public void pushS32(int value) { pushUSize(U32.valueOf(value)); }
-    public void pushS64(long value) { pushUSize(U64.valueOf(value)); }
+    public void pushI8(I8 value) {
+        pushISize(value);
+    }
+    public void pushI16(I16 value) { pushISize(value); }
+    public void pushI32(I32 value) { pushISize(value); }
+    public void pushI64(I64 value) { pushISize(value); }
+    public void pushBool(boolean value) {
+        pushISize(I32.valueOf(new byte[]{ 0,0,0, value ? (byte) 1 : 0 }));
+    }
+    public void pushS32(int value) { pushISize(I32.valueOf(value)); }
+    public void pushS64(long value) { pushISize(I64.valueOf(value)); }
 
-    public U8 popU8() { return parse(popUSize(), U8.class); }
-    public U16 popU16() { return parse(popUSize(), U16.class); }
-    public U32 popU32() { return parse(popUSize(), U32.class); }
-    public U64 popU64() { return parse(popUSize(), U64.class); }
-    public boolean popBool() { return popU32().boolValue(); }
-    public int popS32() { return popU32().intValue(); }
-    public long popS64() { return popU64().longValue(); }
+    public  I8  popI8() { ISize v = popISize(); if (v instanceof  I8) { return ( I8) v; } error(v,  I8.class); return null; }
+    public I16 popI16() { ISize v = popISize(); if (v instanceof I16) { return (I16) v; } error(v, I16.class); return null; }
+    public I32 popI32() { ISize v = popISize(); if (v instanceof I32) { return (I32) v; } error(v, I32.class); return null; }
+    public I64 popI64() { ISize v = popISize(); if (v instanceof I64) { return (I64) v; } error(v, I64.class); return null; }
+    public boolean popBool() { return popI32().booleanValue(); }
+    public int popS32() { return popI32().signed().intValue(); }
+    public long popS64() { return popI64().signed().longValue(); }
 
-    private static <T extends USize> T parse(USize u, Class<T> c) {
-        Assertions.requireType(u, c);
-        return (T) u;
+    private static void error(ISize v, Class<? extends ISize> c) throws RuntimeException {
+        throw new OperandTypeException("not " + c.getName() + ": " + v + "(" + v.getClass().getName() + ")");
     }
 
-    public int size() {
-        return slots.size();
-    }
+    public int size() { return slots.size(); }
 
-    public <T extends USize> T getOperand(int index, Class<T> c) {
-        Assertions.requireTrue(index < slots.size());
-        USize u = slots.get(index);
-        if (c == USize.class) { return (T) u; }
-        Assertions.requireType(u, c);
-        return (T) u;
-    }
+    public ISize  getOperandISize(int index) { return slots.get(index); }
+    public  I8  getOperandI8(int index) { ISize v = slots.get(index); if (v instanceof  I8) { return ( I8) v; } error(v,  I8.class); return null; }
+    public I16 getOperandI16(int index) { ISize v = slots.get(index); if (v instanceof I16) { return (I16) v; } error(v, I16.class); return null; }
+    public I32 getOperandI32(int index) { ISize v = slots.get(index); if (v instanceof I32) { return (I32) v; } error(v, I32.class); return null; }
+    public I64 getOperandI64(int index) { ISize v = slots.get(index); if (v instanceof I64) { return (I64) v; } error(v, I64.class); return null; }
+    public boolean getOperandBoolean(int index) { ISize v = slots.get(index); if (v instanceof I8) { return v.booleanValue(); } error(v, I8.class); return false; }
+    public int getOperandInt(int index) { ISize v = slots.get(index); if (v instanceof I32) { return v.signed().intValue(); } error(v, I32.class); return 0; }
+    public long getOperandLong(int index) { ISize v = slots.get(index); if (v instanceof I64) { return v.signed().longValue(); } error(v, I64.class); return 0; }
 
-    public void setOperand(int index, USize value) {
-        Assertions.requireTrue(index < slots.size());
+    public void setOperand(int index,  ISize value)  { slots.set(index, value); }
+    public void setOperand(int index,  I8 value)  {
         slots.set(index, value);
     }
+    public void setOperand(int index, I16 value)  { slots.set(index, value); }
+    public void setOperand(int index, I32 value)  { slots.set(index, value); }
+    public void setOperand(int index, I64 value)  { slots.set(index, value); }
+    public void setOperand(int index, boolean value)  {
+        slots.set(index, I32.valueOf(new byte[]{ 0,0,0, value ? (byte) 1 : 0 }));
+    }
+    public void setOperand(int index, int value)  { slots.set(index, I32.valueOf(value)); }
+    public void setOperand(int index, long value)  { slots.set(index, I64.valueOf(value)); }
 
-    public void pushUSizes(USize[] values) {
-        for (USize u : values) { pushUSize(u); }
+    public void pushUSizes(ISize[] values) {
+        for (ISize v : values) { pushISize(v); }
     }
 
-    public USize[] popUSizes(int size) {
-        USize[] values = new USize[size];
+    public ISize[] popUSizes(int size) {
+        ISize[] values = new ISize[size];
         for (int i = size - 1; 0 <= i; i--) {
-            values[i] = popUSize();
+            values[i] = popISize();
         }
         return values;
     }

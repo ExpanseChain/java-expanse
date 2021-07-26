@@ -1,10 +1,10 @@
 package might.vm.wasm.instruction.numeric.i32.compare;
 
+import might.common.numeric.I32;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 public class I32GeU implements Operate {
 
@@ -15,9 +15,9 @@ public class I32GeU implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        U32 v2 = mi.popU32();
-        U32 v1 = mi.popU32();
-        mi.pushBool(v1.compareTo(v2) >= 0);
+        I32 v2 = mi.popI32();
+        I32 v1 = mi.popI32();
+        mi.pushBool(v1.greaterOrEqualsU(v2));
     }
 
 }

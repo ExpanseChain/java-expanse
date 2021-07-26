@@ -1,6 +1,7 @@
 package might.vm.wasm.instruction.control;
 
 import might.common.numeric.I32;
+import might.vm.wasm.core.ControlFrame;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.core.structure.ModuleInstance;
@@ -17,10 +18,9 @@ public class Return implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        int[] index = new int[1];
 
-        mi.topCallFrame(index);
+        ControlFrame frame = mi.topCallFrame();
 
-        Instruction.BR.operate(mi, LabelIndex.of(I32.valueOf(index[0])));
+        Instruction.BR.operate(mi, LabelIndex.of(I32.valueOf(frame.getDepth())));
     }
 }

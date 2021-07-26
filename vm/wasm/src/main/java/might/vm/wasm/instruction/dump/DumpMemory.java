@@ -1,25 +1,25 @@
 package might.vm.wasm.instruction.dump;
 
+import might.common.numeric.I32;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.core2.numeric.U32;
 
 public class DumpMemory implements Dump {
 
-    private final U32 align;
-    private final U32 offset;
+    private final I32 align;
+    private final I32 offset;
 
-    public DumpMemory(U32 align, U32 offset) {
+    public DumpMemory(I32 align, I32 offset) {
         this.align = align;
         this.offset = offset;
     }
 
-    public U32 getOffset() {
+    public I32 getOffset() {
         return offset;
     }
 
     @Override
     public String dump() {
-        return String.format("{align: %s, offset: %s}", align.dump(), offset.dump());
+        return String.format("{align: %s, offset: %s}", align.unsigned(), offset.unsigned());
     }
 
     @Override

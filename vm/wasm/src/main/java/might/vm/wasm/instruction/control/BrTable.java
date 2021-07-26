@@ -22,7 +22,7 @@ public class BrTable implements Operate {
 
         DumpBrTable t = (DumpBrTable) args;
 
-        int n = mi.popU32().intValue();
+        int n = mi.popI32().signed().intValue();
 
         if (n < t.labelIndices.length) {
             Instruction.BR.operate(mi, t.labelIndices[n]);
