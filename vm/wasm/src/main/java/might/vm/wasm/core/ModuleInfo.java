@@ -1,6 +1,5 @@
 package might.vm.wasm.core;
 
-import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.model.index.DataCountIndex;
 import might.vm.wasm.model.index.FunctionIndex;
@@ -9,7 +8,6 @@ import might.vm.wasm.model.section.*;
 import might.vm.wasm.model.tag.FunctionTypeTag;
 import might.vm.wasm.model.type.BlockType;
 import might.vm.wasm.model.type.ValueType;
-import might.vm.wasm.nav.function.NativeInstance;
 import might.vm.wasm.util.ValidSlice;
 
 import java.util.HashSet;
@@ -17,10 +15,6 @@ import java.util.Set;
 
 
 public class ModuleInfo {
-    
-    static  {
-        ModuleInstance.MODULES.put("env", new NativeInstance());
-    }
 
     public Magic magic;         // 魔数
     public Version version;     // 版本

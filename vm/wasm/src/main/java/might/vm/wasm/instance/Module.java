@@ -16,6 +16,7 @@ import might.vm.wasm.instruction.dump.DumpMemory;
 import might.vm.wasm.model.describe.ExportDescribe;
 import might.vm.wasm.model.index.*;
 import might.vm.wasm.model.section.*;
+import might.vm.wasm.core.ModuleConfig;
 import might.vm.wasm.util.Slice;
 
 import java.util.HashMap;
@@ -444,11 +445,11 @@ public class Module implements ModuleInstance {
 
 
     @Override
-    public void linkImports() {
+    public void linkImports(ModuleConfig config) {
         for (int i = 0; i < moduleInfo.importSections.size(); i++) {
             ImportSection importSection = moduleInfo.importSections.get(i);
 
-            ModuleInstance instance = ModuleInstance.MODULES.get(importSection.module);
+            ModuleInstance instance = config.findModule(importSection.module);
 
             if (null == instance) {
                 throw new ModuleException("module instance: " + importSection.module + " is not exist");
@@ -525,12 +526,10 @@ public class Module implements ModuleInstance {
     }
 
 
-    public static ModuleInstance newModule(ModuleInfo info) {
-        // TODO 应当先验证下info结构
-
+    public static ModuleInstance newModule(ModuleInfo info, ModuleConfig config) {
         Module module = new Module(info);
 
-        module.linkImports();
+        module.linkImports(config);
 
         module.initFunctions();
         module.initTables();

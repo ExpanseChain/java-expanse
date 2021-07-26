@@ -2,6 +2,7 @@ package might.vm.wasm.nav.function;
 
 import might.common.numeric.*;
 import might.vm.wasm.core.ControlFrame;
+import might.vm.wasm.core.ModuleConfig;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.structure.*;
 import might.vm.wasm.error.execute.ExecutionException;
@@ -349,7 +350,7 @@ public class NativeInstance implements ModuleInstance {
     }
 
     @Override
-    public void linkImports() {
+    public void linkImports(ModuleConfig config) {
         throw new ExecutionException("not for native module");
     }
 

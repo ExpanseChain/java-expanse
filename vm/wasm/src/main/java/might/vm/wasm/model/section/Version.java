@@ -4,7 +4,7 @@ import might.common.numeric.I16;
 import might.common.numeric.I32;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.error.decode.DecodeException;
-import might.vm.wasm.util.ModuleConfig;
+import might.vm.wasm.core.ModuleConfig;
 
 /**
  * Wasm定义是一个U32数字

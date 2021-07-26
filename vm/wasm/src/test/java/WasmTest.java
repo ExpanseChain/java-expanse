@@ -3,8 +3,11 @@ import might.common.numeric.I32;
 import might.common.numeric.ISize;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.instance.Module;
-import might.vm.wasm.util.ModuleConfig;
+import might.vm.wasm.nav.function.NativeInstance;
+import might.vm.wasm.core.ModuleConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import util.FileReader;
@@ -13,16 +16,10 @@ import java.util.Arrays;
 
 public class WasmTest {
     
-    public static ModuleInfo readByName(String name) {
+    public static ModuleInfo readByName(String name, ModuleConfig config) {
         System.out.println("read file: " + name);
         WasmReader reader = new WasmReader(FileReader.readByName(name));
-        return reader.readModuleInfo(new ModuleConfig() {
-
-            @Override
-            public boolean checkVersion(I16 main, I16 min) {
-                return main.equals(I16.valueOf(0)) && min.equals(I16.valueOf(1));
-            }
-        });
+        return reader.readModuleInfo(config);
     }
     
     @Test
@@ -72,9 +69,25 @@ public class WasmTest {
 //                "ch09_calc.wasm",
 
         };
+
+        ModuleConfig config = new ModuleConfig() {
+            @Override
+            public boolean checkVersion(I16 main, I16 min) {
+                return main.equals(I16.valueOf(0)) && min.equals(I16.valueOf(1));
+            }
+            @Override
+            public ModuleInstance findModule(String module) {
+                switch (module) {
+                    case "env": return new NativeInstance();
+                    default:
+                        throw new DecodeException("module is not support.");
+                }
+            }
+        };
+
         for (String n : names) {
             System.out.println("=============== " + n + " ===============");
-            ModuleInfo moduleInfo = readByName(n);
+            ModuleInfo moduleInfo = readByName(n, config);
             System.out.print(moduleInfo.dump());
         }
 
@@ -138,27 +151,28 @@ public class WasmTest {
 //        Module.newModule(readByName("ch09_calc.wasm"));
 
 //        Module.newModule(readByName("ch12_ctrl.wasm")).invoke("print_even", I32.valueOf(90));
-        ISize[] result1 = Module.newModule(readByName("ch12_table.wasm")).invoke("calc", I32.valueOf(1), I32.valueOf(5), I32.valueOf(3));
+
+        ISize[] result1 = Module.newModule(readByName("ch12_table.wasm", config), config).invoke("calc", I32.valueOf(1), I32.valueOf(5), I32.valueOf(3));
         Assertions.assertArrayEquals(new ISize[]{I32.valueOf(new byte[]{0,0,0,8})}, result1);
         System.out.println("---------");
         System.out.println(Arrays.toString(result1));
         System.out.println("---------");
-        ISize[] result2 = Module.newModule(readByName("ch12_table.wasm")).invoke("calc", I32.valueOf(2), I32.valueOf(5), I32.valueOf(3));
+        ISize[] result2 = Module.newModule(readByName("ch12_table.wasm", config), config).invoke("calc", I32.valueOf(2), I32.valueOf(5), I32.valueOf(3));
         Assertions.assertArrayEquals(new ISize[]{I32.valueOf(new byte[]{0,0,0,2})}, result2);
         System.out.println("---------");
         System.out.println(Arrays.toString(result2));
         System.out.println("---------");
-        ISize[] result3 = Module.newModule(readByName("ch12_table.wasm")).invoke("calc", I32.valueOf(3), I32.valueOf(5), I32.valueOf(3));
+        ISize[] result3 = Module.newModule(readByName("ch12_table.wasm", config), config).invoke("calc", I32.valueOf(3), I32.valueOf(5), I32.valueOf(3));
         Assertions.assertArrayEquals(new ISize[]{I32.valueOf(new byte[]{0,0,0,15})}, result3);
         System.out.println("---------");
         System.out.println(Arrays.toString(result3));
         System.out.println("---------");
-        ISize[] result4 = Module.newModule(readByName("ch12_table.wasm")).invoke("calc", I32.valueOf(4), I32.valueOf(5), I32.valueOf(3));
+        ISize[] result4 = Module.newModule(readByName("ch12_table.wasm", config), config).invoke("calc", I32.valueOf(4), I32.valueOf(5), I32.valueOf(3));
         Assertions.assertArrayEquals(new ISize[]{I32.valueOf(new byte[]{0,0,0,1})}, result4);
         System.out.println("---------");
         System.out.println(Arrays.toString(result4));
         System.out.println("---------");
-        Module.newModule(readByName("ch13_prime.wasm")).invoke("main");
+        Module.newModule(readByName("ch13_prime.wasm", config), config).invoke("main");
 
     }
 

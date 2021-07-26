@@ -12,16 +12,12 @@ import might.vm.wasm.model.index.GlobalIndex;
 import might.vm.wasm.model.index.MemoryIndex;
 import might.vm.wasm.model.index.TableIndex;
 import might.vm.wasm.model.section.FunctionType;
-
-import java.util.HashMap;
-import java.util.Map;
+import might.vm.wasm.core.ModuleConfig;
 
 /**
  * 每一个模块都必须对外提供导出类型
  */
 public interface ModuleInstance {
-
-    Map<String, ModuleInstance> MODULES = new HashMap<>();
 
     // =================== 模块操作 ===================
 
@@ -242,7 +238,7 @@ public interface ModuleInstance {
     /**
      * 链接导入模块
      */
-    void linkImports();
+    void linkImports(ModuleConfig config);
 
     /**
      * 初始化函数集合

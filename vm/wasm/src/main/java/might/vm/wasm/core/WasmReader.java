@@ -20,7 +20,6 @@ import might.vm.wasm.model.tag.LimitsTag;
 import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.model.type.*;
 import might.vm.wasm.util.Leb128;
-import might.vm.wasm.util.ModuleConfig;
 import might.vm.wasm.util.Slice;
 import might.vm.wasm.util.ValidSlice;
 
