@@ -1,9 +1,12 @@
 package might.vm.wasm.core2.structure;
 
-import might.vm.wasm.error.Assertions;
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Action;
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.core2.instruction.Instruction;
+import might.vm.wasm.core2.numeric.U32;
+import might.vm.wasm.core2.numeric.U64;
+import might.vm.wasm.error.Assertions;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.Limits;
 import might.vm.wasm.model.Local;
@@ -15,8 +18,6 @@ import might.vm.wasm.model.tag.FunctionTypeTag;
 import might.vm.wasm.model.tag.LimitsTag;
 import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.model.type.*;
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core2.numeric.U64;
 import might.vm.wasm.util.Leb128;
 
 import java.util.ArrayList;
@@ -413,7 +414,8 @@ public class WasmReader {
         int n = readLeb128U32().intValue();
         Local[] locals = new Local[n];
         for (int i = 0; i < locals.length; i++) {
-            locals[i] = new Local(this.readLeb128U32(), ValueType.of(this.readByte()));
+            I32 size = I32.valueOf(this.readLeb128U32().getBytes());
+            locals[i] = new Local(size, ValueType.of(this.readByte()));
         }
         return locals;
     }

@@ -1,22 +1,22 @@
 package might.vm.wasm.model;
 
+import might.common.numeric.I32;
 import might.vm.wasm.model.type.ValueType;
-import might.vm.wasm.core2.numeric.U32;
 
 public class Local {
 
-    public final U32 n;           // 本地变量长度
+    public final I32 size;        // 本地变量长度
     public final ValueType type;  // 本地变量类型
 
-    public Local(U32 n, ValueType type) {
-        this.n = n;
+    public Local(I32 size, ValueType type) {
+        this.size = size;
         this.type = type;
     }
 
     @Override
     public String toString() {
         return "Local{" +
-                "n=" + n +
+                "size=" + size +
                 ", type=" + type +
                 '}';
     }

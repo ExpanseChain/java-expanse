@@ -1,11 +1,9 @@
 package might.vm.wasm.model;
 
-public interface Type {
+public interface Type extends Dump {
 
     byte value();
 
     String name();
-
-    String dump();
 
 }

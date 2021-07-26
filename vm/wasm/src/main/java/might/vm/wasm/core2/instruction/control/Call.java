@@ -51,12 +51,12 @@ public class Call implements Operate {
         for (int i = 0; i < code.locals.length; i++) {
             Local local = code.locals[i];
             switch (local.type.value()) {
-                case 0x7F: for (int j = 0; j < local.n.intValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
-                case 0x7E: for (int j = 0; j < local.n.intValue(); j++) { mi.pushU64(U64.valueOf(0)); } break;
+                case 0x7F: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
+                case 0x7E: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU64(U64.valueOf(0)); } break;
 //            case 0x7D: return F32;
 //            case 0x7C: return F64;
-                case 0x70: for (int j = 0; j < local.n.intValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
-                case 0x6F: for (int j = 0; j < local.n.intValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
+                case 0x70: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
+                case 0x6F: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
                 default:
                     throw new WasmException("what a type?");
             }

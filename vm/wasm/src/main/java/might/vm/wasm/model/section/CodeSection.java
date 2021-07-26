@@ -33,7 +33,7 @@ public class CodeSection {
         StringBuilder sb = new StringBuilder();
 
         sb.append("func[").append(index).append("]: ")
-                .append("locals=[").append(Stream.of(locals).map(l -> l.type.name() + " x " + l.n.dump()).collect(Collectors.joining(", "))).append("]");
+                .append("locals=[").append(Stream.of(locals).map(l -> l.type.name() + " x " + l.size.unsigned().toString()).collect(Collectors.joining(", "))).append("]");
 
         if (null != expression && expression.length() > 0) {
             sb.append("\n");
