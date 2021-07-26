@@ -1,7 +1,7 @@
 package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
-import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Local;
 
 import java.util.Arrays;

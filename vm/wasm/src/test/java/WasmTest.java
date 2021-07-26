@@ -1,7 +1,7 @@
 import might.common.numeric.I16;
-import might.vm.wasm.core2.instance.Module;
-import might.vm.wasm.core2.structure.ModuleInfo;
-import might.vm.wasm.core2.structure.WasmReader;
+import might.vm.wasm.instance.Module;
+import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.util.ModuleConfig;
 import org.junit.jupiter.api.Test;
 import util.FileReader;
