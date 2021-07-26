@@ -77,4 +77,11 @@ public class Slice<T> implements Iterable<T> {
         data.clear();
     }
 
+
+    public static int checkArrayIndex(int n) {
+        if (n < 0 || MAX_CAPACITY < n) {
+            throw new IndexOutOfBoundsException("the capacity limit of array: " + MAX_CAPACITY);
+        }
+        return n;
+    }
 }

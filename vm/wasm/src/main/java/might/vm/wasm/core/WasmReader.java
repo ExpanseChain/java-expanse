@@ -58,7 +58,7 @@ public class WasmReader {
 
             if (sectionId == SECTION_ID_CUSTOM) {
                 int size = readLeb128U32().unsigned().intValue();
-                byte[] data = new byte[size];
+                byte[] data = new byte[Slice.checkArrayIndex(size)];
                 System.arraycopy(this.data, 0, data, 0, size);
                 drop(size);
                 moduleInfo.customSections.append(new WasmReader(data).readCustomSection());
@@ -172,7 +172,7 @@ public class WasmReader {
     public byte[] readBytes() {
         I32 u32 = readLeb128U32();
         int n = u32.unsigned().intValue();
-        byte[] bytes = new byte[n];
+        byte[] bytes = new byte[Slice.checkArrayIndex(n)];
         System.arraycopy(data, 0, bytes, 0, n);
         drop(n);
         return bytes;
@@ -200,7 +200,7 @@ public class WasmReader {
 
     public Slice<FunctionType> readTypeSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<FunctionType> types = new Slice<>(n);
+        Slice<FunctionType> types = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             types.append(readFunctionType());
         }
@@ -216,7 +216,7 @@ public class WasmReader {
 
     public ValueType[] readValueTypes() {
         int n = readLeb128U32().unsigned().intValue();
-        ValueType[] types = new ValueType[n];
+        ValueType[] types = new ValueType[Slice.checkArrayIndex(n)];
         for (int i = 0; i < types.length; i++) {
             types[i] = readValueType();
         }
@@ -232,7 +232,7 @@ public class WasmReader {
 
     public Slice<ImportSection> readImportSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<ImportSection> importSections = new Slice<>(n);
+        Slice<ImportSection> importSections = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             importSections.append(new ImportSection(this.readName(), this.readName(), this.readImportDescribe()));
         }
@@ -286,7 +286,7 @@ public class WasmReader {
 
     public Slice<TypeIndex> readFunctionSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<TypeIndex> indices = new Slice<>(n);
+        Slice<TypeIndex> indices = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             indices.append(TypeIndex.of(this.readLeb128U32()));
         }
@@ -297,7 +297,7 @@ public class WasmReader {
 
     public Slice<TableType> readTableSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<TableType> types = new Slice<>(n);
+        Slice<TableType> types = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             types.append(this.readTableType());
         }
@@ -308,7 +308,7 @@ public class WasmReader {
 
     public Slice<MemoryType> readMemorySections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<MemoryType> types = new Slice<>(n);
+        Slice<MemoryType> types = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             types.append(readMemoryType());
         }
@@ -319,7 +319,7 @@ public class WasmReader {
 
     public Slice<GlobalSection> readGlobalSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<GlobalSection> globalSections = new Slice<>(n);
+        Slice<GlobalSection> globalSections = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             globalSections.append(this.readGlobalSection());
         }
@@ -336,7 +336,7 @@ public class WasmReader {
 
     public Slice<ExportSection> readExportSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<ExportSection> exportSections = new Slice<>(n);
+        Slice<ExportSection> exportSections = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             exportSections.append(new ExportSection(this.readName(),
                     new ExportDescribe(PortTag.of(this.readByte()), readLeb128U32())));
@@ -348,7 +348,7 @@ public class WasmReader {
 
     public Slice<ElementSection> readElementSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<ElementSection> elementSections = new Slice<>(n);
+        Slice<ElementSection> elementSections = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             elementSections.append(readElementSection());
         }
@@ -365,10 +365,10 @@ public class WasmReader {
             case 0x01: value = new ElementSection.Value1(readByte(), readFunctionIndices()); break;
             case 0x02: value = new ElementSection.Value2(TableIndex.of(readLeb128U32()), readExpression(), readByte(), readFunctionIndices()); break;
             case 0x03: value = new ElementSection.Value3(readByte(), readFunctionIndices()); break;
-            case 0x04: value = new ElementSection.Value4(readExpression(), readExpresses()); break;
-            case 0x05: value = new ElementSection.Value5(ReferenceType.of(readByte()), readExpresses()); break;
-            case 0x06: value = new ElementSection.Value6(TableIndex.of(readLeb128U32()), readExpression(), ReferenceType.of(readByte()), readExpresses()); break;
-            case 0x07: value = new ElementSection.Value7(ReferenceType.of(readByte()), readExpresses()); break;
+            case 0x04: value = new ElementSection.Value4(readExpression(), readExpressions()); break;
+            case 0x05: value = new ElementSection.Value5(ReferenceType.of(readByte()), readExpressions()); break;
+            case 0x06: value = new ElementSection.Value6(TableIndex.of(readLeb128U32()), readExpression(), ReferenceType.of(readByte()), readExpressions()); break;
+            case 0x07: value = new ElementSection.Value7(ReferenceType.of(readByte()), readExpressions()); break;
         }
 
         return new ElementSection(tag, value);
@@ -376,16 +376,16 @@ public class WasmReader {
 
     private FunctionIndex[] readFunctionIndices() {
         int n = readLeb128U32().unsigned().intValue();
-        FunctionIndex[] indices = new FunctionIndex[n];
+        FunctionIndex[] indices = new FunctionIndex[Slice.checkArrayIndex(n)];
         for (int i = 0; i < n; i++) {
             indices[i] = FunctionIndex.of(readLeb128U32());
         }
         return indices;
     }
 
-    private Expression[] readExpresses() {
+    private Expression[] readExpressions() {
         int n = readLeb128U32().unsigned().intValue();
-        Expression[] expressions = new Expression[n];
+        Expression[] expressions = new Expression[Slice.checkArrayIndex(n)];
         for (int i = 0; i < n; i++) {
             expressions[i] = readExpression();
         }
@@ -397,12 +397,12 @@ public class WasmReader {
     public Slice<CodeSection> readCodeSections() {
 //        System.out.println(">>>> read codeSection");
         int n = readLeb128U32().unsigned().intValue();
-        Slice<CodeSection> codeSections = new Slice<>(n);
+        Slice<CodeSection> codeSections = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             I32 size = this.readLeb128U32();
             int s = size.unsigned().intValue();
 //            System.out.println("codeSection [" + i + "] size: " + s);
-            byte[] data = new byte[s];
+            byte[] data = new byte[Slice.checkArrayIndex(s)];
             System.arraycopy(this.data, 0, data, 0, s);
             drop(s);
             WasmReader reader = new WasmReader(data);
@@ -413,7 +413,7 @@ public class WasmReader {
 
     private Local[] readLocals() {
         int n = readLeb128U32().unsigned().intValue();
-        Local[] locals = new Local[n];
+        Local[] locals = new Local[Slice.checkArrayIndex(n)];
         for (int i = 0; i < locals.length; i++) {
             I32 size = readLeb128U32();
             locals[i] = new Local(size, ValueType.of(this.readByte()));
@@ -425,7 +425,7 @@ public class WasmReader {
 
     public Slice<DataSection> readDataSections() {
         int n = readLeb128U32().unsigned().intValue();
-        Slice<DataSection> data = new Slice<>(n);
+        Slice<DataSection> data = new Slice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             data.append(readDataSection());
         }
@@ -471,6 +471,7 @@ public class WasmReader {
             }
             Action action = readAction();
             actions.add(action);
+            Slice.checkArrayIndex(actions.size());
         }
     }
 
@@ -595,7 +596,7 @@ public class WasmReader {
 
     public LabelIndex[] readLabelIndices() {
         int n = readLeb128U32().unsigned().intValue();
-        LabelIndex[] indices = new LabelIndex[n];
+        LabelIndex[] indices = new LabelIndex[Slice.checkArrayIndex(n)];
         for (int i = 0; i < indices.length; i++) {
             indices[i] = readLabelIndex();
         }

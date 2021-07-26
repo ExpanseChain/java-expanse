@@ -56,7 +56,7 @@ public class OperandStack {
     }
 
     public ISize[] popUSizes(int size) {
-        ISize[] values = new ISize[size];
+        ISize[] values = new ISize[Slice.checkArrayIndex(size)];
         for (int i = size - 1; 0 <= i; i--) {
             values[i] = popISize();
         }
