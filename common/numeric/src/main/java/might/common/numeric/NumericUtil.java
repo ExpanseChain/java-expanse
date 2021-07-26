@@ -74,7 +74,7 @@ class NumericUtil {
     }
 
     static String hexString(byte value) {
-        return new String(new char[]{hexChar((value & 0xFF00) >> 8), hexChar(value & 0xFF)}) ;
+        return new String(new char[]{hexChar((value & 0xF0) >> 4), hexChar(value & 0xF)}) ;
     }
 
     private static char hexChar(int value) {

@@ -19,7 +19,7 @@ public class I32 extends ISize {
     public static I32 valueOf(String value, int radix) { return new I32(value, radix); }
     public static I32 binaryValueOf(String value) { return new I32(value, 2); }
     public static I32 hexValueOf(String value) { return new I32(value, 16); }
-    public static I32 valueOf(int value) { return new I32(NumericUtil.parseBytes(value)); } // 精度损失
+    public static I32 valueOf(int value) { return new I32(NumericUtil.parseBytes(value)); }
     public static I32 valueOf(long value) { return new I32(new byte[]{ ((byte) ((value & 0xFF000000) >> 24)), ((byte) ((value & 0xFF0000) >> 16)), ((byte) ((value & 0xFF00) >> 8)), (byte) value }); } // 精度损失
 
     public I8     i8() { return   I8.valueOf(NumericUtil.padding((byte) 0,  1, bytes)); }

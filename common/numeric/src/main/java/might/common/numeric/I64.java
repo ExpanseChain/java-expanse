@@ -17,7 +17,7 @@ public class I64 extends ISize {
     public static I64 valueOf(String value, int radix) { return new I64(value, radix); }
     public static I64 binaryValueOf(String value) { return new I64(value, 2); }
     public static I64 hexValueOf(String value) { return new I64(value, 16); }
-    public static I64 valueOf(long value) { return new I64(NumericUtil.parseBytes(value)); } // 精度损失
+    public static I64 valueOf(long value) { return new I64(NumericUtil.parseBytes(value)); }
 
     public I8     i8() { return   I8.valueOf(NumericUtil.padding((byte) 0,  1, bytes)); }
     public I16   i16() { return  I16.valueOf(NumericUtil.padding((byte) 0,  2, bytes)); }
