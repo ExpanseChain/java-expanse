@@ -1,8 +1,8 @@
 package might.vm.wasm.model.section;
 
+import might.common.numeric.I32;
 import might.vm.wasm.core2.instruction.Expression;
 import might.vm.wasm.model.Local;
-import might.vm.wasm.core2.numeric.U32;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 
 public class CodeSection {
 
-    public final U32 size;                // 代码大小？
+    public final I32 size;                // 代码大小
     public final Local[] locals;          // 本地变量组
     public final Expression expression;   // 代码的表达式
 
-    public CodeSection(U32 size, Local[] locals, Expression expression) {
+    public CodeSection(I32 size, Local[] locals, Expression expression) {
         this.size = size;
         this.locals = locals;
         this.expression = expression;
@@ -23,7 +23,7 @@ public class CodeSection {
     @Override
     public String toString() {
         return "CodeSection{" +
-                "size=" + size +
+                "size=" + size.unsigned() +
                 ", locals=" + Arrays.toString(locals) +
                 ", express=" + expression +
                 '}';

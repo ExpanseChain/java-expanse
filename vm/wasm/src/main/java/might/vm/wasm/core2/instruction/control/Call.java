@@ -1,19 +1,16 @@
 package might.vm.wasm.core2.instruction.control;
 
-import might.vm.wasm.error.Assertions;
-import might.vm.wasm.error.WasmException;
 import might.vm.wasm.core2.instruction.Instruction;
 import might.vm.wasm.core2.instruction.Operate;
-import might.vm.wasm.model.Dump;
-import might.vm.wasm.model.Local;
-import might.vm.wasm.model.index.FunctionIndex;
-import might.vm.wasm.model.section.CodeSection;
-import might.vm.wasm.core2.numeric.U32;
-import might.vm.wasm.core2.numeric.U64;
 import might.vm.wasm.core2.numeric.USize;
 import might.vm.wasm.core2.structure.Function;
 import might.vm.wasm.core2.structure.ModuleInstance;
 import might.vm.wasm.core2.structure.WasmReader;
+import might.vm.wasm.error.Assertions;
+import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.Local;
+import might.vm.wasm.model.index.FunctionIndex;
+import might.vm.wasm.model.section.CodeSection;
 
 public class Call implements Operate {
 
@@ -50,16 +47,7 @@ public class Call implements Operate {
         // 分配本地变量
         for (int i = 0; i < code.locals.length; i++) {
             Local local = code.locals[i];
-            switch (local.type.value()) {
-                case 0x7F: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
-                case 0x7E: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU64(U64.valueOf(0)); } break;
-//            case 0x7D: return F32;
-//            case 0x7C: return F64;
-                case 0x70: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
-                case 0x6F: for (int j = 0; j < local.size.unsigned().longValue(); j++) { mi.pushU32(U32.valueOf(0)); } break;
-                default:
-                    throw new WasmException("what a type?");
-            }
+            local.pushLocal(mi);
         }
     }
 

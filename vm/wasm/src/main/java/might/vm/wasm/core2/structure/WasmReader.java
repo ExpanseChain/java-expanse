@@ -407,7 +407,7 @@ public class WasmReader {
             System.arraycopy(this.data, 0, data, 0, s);
             drop(s);
             WasmReader reader = new WasmReader(data);
-            codeSections[i] = new CodeSection(size, reader.readLocals(), reader.readExpression());
+            codeSections[i] = new CodeSection(I32.valueOf(size.getBytes()), reader.readLocals(), reader.readExpression());
         }
         return codeSections;
     }
