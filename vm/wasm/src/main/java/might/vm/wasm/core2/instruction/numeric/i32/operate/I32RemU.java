@@ -1,11 +1,11 @@
 package might.vm.wasm.core2.instruction.numeric.i32.operate;
 
-import wasm.core.instruction.Operate;
-import wasm.core.model.Dump;
-import wasm.core.numeric.U32;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.structure.WasmReader;
-import wasm.core.util.NumberUtil;
+import might.vm.wasm.core2.instruction.Operate;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.numeric.U32;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.core2.structure.WasmReader;
+import might.vm.wasm.util.NumberUtil;
 
 public class I32RemU implements Operate {
 

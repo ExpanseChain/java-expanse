@@ -1,11 +1,11 @@
 package might.vm.wasm.core2.instruction.numeric.i64;
 
-import wasm.core.exception.Check;
-import wasm.core.instruction.Operate;
-import wasm.core.instruction.dump.DumpI64;
-import wasm.core.model.Dump;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.structure.WasmReader;
+import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.core2.instruction.Operate;
+import might.vm.wasm.core2.instruction.dump.DumpI64;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.core2.structure.WasmReader;
 
 public class I64Const implements Operate {
 
@@ -16,8 +16,8 @@ public class I64Const implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        Check.requireNonNull(args);
-        Check.require(args, DumpI64.class);
+        Assertions.requireNonNull(args);
+        Assertions.requireType(args, DumpI64.class);
 
         DumpI64 a = (DumpI64) args;
 

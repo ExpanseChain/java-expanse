@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.exception.Check;
+import might.vm.wasm.core.error.Assertions;
 
 public class Magic {
 
@@ -12,10 +12,10 @@ public class Magic {
     private final String value;
 
     public Magic(byte b0, byte b1, byte b2, byte b3) {
-        Check.require(Magic.b0, b0);
-        Check.require(Magic.b1, b1);
-        Check.require(Magic.b2, b2);
-        Check.require(Magic.b3, b3);
+        Assertions.requireTrue(Magic.b0 == b0);
+        Assertions.requireTrue(Magic.b1 == b1);
+        Assertions.requireTrue(Magic.b2 == b2);
+        Assertions.requireTrue(Magic.b3 == b3);
 
         this.value = new String(new byte[]{ b0, b1, b2, b3 });
     }

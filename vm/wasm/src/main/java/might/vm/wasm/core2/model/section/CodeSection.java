@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.instruction.Expression;
-import wasm.core.model.Local;
-import wasm.core.numeric.U32;
+import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.core2.model.Local;
+import might.vm.wasm.core2.numeric.U32;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package might.vm.wasm.core2.model.describe;
 
-import wasm.core.model.tag.PortTag;
-import wasm.core.numeric.U32;
+import might.vm.wasm.core2.model.tag.PortTag;
+import might.vm.wasm.core2.numeric.U32;
 
 public class ExportDescribe {
 

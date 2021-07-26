@@ -1,16 +1,16 @@
 package might.vm.wasm.core2.instruction.dump;
 
-import wasm.core.exception.Check;
-import wasm.core.model.Dump;
+import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.core2.model.Dump;
 
-import static wasm.core.util.NumberTransform.toHex;
+import static might.vm.wasm.util.NumberTransform.toHex;
 
 public class DumpZero implements Dump {
 
     public byte value;
 
     public DumpZero(byte value) {
-        Check.require(value, 0x00);
+        Assertions.requireTrue(value == 0x00);
         this.value = value;
     }
 

@@ -1,7 +1,7 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.instruction.Expression;
-import wasm.core.model.type.GlobalType;
+import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.core2.model.type.GlobalType;
 
 public class GlobalSection {
 

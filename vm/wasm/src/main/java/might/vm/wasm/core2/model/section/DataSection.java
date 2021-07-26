@@ -1,13 +1,13 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.instruction.Expression;
-import wasm.core.model.Dump;
-import wasm.core.model.index.MemoryIndex;
-import wasm.core.numeric.U32;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.util.NumberTransform;
+import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.index.MemoryIndex;
+import might.vm.wasm.core2.numeric.U32;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.util.NumberTransform;
 
-import static wasm.core.util.NumberTransform.toHexArray;
+import static might.vm.wasm.util.NumberTransform.toHexArray;
 
 public class DataSection {
 

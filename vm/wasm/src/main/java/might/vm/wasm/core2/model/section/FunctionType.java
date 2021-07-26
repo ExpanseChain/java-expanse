@@ -1,7 +1,7 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.model.tag.FunctionTypeTag;
-import wasm.core.model.type.ValueType;
+import might.vm.wasm.core2.model.tag.FunctionTypeTag;
+import might.vm.wasm.core2.model.type.ValueType;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

@@ -1,19 +1,19 @@
 package might.vm.wasm.core2.instruction.control;
 
-import wasm.core.exception.Check;
-import wasm.core.exception.WasmException;
-import wasm.core.instruction.Instruction;
-import wasm.core.instruction.Operate;
-import wasm.core.model.Dump;
-import wasm.core.model.Local;
-import wasm.core.model.index.FunctionIndex;
-import wasm.core.model.section.CodeSection;
-import wasm.core.numeric.U32;
-import wasm.core.numeric.U64;
-import wasm.core.numeric.USize;
-import wasm.core.structure.Function;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.structure.WasmReader;
+import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.core.error.WasmException;
+import might.vm.wasm.core2.instruction.Instruction;
+import might.vm.wasm.core2.instruction.Operate;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.Local;
+import might.vm.wasm.core2.model.index.FunctionIndex;
+import might.vm.wasm.core2.model.section.CodeSection;
+import might.vm.wasm.core2.numeric.U32;
+import might.vm.wasm.core2.numeric.U64;
+import might.vm.wasm.core2.numeric.USize;
+import might.vm.wasm.core2.structure.Function;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.core2.structure.WasmReader;
 
 public class Call implements Operate {
 
@@ -24,8 +24,8 @@ public class Call implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        Check.requireNonNull(args);
-        Check.require(args, FunctionIndex.class);
+        Assertions.requireNonNull(args);
+        Assertions.requireType(args, FunctionIndex.class);
 
         FunctionIndex index = ((FunctionIndex) args);
 

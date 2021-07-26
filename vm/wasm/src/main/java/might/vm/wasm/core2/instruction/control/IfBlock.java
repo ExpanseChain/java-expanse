@@ -1,17 +1,17 @@
 package might.vm.wasm.core2.instruction.control;
 
-import wasm.core.exception.Check;
-import wasm.core.instruction.Expression;
-import wasm.core.instruction.Instruction;
-import wasm.core.instruction.Operate;
-import wasm.core.instruction.dump.DumpIfBlock;
-import wasm.core.model.Dump;
-import wasm.core.model.section.FunctionType;
-import wasm.core.model.type.BlockType;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.structure.WasmReader;
+import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.core2.instruction.Instruction;
+import might.vm.wasm.core2.instruction.Operate;
+import might.vm.wasm.core2.instruction.dump.DumpIfBlock;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.section.FunctionType;
+import might.vm.wasm.core2.model.type.BlockType;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.core2.structure.WasmReader;
 
-import static wasm.core.util.ConstNumber.EXPRESSION_ELSE;
+import static might.vm.wasm.util.ConstNumber.EXPRESSION_ELSE;
 
 public class IfBlock implements Operate {
 
@@ -31,8 +31,8 @@ public class IfBlock implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        Check.requireNonNull(args);
-        Check.require(args, DumpIfBlock.class);
+        Assertions.requireNonNull(args);
+        Assertions.requireType(args, DumpIfBlock.class);
 
         DumpIfBlock b = (DumpIfBlock) args;
 

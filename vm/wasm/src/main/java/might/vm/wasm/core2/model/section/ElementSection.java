@@ -1,17 +1,17 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.instruction.Expression;
-import wasm.core.model.Dump;
-import wasm.core.model.index.FunctionIndex;
-import wasm.core.model.index.TableIndex;
-import wasm.core.model.type.ReferenceType;
-import wasm.core.numeric.U32;
-import wasm.core.structure.ModuleInstance;
+import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.index.FunctionIndex;
+import might.vm.wasm.core2.model.index.TableIndex;
+import might.vm.wasm.core2.model.type.ReferenceType;
+import might.vm.wasm.core2.numeric.U32;
+import might.vm.wasm.core2.structure.ModuleInstance;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static wasm.core.util.NumberTransform.toHex;
+import static might.vm.wasm.util.NumberTransform.toHex;
 
 /**
  * 这部分貌似有更新，以后再修改

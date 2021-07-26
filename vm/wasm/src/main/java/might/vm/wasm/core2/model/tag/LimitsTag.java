@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.model.tag;
 
-import wasm.core.model.Type;
+import might.vm.wasm.core2.model.Type;
 
-import static wasm.core.util.NumberTransform.toHex;
+import static might.vm.wasm.util.NumberTransform.toHex;
 
 public class LimitsTag implements Type {
 

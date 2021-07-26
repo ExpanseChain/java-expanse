@@ -1,13 +1,13 @@
 package might.vm.wasm.core2.instruction.control;
 
-import wasm.core.exception.Check;
-import wasm.core.instruction.Instruction;
-import wasm.core.instruction.Operate;
-import wasm.core.model.Dump;
-import wasm.core.model.index.LabelIndex;
-import wasm.core.structure.ControlFrame;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.structure.WasmReader;
+import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.core2.instruction.Instruction;
+import might.vm.wasm.core2.instruction.Operate;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.index.LabelIndex;
+import might.vm.wasm.core2.structure.ControlFrame;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.core2.structure.WasmReader;
 
 public class Br implements Operate {
 
@@ -18,8 +18,8 @@ public class Br implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        Check.requireNonNull(args);
-        Check.require(args, LabelIndex.class);
+        Assertions.requireNonNull(args);
+        Assertions.requireType(args, LabelIndex.class);
 
         int index = ((LabelIndex) args).intValue();
 

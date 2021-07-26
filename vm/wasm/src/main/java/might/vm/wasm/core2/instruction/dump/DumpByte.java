@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.instruction.dump;
 
-import wasm.core.model.Dump;
+import might.vm.wasm.core2.model.Dump;
 
-import static wasm.core.util.NumberTransform.toHex;
+import static might.vm.wasm.util.NumberTransform.toHex;
 
 
 public class DumpByte implements Dump {

@@ -1,10 +1,10 @@
 package might.vm.wasm.core2.instruction.control;
 
-import wasm.core.instruction.Instruction;
-import wasm.core.instruction.Operate;
-import wasm.core.model.Dump;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.structure.WasmReader;
+import might.vm.wasm.core2.instruction.Instruction;
+import might.vm.wasm.core2.instruction.Operate;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.core2.structure.WasmReader;
 
 public class BrIf implements Operate {
 

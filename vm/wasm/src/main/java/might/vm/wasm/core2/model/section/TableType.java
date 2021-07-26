@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.model.Dump;
-import wasm.core.model.Limits;
-import wasm.core.model.type.ReferenceType;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.Limits;
+import might.vm.wasm.core2.model.type.ReferenceType;
 
 public class TableType implements Dump {
 

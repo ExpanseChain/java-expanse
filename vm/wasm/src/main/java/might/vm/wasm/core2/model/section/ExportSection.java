@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.model.describe.ExportDescribe;
+import might.vm.wasm.core2.model.describe.ExportDescribe;
 
 public class ExportSection {
 

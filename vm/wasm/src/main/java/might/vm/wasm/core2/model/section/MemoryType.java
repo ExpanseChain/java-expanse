@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.model.section;
 
-import wasm.core.model.Limits;
-import wasm.core.model.tag.LimitsTag;
-import wasm.core.numeric.U32;
+import might.vm.wasm.core2.model.Limits;
+import might.vm.wasm.core2.model.tag.LimitsTag;
+import might.vm.wasm.core2.numeric.U32;
 
 public class MemoryType extends Limits {
 

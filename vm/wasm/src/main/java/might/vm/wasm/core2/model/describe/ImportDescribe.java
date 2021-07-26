@@ -1,11 +1,11 @@
 package might.vm.wasm.core2.model.describe;
 
-import wasm.core.model.Dump;
-import wasm.core.model.index.TypeIndex;
-import wasm.core.model.section.MemoryType;
-import wasm.core.model.section.TableType;
-import wasm.core.model.tag.PortTag;
-import wasm.core.model.type.GlobalType;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.index.TypeIndex;
+import might.vm.wasm.core2.model.section.MemoryType;
+import might.vm.wasm.core2.model.section.TableType;
+import might.vm.wasm.core2.model.tag.PortTag;
+import might.vm.wasm.core2.model.type.GlobalType;
 
 public class ImportDescribe {
 

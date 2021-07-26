@@ -1,14 +1,14 @@
 package might.vm.wasm.core2.instruction.memory;
 
-import wasm.core.exception.Check;
-import wasm.core.instruction.Operate;
-import wasm.core.instruction.dump.DumpMemory;
-import wasm.core.model.Dump;
-import wasm.core.model.index.MemoryIndex;
-import wasm.core.numeric.U32;
-import wasm.core.numeric.U64;
-import wasm.core.structure.ModuleInstance;
-import wasm.core.structure.WasmReader;
+import might.vm.wasm.core.error.Assertions;
+import might.vm.wasm.core2.instruction.Operate;
+import might.vm.wasm.core2.instruction.dump.DumpMemory;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.index.MemoryIndex;
+import might.vm.wasm.core2.numeric.U32;
+import might.vm.wasm.core2.numeric.U64;
+import might.vm.wasm.core2.structure.ModuleInstance;
+import might.vm.wasm.core2.structure.WasmReader;
 
 public class I64Store16 implements Operate {
 
@@ -19,7 +19,7 @@ public class I64Store16 implements Operate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        Check.requireNonNull(args);
+        Assertions.requireNonNull(args);
 
         DumpMemory a = (DumpMemory) args;
 

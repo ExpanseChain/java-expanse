@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.instruction.dump;
 
-import wasm.core.model.Dump;
+import might.vm.wasm.core2.model.Dump;
 
 public class DumpI32 implements Dump {
 

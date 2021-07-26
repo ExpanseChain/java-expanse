@@ -1,8 +1,8 @@
 package might.vm.wasm.core2.instruction.dump;
 
-import wasm.core.model.Dump;
-import wasm.core.model.index.LabelIndex;
-import wasm.core.numeric.U32;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.index.LabelIndex;
+import might.vm.wasm.core2.numeric.U32;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

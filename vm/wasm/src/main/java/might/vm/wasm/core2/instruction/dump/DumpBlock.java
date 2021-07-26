@@ -1,9 +1,9 @@
 package might.vm.wasm.core2.instruction.dump;
 
-import wasm.core.instruction.Action;
-import wasm.core.instruction.Expression;
-import wasm.core.model.Dump;
-import wasm.core.model.type.BlockType;
+import might.vm.wasm.core2.instruction.Action;
+import might.vm.wasm.core2.instruction.Expression;
+import might.vm.wasm.core2.model.Dump;
+import might.vm.wasm.core2.model.type.BlockType;
 
 public class DumpBlock implements Dump {
 

@@ -1,6 +1,6 @@
 package might.vm.wasm.core2.model.index;
 
-import wasm.core.numeric.U32;
+import might.vm.wasm.core2.numeric.U32;
 
 public class DataCountIndex extends U32 {
 
