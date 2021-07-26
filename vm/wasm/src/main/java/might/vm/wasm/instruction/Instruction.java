@@ -267,7 +267,7 @@ public enum Instruction {
     }
 
     public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
-        operate.valid(info, args, parameters, locals);
+        operate.validate(info, args, parameters, locals);
     }
 
 }

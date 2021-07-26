@@ -15,7 +15,7 @@ public interface StoreOperate extends Operate {
     }
 
     @Override
-    default void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+    default void validate(ModuleInfo info, Dump args, int parameters, long locals) {
         Assertions.requireTrue(null != args);
         Assertions.requireTrue(args instanceof DumpMemory);
         // 还有要检查的吗？

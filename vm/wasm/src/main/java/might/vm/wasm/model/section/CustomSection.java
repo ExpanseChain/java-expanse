@@ -1,8 +1,9 @@
 package might.vm.wasm.model.section;
 
 import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.model.Validate;
 
-public class CustomSection implements Valid {
+public class CustomSection implements Validate {
 
     public final String name;
     public final byte[] bytes;
@@ -16,7 +17,7 @@ public class CustomSection implements Valid {
         return "custom[" + index + "]: name=" + name + " length=" + bytes.length;
     }
 
-    @Override public void valid(ModuleInfo info) {
+    @Override public void validate(ModuleInfo info) {
         // 自定义模块不检查
     }
 

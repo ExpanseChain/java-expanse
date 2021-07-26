@@ -4,11 +4,12 @@ import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.Limits;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.type.ReferenceType;
 
 import static might.vm.wasm.util.ConstNumber.TABLE_MAX_CAPACITY;
 
-public class TableType implements Dump, Valid {
+public class TableType implements Dump, Validate {
 
     public final ReferenceType type;    // 引用类型
     public final Limits limits;         // 表限制
@@ -36,7 +37,7 @@ public class TableType implements Dump, Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         if (limits.getMin().unsigned().longValue() > TABLE_MAX_CAPACITY) {
             throw new ModuleException(String.format("min memory page(%d) > max page count(%d)", limits.getMin().unsigned().longValue(), TABLE_MAX_CAPACITY));
         }

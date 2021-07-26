@@ -30,7 +30,7 @@ public class DumpBlock implements Dump {
     }
 
     public void valid(ModuleInfo info, int parameters, long locals) {
-        blockType.valid(info);
+        blockType.validate(info);
         expression.valid(info, parameters, locals);
     }
 

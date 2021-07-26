@@ -21,7 +21,7 @@ import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.model.type.*;
 import might.vm.wasm.util.Leb128;
 import might.vm.wasm.util.Slice;
-import might.vm.wasm.util.ValidSlice;
+import might.vm.wasm.util.ValidationSlice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class WasmReader {
                 System.arraycopy(this.data, 0, data, 0, size);
                 drop(size);
                 CustomSection cs = new WasmReader(data).readCustomSection();
-                cs.valid(moduleInfo);
+                cs.validate(moduleInfo);
                 moduleInfo.customSections.append(cs);
                 continue;
             }
@@ -247,9 +247,9 @@ public class WasmReader {
 
     // 1
 
-    public ValidSlice<FunctionType> readTypeSections() {
+    public ValidationSlice<FunctionType> readTypeSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<FunctionType> types = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<FunctionType> types = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             types.append(readFunctionType());
         }
@@ -279,9 +279,9 @@ public class WasmReader {
 
     // 2
 
-    public ValidSlice<ImportSection> readImportSections() {
+    public ValidationSlice<ImportSection> readImportSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<ImportSection> importSections = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<ImportSection> importSections = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             importSections.append(new ImportSection(this.readName(), this.readName(), this.readImportDescribe()));
         }
@@ -335,9 +335,9 @@ public class WasmReader {
 
     // 3
 
-    public ValidSlice<TypeIndex> readFunctionSections() {
+    public ValidationSlice<TypeIndex> readFunctionSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<TypeIndex> indices = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<TypeIndex> indices = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             indices.append(TypeIndex.of(this.readLeb128U32()));
         }
@@ -346,9 +346,9 @@ public class WasmReader {
 
     // 4
 
-    public ValidSlice<TableType> readTableSections() {
+    public ValidationSlice<TableType> readTableSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<TableType> types = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<TableType> types = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             types.append(this.readTableType());
         }
@@ -357,9 +357,9 @@ public class WasmReader {
 
     // 5
 
-    public ValidSlice<MemoryType> readMemorySections() {
+    public ValidationSlice<MemoryType> readMemorySections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<MemoryType> types = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<MemoryType> types = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             types.append(readMemoryType());
         }
@@ -368,9 +368,9 @@ public class WasmReader {
 
     // 6
 
-    public ValidSlice<GlobalSection> readGlobalSections() {
+    public ValidationSlice<GlobalSection> readGlobalSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<GlobalSection> globalSections = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<GlobalSection> globalSections = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             globalSections.append(this.readGlobalSection());
         }
@@ -385,9 +385,9 @@ public class WasmReader {
 
     // 7
 
-    public ValidSlice<ExportSection> readExportSections() {
+    public ValidationSlice<ExportSection> readExportSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<ExportSection> exportSections = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<ExportSection> exportSections = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             exportSections.append(new ExportSection(this.readName(),
                     new ExportDescribe(PortTag.of(this.readByte()), readLeb128U32())));
@@ -397,9 +397,9 @@ public class WasmReader {
 
     // 9
 
-    public ValidSlice<ElementSection> readElementSections() {
+    public ValidationSlice<ElementSection> readElementSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<ElementSection> elementSections = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<ElementSection> elementSections = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             elementSections.append(readElementSection());
         }
@@ -446,10 +446,10 @@ public class WasmReader {
 
     // 10
 
-    public ValidSlice<CodeSection> readCodeSections() {
+    public ValidationSlice<CodeSection> readCodeSections() {
 //        System.out.println(">>>> read codeSection");
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<CodeSection> codeSections = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<CodeSection> codeSections = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             I32 size = this.readLeb128U32();
             int s = size.unsigned().intValue();
@@ -476,9 +476,9 @@ public class WasmReader {
 
     // 11
 
-    public ValidSlice<DataSection> readDataSections() {
+    public ValidationSlice<DataSection> readDataSections() {
         int n = readLeb128U32().unsigned().intValue();
-        ValidSlice<DataSection> data = new ValidSlice<>(Slice.checkArrayIndex(n));
+        ValidationSlice<DataSection> data = new ValidationSlice<>(Slice.checkArrayIndex(n));
         for (int i = 0; i < n; i++) {
             data.append(readDataSection());
         }

@@ -3,9 +3,10 @@ package might.vm.wasm.model.section;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.module.ModuleException;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.describe.ImportDescribe;
 
-public class ImportSection implements Valid {
+public class ImportSection implements Validate {
 
     public final String module;             // 导入模块名
     public final String name;               // 导入成员名
@@ -58,7 +59,7 @@ public class ImportSection implements Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         // 导入段
         if (null == module || module.isEmpty()) {
             throw new ModuleException("module can not be empty.");
@@ -66,7 +67,7 @@ public class ImportSection implements Valid {
         if (null == name || name.isEmpty()) {
             throw new ModuleException("module can not be empty.");
         }
-        this.describe.value.valid(info);
+        this.describe.value.validate(info);
     }
 
 }

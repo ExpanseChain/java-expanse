@@ -3,9 +3,10 @@ package might.vm.wasm.model.section;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.module.ModuleException;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.describe.ExportDescribe;
 
-public class ExportSection implements Valid {
+public class ExportSection implements Validate {
 
     public final String name;             // 导出名称
     public final ExportDescribe describe; // 导出描述信息
@@ -44,7 +45,7 @@ public class ExportSection implements Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         // 名称要求不能重复
         if (null == name || name.isEmpty()) {
             throw new ModuleException("export item name can not be empty.");

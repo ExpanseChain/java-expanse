@@ -76,9 +76,7 @@ public class Module implements ModuleInstance {
         if (member instanceof Function) {
             Function f = (Function) member;
 
-            if (args.length != f.type().parameters.length) {
-                throw new ExecutionException("args is mismatch.");
-            }
+            f.type().checkParameters(args);
 
             // 启动一个新的函数，清除栈
             this.clearOperandStack();
@@ -562,13 +560,13 @@ public class Module implements ModuleInstance {
         module.initMemories();
         module.initGlobals();
 
-        System.out.println("========================= ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ =========================");
-        System.out.print(info.dump());
-        System.out.println("========================= ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ =========================");
+//        System.out.println("========================= ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ =========================");
+//        System.out.print(info.dump());
+//        System.out.println("========================= ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ =========================");
 
         module.execStartFunction();
 
-        System.out.println();
+//        System.out.println();
 
         return module;
     }

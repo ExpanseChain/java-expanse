@@ -4,11 +4,12 @@ import might.common.numeric.I32;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Limits;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.tag.LimitsTag;
 
 import static might.vm.wasm.util.ConstNumber.MEMORY_MAX_PAGE_COUNT;
 
-public class MemoryType extends Limits implements Valid {
+public class MemoryType extends Limits implements Validate {
 
     public MemoryType(LimitsTag tag, I32 min, I32 max) {
         super(tag, min, max);
@@ -19,7 +20,7 @@ public class MemoryType extends Limits implements Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         if (min.unsigned().longValue() > MEMORY_MAX_PAGE_COUNT) {
             throw new ModuleException(String.format("min memory page(%d) > max page count(%d)", min.unsigned().longValue(), MEMORY_MAX_PAGE_COUNT));
         }

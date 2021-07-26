@@ -5,13 +5,14 @@ import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Local;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.index.TypeIndex;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CodeSection implements Valid {
+public class CodeSection implements Validate {
 
     public final int index;               // 本代码在函数段的序号，再通过函数段指向函数签名段获得参数长度
     public final I32 size;                // 代码大小
@@ -57,7 +58,7 @@ public class CodeSection implements Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         if (info.functionSections.size() <= index) {
             throw new DecodeException("can not find function type index by index: " + index);
         }

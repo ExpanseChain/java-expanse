@@ -9,6 +9,7 @@ import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.TableIndex;
 import might.vm.wasm.model.type.ReferenceType;
@@ -23,17 +24,17 @@ import static might.vm.wasm.util.NumberTransform.toHex;
 /**
  * 这部分貌似有更新，以后再修改
  */
-public class ElementSection implements Valid {
+public class ElementSection implements Validate {
 
     public final byte tag;    // 0x00 ~ 0x07 元素段好多种
     public final Value value; // 元素段内容
 
     @Override
-    public void valid(ModuleInfo info) {
-        value.valid(info);
+    public void validate(ModuleInfo info) {
+        value.validate(info);
     }
 
-    public static abstract class Value implements Dump, Valid {
+    public static abstract class Value implements Dump, Validate {
         public abstract boolean isActive();
         public abstract void init(ModuleInstance mi);
         protected static void checkExpression(ModuleInfo info, Expression expression) {
@@ -103,7 +104,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             checkExpression(info, expression);
             checkFunctionIndices(info, functionIndices);
         }
@@ -134,7 +135,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             checkFunctionIndices(info, functionIndices);
             throw new ModuleException("how to valid?");
         }
@@ -169,7 +170,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             checkTableIndex(info, tableIndex);
             checkExpression(info, expression);
             checkFunctionIndices(info, functionIndices);
@@ -201,7 +202,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             checkFunctionIndices(info, functionIndices);
             throw new ModuleException("how to valid?");
         }
@@ -242,7 +243,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             checkExpression(info, expression);
             for (Expression actions : expressionArray) {
                 checkExpression(info, actions);
@@ -274,7 +275,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             for (Expression actions : expressionArray) {
                 checkExpression(info, actions);
             }
@@ -310,7 +311,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             checkTableIndex(info, tableIndex);
             checkExpression(info, expression);
             for (Expression actions : expressionArray) {
@@ -344,7 +345,7 @@ public class ElementSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             for (Expression actions : expressionArray) {
                 checkExpression(info, actions);
             }

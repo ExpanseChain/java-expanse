@@ -4,10 +4,11 @@ import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.type.GlobalType;
 import might.vm.wasm.model.type.ValueType;
 
-public class GlobalSection implements Valid {
+public class GlobalSection implements Validate {
 
     public GlobalType type; // 变量类型
     public Expression init; // 初始化表达式
@@ -30,7 +31,7 @@ public class GlobalSection implements Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         // 表达式要检查一下
         ValueType vt = null;
         for (Action action : init) {

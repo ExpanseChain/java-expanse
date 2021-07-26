@@ -8,6 +8,7 @@ import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.index.MemoryIndex;
 import might.vm.wasm.model.type.ValueType;
 import might.vm.wasm.util.NumberTransform;
@@ -15,17 +16,17 @@ import might.vm.wasm.util.Slice;
 
 import static might.vm.wasm.util.NumberTransform.toHexArray;
 
-public class DataSection implements Valid {
+public class DataSection implements Validate {
 
     public byte tag;    // 数据标签
     public Value value; // 数据内容
 
     @Override
-    public void valid(ModuleInfo info) {
-        value.valid(info);
+    public void validate(ModuleInfo info) {
+        value.validate(info);
     }
 
-    public static abstract class Value implements Dump, Valid {
+    public static abstract class Value implements Dump, Validate {
         public abstract void initMemory(ModuleInstance mi);
         protected static void checkExpression(ModuleInfo info, Expression expression) {
             // 表达式要检查一下
@@ -69,7 +70,7 @@ public class DataSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             checkExpression(info, expression);
         }
     }
@@ -91,7 +92,7 @@ public class DataSection implements Valid {
         public void initMemory(ModuleInstance mi) { }
 
         @Override
-        public void valid(ModuleInfo info) { }
+        public void validate(ModuleInfo info) { }
 
     }
     public static class Value2 extends Value {
@@ -122,7 +123,7 @@ public class DataSection implements Valid {
         }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             // 检查memory
             int mi = memoryIndex.unsigned().intValue();
             Slice.checkArrayIndex(mi);

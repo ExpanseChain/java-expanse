@@ -15,7 +15,7 @@ public class MemoryInit implements Operate {
     }
 
     @Override
-    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+    public void validate(ModuleInfo info, Dump args, int parameters, long locals) {
         Assertions.requireTrue(null != args);
         Assertions.requireTrue(args instanceof DataIndex);
     }

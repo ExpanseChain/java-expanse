@@ -13,7 +13,7 @@ public interface Operate {
         throw new DecodeException("what a operate code args ?");
     }
 
-    default void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+    default void validate(ModuleInfo info, Dump args, int parameters, long locals) {
         throw new DecodeException("how to valid ?");
     }
 

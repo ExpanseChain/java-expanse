@@ -7,7 +7,7 @@ import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.TypeIndex;
 import might.vm.wasm.model.section.MemoryType;
 import might.vm.wasm.model.section.TableType;
-import might.vm.wasm.model.section.Valid;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.model.type.GlobalType;
 
@@ -17,7 +17,7 @@ public class ImportDescribe {
 
     public final Value value;
 
-    public static abstract class Value implements Dump, Valid { }
+    public static abstract class Value implements Dump, Validate { }
 
     public static class Function extends Value {
         public TypeIndex typeIndex; // 如果是导入函数 指向类型段的函数索引
@@ -30,7 +30,7 @@ public class ImportDescribe {
         public String dump() { return typeIndex.unsigned().toString(); }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             if (typeIndex.greaterOrEqualsU(I32.valueOf(info.typeSections.size()))) {
                 // type index >= size
                 throw new ModuleException("can not find type section by index: " + typeIndex.unsigned().toString());
@@ -48,8 +48,8 @@ public class ImportDescribe {
         public String dump() { return table.dump(); }
 
         @Override
-        public void valid(ModuleInfo info) {
-            table.valid(info);
+        public void validate(ModuleInfo info) {
+            table.validate(info);
         }
     }
     public static class Memory extends Value {
@@ -63,8 +63,8 @@ public class ImportDescribe {
         public String dump() { return memory.dump(); }
 
         @Override
-        public void valid(ModuleInfo info) {
-            memory.valid(info);
+        public void validate(ModuleInfo info) {
+            memory.validate(info);
         }
     }
     public static class Global extends Value {
@@ -78,7 +78,7 @@ public class ImportDescribe {
         public String dump() { return global.dump(); }
 
         @Override
-        public void valid(ModuleInfo info) {
+        public void validate(ModuleInfo info) {
             // 构造就算验证了
         }
     }

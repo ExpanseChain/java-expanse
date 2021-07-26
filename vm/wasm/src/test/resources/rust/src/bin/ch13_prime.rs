@@ -52,3 +52,10 @@ pub extern "C" fn is_prime(n: i64) -> bool {
     }
     return true;
 }
+
+#[inline(never)]
+#[no_mangle]
+pub extern "C" fn div(a: i64, b: i64) -> i64 {
+    return a / b;
+}
+

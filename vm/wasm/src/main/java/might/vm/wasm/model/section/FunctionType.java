@@ -1,13 +1,19 @@
 package might.vm.wasm.model.section;
 
+import might.common.numeric.I32;
+import might.common.numeric.I64;
+import might.common.numeric.ISize;
 import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.error.decode.DecodeException;
+import might.vm.wasm.error.execute.ExecutionException;
+import might.vm.wasm.model.Validate;
 import might.vm.wasm.model.tag.FunctionTypeTag;
 import might.vm.wasm.model.type.ValueType;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class FunctionType implements Valid {
+public class FunctionType implements Validate {
 
     public final FunctionTypeTag tag;       // 函数标识
     public final ValueType[] parameters;    // 参数列表
@@ -56,8 +62,33 @@ public class FunctionType implements Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         // 类型段 能构造成功就通过了
+    }
+
+    public void checkParameters(ISize[] args) {
+        if (args.length != parameters.length) {
+            throw new ExecutionException(String.format("args is mismatch. this function(%d) != args(%d)", parameters.length, args.length));
+        }
+        for (int i = 0; i < parameters.length; i++) {
+            ValueType p = parameters[i];
+            switch (p.value()) {
+                case 0x7F: // I32;
+                    if (!(args[i] instanceof I32)) {
+                        throw new ExecutionException(String.format("args is mismatch. this function(%s) != args(%s)", Arrays.toString(parameters), Arrays.toString(args)));
+                    }
+                    break;
+                case 0x7E: // I64;
+                case 0x70: // FUNCTION_REFERENCE;
+                case 0x6F: // EXTERN_REFERENCE;
+                    if (!(args[i] instanceof I64)) {
+                        throw new ExecutionException(String.format("args is mismatch. this function(%s) != args(%s)", Arrays.toString(parameters), Arrays.toString(args)));
+                    }
+                    break;
+                default:
+                    throw new DecodeException("what a type: " + p.value());
+            }
+        }
     }
 
 }

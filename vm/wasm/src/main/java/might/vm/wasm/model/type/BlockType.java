@@ -4,9 +4,9 @@ import might.common.numeric.I64;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.model.Type;
-import might.vm.wasm.model.section.Valid;
+import might.vm.wasm.model.Validate;
 
-public class BlockType implements Type, Valid {
+public class BlockType implements Type, Validate {
 
     public final ValueType type;
 
@@ -33,7 +33,7 @@ public class BlockType implements Type, Valid {
     }
 
     @Override
-    public void valid(ModuleInfo info) {
+    public void validate(ModuleInfo info) {
         if (null == type) {
             // 验证是否有对应函数签名 s33
 
