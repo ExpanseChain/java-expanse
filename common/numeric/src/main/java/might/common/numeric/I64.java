@@ -6,6 +6,9 @@ import java.util.Arrays;
 
 public class I64 extends ISize {
 
+    public static final I64 ZERO = I64.valueOf(0);
+    public static final I64 ONE = I64.valueOf(1);
+
     public I64(byte[] bytes) {
         super(bytes);
         if (bytes.length != 8) {

@@ -22,4 +22,8 @@ public class GlobalType {
         return "{type: " + value.name() + ", mut: " + mutable.name() + "}";
     }
 
+    public boolean same(GlobalType o) {
+        return value == o.value && mutable == o.mutable;
+    }
+
 }

@@ -50,4 +50,8 @@ public class TableType implements Dump, Valid {
         }
     }
 
+    public boolean same(TableType o) {
+        return type == o.type && limits.same(o.limits);
+    }
+
 }

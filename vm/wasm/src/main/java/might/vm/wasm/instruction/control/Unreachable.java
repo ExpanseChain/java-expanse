@@ -9,7 +9,7 @@ public class Unreachable implements UnreadOperate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {
-        throw new ExecutionException("unreachable code ?");
+        throw new ExecutionException("unreachable code");
     }
 
 }

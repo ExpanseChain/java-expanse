@@ -6,6 +6,9 @@ import java.util.Arrays;
 
 public class I32 extends ISize {
 
+    public static final I32 ZERO = I32.valueOf(0);
+    public static final I32 ONE = I32.valueOf(1);
+
     public I32(byte[] bytes) {
         super(bytes);
         if (bytes.length != 4) {

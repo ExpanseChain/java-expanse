@@ -45,4 +45,8 @@ public class Limits {
         return "{min: " + min.unsigned().toString() + ", max: " + (null == max ? "0" : max.unsigned().toString()) + "}";
     }
 
+    public boolean same(Limits o) {
+        return tag == o.tag && min.equals(o.min) && ((null == max && null == o.max)||(null != max && max.equals(o.max)));
+    }
+
 }

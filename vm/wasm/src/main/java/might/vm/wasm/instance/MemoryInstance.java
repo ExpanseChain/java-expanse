@@ -5,7 +5,6 @@ import might.common.numeric.I64;
 import might.vm.wasm.core.structure.Memory;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.error.execute.ExecutionException;
-import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.section.MemoryType;
 
 import static might.vm.wasm.util.ConstNumber.MEMORY_MAX_PAGE_COUNT;
@@ -73,13 +72,13 @@ public class MemoryInstance implements Memory {
         int start = offset.unsigned().intValue();
 
         if (start < 0 || max <= start) {
-            throw new ModuleException("start position is invalid: " + start + " for max " + max);
+            throw new ExecutionException("start position is invalid: " + start + " for max " + max);
         }
 
         int end = start + buffer.length;
 
         if (end < 0 || max <= end) {
-            throw new ModuleException("end position is invalid: " + end + " for max " + max);
+            throw new ExecutionException("end position is invalid: " + end + " for max " + max);
         }
 
         System.arraycopy(this.data, start, buffer, 0, buffer.length);

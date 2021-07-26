@@ -38,8 +38,9 @@ public class CallIndirect implements Operate {
 
         int i = mi.popS32();
         // which table ?
-        if (i >= mi.getTable(TableIndex.of(I32.valueOf(0))).size().signed().intValue()) {
-            throw new ExecutionException("to large");
+        if (mi.getTable(TableIndex.of(I32.valueOf(0))).size().unsigned().intValue() <= i) {
+            throw new ExecutionException(String.format("can not find function from table(size:%d) by index: %d",
+                    mi.getTable(TableIndex.of(I32.valueOf(0))).size().unsigned().intValue(), i));
         }
 
         Function function = mi.getTable(TableIndex.of(I32.valueOf(0))).getElement(I32.valueOf(i));
@@ -47,6 +48,7 @@ public class CallIndirect implements Operate {
         TypeIndex typeIndex = d.typeIndex;
         FunctionType functionType = mi.getModuleInfo().typeSections.get(typeIndex.unsigned().intValue());
         if (!function.type().same(functionType)) {
+            // 检查函数类型是否匹配
             throw new ExecutionException("indirect call type mismatch");
         }
 

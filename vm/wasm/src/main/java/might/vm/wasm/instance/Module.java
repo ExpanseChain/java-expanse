@@ -1,22 +1,19 @@
 package might.vm.wasm.instance;
 
 import might.common.numeric.*;
-import might.vm.wasm.core.ControlFrame;
-import might.vm.wasm.core.ControlStack;
-import might.vm.wasm.core.ModuleInfo;
-import might.vm.wasm.core.OperandStack;
+import might.vm.wasm.core.*;
 import might.vm.wasm.core.structure.*;
 import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.error.instance.InstanceException;
-import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.dump.DumpMemory;
 import might.vm.wasm.model.describe.ExportDescribe;
+import might.vm.wasm.model.describe.ImportDescribe;
 import might.vm.wasm.model.index.*;
 import might.vm.wasm.model.section.*;
-import might.vm.wasm.core.ModuleConfig;
+import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.util.Slice;
 
 import java.util.HashMap;
@@ -452,25 +449,54 @@ public class Module implements ModuleInstance {
             ModuleInstance instance = config.findModule(importSection.module);
 
             if (null == instance) {
-                throw new ModuleException("module instance: " + importSection.module + " is not exist");
+                throw new InstanceException("module instance: " + importSection.module + " is not exist");
             }
 
             Object member = instance.getMember(importSection.name);
 
             if (null == member) {
-                throw new ModuleException("can not find export member: " + importSection.name + " in module instance:" + importSection.module);
+                throw new InstanceException("can not find export member: " + importSection.name + " in module instance:" + importSection.module);
             }
 
-            if (member instanceof Function) {
-                this.setFunction(FunctionIndex.of(I32.valueOf(i)), (Function) member);
-            } else if (member instanceof Table) {
-                this.setTable(TableIndex.of(I32.valueOf(i)), (Table) member);
-            } else if (member instanceof Memory) {
-                this.setMemory(MemoryIndex.of(I32.valueOf(i)), (Memory) member);
-            } else if (member instanceof Global) {
-                this.setGlobal(GlobalIndex.of(I32.valueOf(i)), (Global) member);
+            if (member instanceof Function && importSection.describe.tag == PortTag.FUNCTION) {
+                // 检查函数签名
+                Function function = (Function) member;
+                ImportDescribe.Function v = (ImportDescribe.Function) importSection.describe.value;
+                FunctionType ft = this.moduleInfo.typeSections.get(v.typeIndex);
+                if (function.type().same(ft)) {
+                    this.setFunction(FunctionIndex.of(I32.valueOf(this.functions.size())), function);
+                } else {
+                    throw new InstanceException(String.format("import function but type is different. this module(%s) != import(%s)", ft, function.type()));
+                }
+            } else if (member instanceof Table && importSection.describe.tag == PortTag.TABLE) {
+                // 检查表类型
+                Table table = (Table) member;
+                ImportDescribe.Table t = (ImportDescribe.Table) importSection.describe.value;
+                if (table.type().same(t.table)) {
+                    this.setTable(TableIndex.of(I32.valueOf(this.tables.size())), table);
+                } else {
+                    throw new InstanceException(String.format("import table but type is different. this module(%s) != import(%s)", t.table, table.type()));
+                }
+            } else if (member instanceof Memory && importSection.describe.tag == PortTag.MEMORY) {
+                // 检查内存类型
+                Memory memory = (Memory) member;
+                ImportDescribe.Memory m = (ImportDescribe.Memory) importSection.describe.value;
+                if (memory.type().same(m.memory)) {
+                    this.setMemory(MemoryIndex.of(I32.valueOf(this.memories.size())), memory);
+                } else {
+                    throw new InstanceException(String.format("import memory but type is different. this module(%s) != import(%s)", m.memory, memory.type()));
+                }
+            } else if (member instanceof Global && importSection.describe.tag == PortTag.GLOBAL) {
+                // 检查变量类型
+                Global global = (Global) member;
+                ImportDescribe.Global g = (ImportDescribe.Global) importSection.describe.value;
+                if (global.type().same(g.global)) {
+                    this.setGlobal(GlobalIndex.of(I32.valueOf(this.globals.size())), global);
+                } else {
+                    throw new InstanceException(String.format("import global but type is different. this module(%s) != import(%s)", g.global, global.type()));
+                }
             } else {
-                throw new ModuleException("what a member: " + member);
+                throw new InstanceException("what a member: " + member);
             }
         }
     }
