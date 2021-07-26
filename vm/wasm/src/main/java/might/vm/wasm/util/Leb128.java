@@ -1,6 +1,5 @@
 package might.vm.wasm.util;
 
-import might.common.numeric.NumericUtil;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.error.decode.DecodeException;
 
@@ -60,7 +59,7 @@ public class Leb128 {
             }
 
             // 每次只取后面7位数字
-            sb.insert(0, NumericUtil.binaryString(b).substring(1));
+            sb.insert(0, toBinary(b).substring(1));
 
             if ((b & 0x80) == 0) {
                 String v;
@@ -110,7 +109,7 @@ public class Leb128 {
             }
 
             // 每次只取后面7位数字
-            sb.insert(0, NumericUtil.binaryString(b).substring(1));
+            sb.insert(0, toBinary(b).substring(1));
 
             if ((b&0x80) == 0) {
                 String v;

@@ -88,21 +88,6 @@ public class NumberTransform {
     }
 
     /**
-     * 16进制字符解析byte
-     */
-    public static byte parseByteByHex(String v) {
-        Assertions.requireNonNull(v);
-        v = v.toUpperCase();
-        Assertions.requireTrue(v.matches("[0-9A-F]{2}"));
-
-        if (v.charAt(0) < '8') {
-            return (byte) Integer.parseInt(v, 16);
-        } else {
-            return (byte) Integer.parseUnsignedInt("FFFFFF" + v, 16);
-        }
-    }
-
-    /**
      * byte解析二进制字符
      */
     public static String toBinary(byte value) {
