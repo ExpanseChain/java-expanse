@@ -11,15 +11,11 @@ public class OperandStack {
     public void pushISize(ISize value) { slots.append(value); }
     public ISize popISize() { return slots.remove(slots.size() - 1); }
 
-    public void pushI8(I8 value) {
-        pushISize(value);
-    }
+    public void pushI8(I8 value) { pushISize(value); }
     public void pushI16(I16 value) { pushISize(value); }
     public void pushI32(I32 value) { pushISize(value); }
     public void pushI64(I64 value) { pushISize(value); }
-    public void pushBool(boolean value) {
-        pushISize(I32.valueOf(new byte[]{ 0,0,0, value ? (byte) 1 : 0 }));
-    }
+    public void pushBool(boolean value) { pushISize(I32.valueOf(new byte[]{ 0,0,0, value ? (byte) 1 : 0 })); }
     public void pushS32(int value) { pushISize(I32.valueOf(value)); }
     public void pushS64(long value) { pushISize(I64.valueOf(value)); }
 
@@ -47,15 +43,11 @@ public class OperandStack {
     public long getOperandLong(int index) { ISize v = slots.get(index); if (v instanceof I64) { return v.signed().longValue(); } error(v, I64.class); return 0; }
 
     public void setOperand(int index,  ISize value)  { slots.set(index, value); }
-    public void setOperand(int index,  I8 value)  {
-        slots.set(index, value);
-    }
+    public void setOperand(int index,  I8 value)  { slots.set(index, value); }
     public void setOperand(int index, I16 value)  { slots.set(index, value); }
     public void setOperand(int index, I32 value)  { slots.set(index, value); }
     public void setOperand(int index, I64 value)  { slots.set(index, value); }
-    public void setOperand(int index, boolean value)  {
-        slots.set(index, I32.valueOf(new byte[]{ 0,0,0, value ? (byte) 1 : 0 }));
-    }
+    public void setOperand(int index, boolean value)  { slots.set(index, I32.valueOf(new byte[]{ 0,0,0, value ? (byte) 1 : 0 })); }
     public void setOperand(int index, int value)  { slots.set(index, I32.valueOf(value)); }
     public void setOperand(int index, long value)  { slots.set(index, I64.valueOf(value)); }
 
