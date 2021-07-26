@@ -298,7 +298,7 @@ public class WasmReader {
     public Slice<TableType> readTableSections() {
         int n = readLeb128U32().unsigned().intValue();
         Slice<TableType> types = new Slice<>(n);
-        for (int i = 0; i < types.size(); i++) {
+        for (int i = 0; i < n; i++) {
             types.append(this.readTableType());
         }
         return types;

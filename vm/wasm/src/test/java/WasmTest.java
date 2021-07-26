@@ -1,7 +1,7 @@
 import might.common.numeric.I16;
-import might.vm.wasm.instance.Module;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.instance.Module;
 import might.vm.wasm.util.ModuleConfig;
 import org.junit.jupiter.api.Test;
 import util.FileReader;
@@ -115,7 +115,7 @@ public class WasmTest {
 //        Module.newModule(readByName("ch07_global2.wasm"));
 //        Module.newModule(readByName("ch07_local.wasm"));
 //        Module.newModule(readByName("ch07_max.wasm"));
-//
+
 //        Module.newModule(readByName("ch08_cmp.wasm"));
 //        Module.newModule(readByName("ch08_fac.wasm"));
 //        Module.newModule(readByName("ch08_sum.wasm"));
@@ -129,10 +129,10 @@ public class WasmTest {
 //        Module.newModule(readByName("ch08_eg7_br_if.wasm"));
 //        Module.newModule(readByName("ch08_eg8_br_table.wasm"));
 //        Module.newModule(readByName("ch08_eg9_return.wasm"));
-//
+
 //        Module.newModule(readByName("ch09_calc.wasm"));
 
-//        Module.newModule(readByName("ch12_ctrl.wasm")).invoke("print_even", U32.valueOf(90));
+//        Module.newModule(readByName("ch12_ctrl.wasm")).invoke("print_even", I32.valueOf(90));
         Module.newModule(readByName("ch13_prime.wasm")).invoke("main");
 
     }

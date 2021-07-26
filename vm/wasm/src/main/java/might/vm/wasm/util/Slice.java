@@ -69,7 +69,7 @@ public class Slice<T> implements Iterable<T> {
         if (MAX_CAPACITY - 1 < index) {
             throw new IndexOutOfBoundsException("capacity limit: " + MAX_CAPACITY);
         }
-        if (data.size() - 1 < index) { data.add(null); }
+        while (data.size() - 1 < index) { data.add(null); }
         data.set(index, value);
     }
 
