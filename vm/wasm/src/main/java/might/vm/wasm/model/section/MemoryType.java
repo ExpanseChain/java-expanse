@@ -1,12 +1,12 @@
 package might.vm.wasm.model.section;
 
+import might.common.numeric.I32;
 import might.vm.wasm.model.Limits;
 import might.vm.wasm.model.tag.LimitsTag;
-import might.vm.wasm.core2.numeric.U32;
 
 public class MemoryType extends Limits {
 
-    public MemoryType(LimitsTag tag, U32 min, U32 max) {
+    public MemoryType(LimitsTag tag, I32 min, I32 max) {
         super(tag, min, max);
     }
 

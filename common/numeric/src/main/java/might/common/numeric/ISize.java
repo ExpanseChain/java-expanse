@@ -137,4 +137,53 @@ public class ISize {
         return (bytes[0] & 0b10000000) != 0;
     }
 
+
+    public boolean equalsU(ISize o) {
+        return unsigned().compareTo(o.unsigned()) == 0;
+    }
+
+    public boolean notEqualsU(ISize o) {
+        return unsigned().compareTo(o.unsigned()) != 0;
+    }
+
+    public boolean lessThanU(ISize o) {
+        return unsigned().compareTo(o.unsigned()) < 0;
+    }
+
+    public boolean lessOrEqualsU(ISize o) {
+        return unsigned().compareTo(o.unsigned()) <= 0;
+    }
+
+    public boolean greaterThanU(ISize o) {
+        return unsigned().compareTo(o.unsigned()) > 0;
+    }
+
+    public boolean greaterOrEqualsU(ISize o) {
+        return unsigned().compareTo(o.unsigned()) >= 0;
+    }
+
+    public boolean equalsS(ISize o) {
+        return signed().compareTo(o.signed()) == 0;
+    }
+
+    public boolean notEqualsS(ISize o) {
+        return signed().compareTo(o.signed()) != 0;
+    }
+
+    public boolean lessThanS(ISize o) {
+        return signed().compareTo(o.signed()) < 0;
+    }
+
+    public boolean lessOrEqualsS(ISize o) {
+        return signed().compareTo(o.signed()) <= 0;
+    }
+
+    public boolean greaterThanS(ISize o) {
+        return signed().compareTo(o.signed()) > 0;
+    }
+
+    public boolean greaterOrEqualsS(ISize o) {
+        return signed().compareTo(o.signed()) >= 0;
+    }
+
 }

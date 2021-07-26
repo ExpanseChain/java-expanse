@@ -1,15 +1,15 @@
 package might.vm.wasm.model;
 
+import might.common.numeric.I32;
 import might.vm.wasm.model.tag.LimitsTag;
-import might.vm.wasm.core2.numeric.U32;
 
 public class Limits {
 
-    private final LimitsTag tag;    // 0x00 只有min  如果是 0x01 还要读取max值
-    private final U32 min;          // 最小值
-    private final U32 max;          // 最大值
+    private final LimitsTag tag;    // 0x00 只有min  如果是I0x01 还要读取max值
+    private final I32 min;          // 最小值
+    private final I32 max;          // 最大值
 
-    public Limits(LimitsTag tag, U32 min, U32 max) {
+    public Limits(LimitsTag tag, I32 min, I32 max) {
         this.tag = tag;
         this.min = min;
         this.max = max;
@@ -19,19 +19,17 @@ public class Limits {
         return tag;
     }
 
-    public U32 getMin() {
+    public I32 getMin() {
         return min;
     }
 
-    public U32 getMax() {
+    public I32 getMax() {
         return max;
     }
 
-    public boolean check(int wanna) {
-        if (null == max) {
-            return true;
-        }
-        return 0 <= wanna && wanna <= max.intValue();
+    public boolean isValid(I32 wanna) {
+        if (null == max) { return true; }
+        return wanna.lessOrEqualsU(max); // 小于活等于最大限制
     }
 
     @Override
@@ -44,7 +42,7 @@ public class Limits {
     }
 
     public String dump() {
-        return "{min: " + min.dump() + ", max: " + (null == max ? "0" : max.dump()) + "}";
+        return "{min: " + min.unsigned().toString() + ", max: " + (null == max ? "0" : max.unsigned().toString()) + "}";
     }
 
 }

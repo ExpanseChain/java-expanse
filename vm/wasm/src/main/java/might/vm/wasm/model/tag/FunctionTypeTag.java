@@ -15,7 +15,7 @@ public class FunctionTypeTag implements Type {
         this.name = name;
     }
 
-    // 块没有标签
+    // 块没有标签 这里随便设置一个标签
     public static final FunctionTypeTag BLOCK_TYPE = new FunctionTypeTag((byte) 0x00, "blocktype");
 
     public static final FunctionTypeTag FUNCTION_TYPE = new FunctionTypeTag((byte) 0x60, "functype");
@@ -49,4 +49,5 @@ public class FunctionTypeTag implements Type {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

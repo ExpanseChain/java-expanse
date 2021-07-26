@@ -1,5 +1,6 @@
 package might.vm.wasm.core2.instance;
 
+import might.common.numeric.I32;
 import might.vm.wasm.model.section.TableType;
 import might.vm.wasm.core2.numeric.U32;
 import might.vm.wasm.core2.structure.Function;
@@ -13,7 +14,7 @@ public class TableInstance implements Table {
 
     public TableInstance(TableType type) {
         this.type = type;
-        this.elements = new FunctionInstance[type.limits.getMin().intValue()];
+        this.elements = new FunctionInstance[type.limits.getMin().unsigned().intValue()];
     }
 
 
@@ -37,7 +38,7 @@ public class TableInstance implements Table {
 
         int wanna = elements.length + g;
 
-        if (!type.limits.check(wanna)) {
+        if (!type.limits.isValid(I32.valueOf(wanna))) {
             throw new RuntimeException("too large for: " + type.limits);
         }
 

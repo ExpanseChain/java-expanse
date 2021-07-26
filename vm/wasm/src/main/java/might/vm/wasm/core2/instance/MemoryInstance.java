@@ -1,5 +1,6 @@
 package might.vm.wasm.core2.instance;
 
+import might.common.numeric.I32;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.model.section.MemoryType;
 import might.vm.wasm.core2.numeric.U32;
@@ -24,7 +25,7 @@ public class MemoryInstance implements Memory {
     public MemoryInstance(MemoryType type) {
         this.type = type;
         // 先按照最小的初始化
-        this.data = new byte[MEMORY_PAGE_SIZE * type.getMin().intValue()];
+        this.data = new byte[MEMORY_PAGE_SIZE * type.getMin().unsigned().intValue()];
     }
 
     @Override
@@ -43,7 +44,7 @@ public class MemoryInstance implements Memory {
 
         int wanna = old.intValue() + grow.intValue();
 
-        if (!type.check(wanna)) {
+        if (!type.isValid(I32.valueOf(wanna))) {
             return U32.valueOf(-1);
         }
 

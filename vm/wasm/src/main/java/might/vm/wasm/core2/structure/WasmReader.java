@@ -264,10 +264,10 @@ public class WasmReader {
 
     private Limits readLimits() {
         LimitsTag tag = LimitsTag.of(this.readByte());
-        U32 min = this.readLeb128U32();
-        U32 max = null;
+        I32 min = I32.valueOf(this.readLeb128U32().getBytes());
+        I32 max = null;
         if (tag == LimitsTag.ONE) {
-            max = this.readLeb128U32();
+            max = I32.valueOf(this.readLeb128U32().getBytes());
         }
         return new Limits(tag, min, max);
     }
