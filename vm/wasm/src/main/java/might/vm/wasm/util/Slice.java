@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class Slice<T> implements Iterable<T> {
 
-    private static final int MAX_CAPACITY = 1024 * 1024; // 最大容量
+    private static final int MAX_CAPACITY = 1024 * 1024 * 1024; // 最大容量 10亿的数组也太夸张了
 
     protected final ArrayList<T> data;
 

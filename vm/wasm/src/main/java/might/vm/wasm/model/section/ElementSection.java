@@ -3,13 +3,16 @@ package might.vm.wasm.model.section;
 import might.common.numeric.I32;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.structure.ModuleInstance;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.error.module.ModuleException;
+import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.TableIndex;
 import might.vm.wasm.model.type.ReferenceType;
+import might.vm.wasm.model.type.ValueType;
 import might.vm.wasm.util.Slice;
 
 import java.util.stream.Collectors;
@@ -33,6 +36,37 @@ public class ElementSection implements Valid {
     public static abstract class Value implements Dump, Valid {
         public abstract boolean isActive();
         public abstract void init(ModuleInstance mi);
+        protected static void checkExpression(ModuleInfo info, Expression expression) {
+            // 表达式要检查一下
+            ValueType vt = null;
+            for (Action action : expression) {
+                switch (action.getInstruction()) {
+                    case I32_CONST:
+                        vt = ValueType.I32;
+                        break;
+                    case GLOBAL_GET: break;
+                    default: throw new DecodeException("element init expression error.");
+                }
+            }
+            if (vt != ValueType.I32) {
+                throw new DecodeException("element init expression error.");
+            }
+        }
+        protected static void checkFunctionIndices(ModuleInfo info, FunctionIndex[] functionIndices) {
+            for (FunctionIndex functionIndex : functionIndices) {
+                int j = functionIndex.unsigned().intValue();
+                Slice.checkArrayIndex(j);
+                if (info.functionCount <= j) {
+                    throw new DecodeException("can not find function by index: " + j);
+                }
+            }
+        }
+        protected static void checkTableIndex(ModuleInfo info, TableIndex tableIndex) {
+            long index = tableIndex.unsigned().longValue();
+            if (info.tableCount <= index) {
+                throw new DecodeException("can not find table by index: " + index);
+            }
+        }
     }
 
     public static class Value0 extends Value {
@@ -70,16 +104,8 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
-            expression.valid(info, 0,0);
-
-            // 计算函数集合大小
-            for (int i = 0; i < functionIndices.length; i++) {
-                int j = functionIndices[i].unsigned().intValue();
-                Slice.checkArrayIndex(j);
-                if (info.functionCount <= j) {
-                    throw new ModuleException("can not find function by index: " + j);
-                }
-            }
+            checkExpression(info, expression);
+            checkFunctionIndices(info, functionIndices);
         }
     }
     public static class Value1 extends Value {
@@ -109,6 +135,7 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
+            checkFunctionIndices(info, functionIndices);
             throw new ModuleException("how to valid?");
         }
     }
@@ -143,6 +170,9 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
+            checkTableIndex(info, tableIndex);
+            checkExpression(info, expression);
+            checkFunctionIndices(info, functionIndices);
             throw new ModuleException("how to valid?");
         }
     }
@@ -172,6 +202,7 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
+            checkFunctionIndices(info, functionIndices);
             throw new ModuleException("how to valid?");
         }
     }
@@ -212,24 +243,24 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
-            expression.valid(info, 0, 0);
+            checkExpression(info, expression);
             for (Expression actions : expressionArray) {
-                actions.valid(info, 0, 0);
+                checkExpression(info, actions);
             }
         }
     }
     public static class Value5 extends Value {
         // 𝟶𝚡𝟶𝟻  et:𝚛𝚎𝚏𝚝𝚢𝚙𝚎  el∗:𝚟𝚎𝚌(𝚎𝚡𝚙𝚛) => {𝗍𝗒𝗉𝖾 𝑒𝑡,𝗂𝗇𝗂𝗍 el∗,𝗆𝗈𝖽𝖾 𝗉𝖺𝗌𝗌𝗂𝗏𝖾}
         public ReferenceType referenceType;
-        public Expression[] expressionsArray;
+        public Expression[] expressionArray;
 
-        public Value5(ReferenceType referenceType, Expression[] expressionsArray) {
+        public Value5(ReferenceType referenceType, Expression[] expressionArray) {
             this.referenceType = referenceType;
-            this.expressionsArray = expressionsArray;
+            this.expressionArray = expressionArray;
         }
         @Override
         public String dump() {
-            return "0x05 " + referenceType.dump() + " [" + Stream.of(expressionsArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
+            return "0x05 " + referenceType.dump() + " [" + Stream.of(expressionArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -244,6 +275,9 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
+            for (Expression actions : expressionArray) {
+                checkExpression(info, actions);
+            }
             throw new ModuleException("how to valid?");
         }
     }
@@ -252,17 +286,17 @@ public class ElementSection implements Valid {
         public TableIndex tableIndex;
         public Expression expression;
         public ReferenceType referenceType;
-        public Expression[] expressionsArray;
+        public Expression[] expressionArray;
 
-        public Value6(TableIndex tableIndex, Expression expression, ReferenceType referenceType, Expression[] expressionsArray) {
+        public Value6(TableIndex tableIndex, Expression expression, ReferenceType referenceType, Expression[] expressionArray) {
             this.tableIndex = tableIndex;
             this.expression = expression;
             this.referenceType = referenceType;
-            this.expressionsArray = expressionsArray;
+            this.expressionArray = expressionArray;
         }
         @Override
         public String dump() {
-            return "0x06 " + tableIndex + " " + expression.dump() + " " + referenceType.dump() + " [" + Stream.of(expressionsArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
+            return "0x06 " + tableIndex + " " + expression.dump() + " " + referenceType.dump() + " [" + Stream.of(expressionArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -277,21 +311,26 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
+            checkTableIndex(info, tableIndex);
+            checkExpression(info, expression);
+            for (Expression actions : expressionArray) {
+                checkExpression(info, actions);
+            }
             throw new ModuleException("how to valid?");
         }
     }
     public static class Value7 extends Value {
         // 𝟶𝚡𝟶𝟽  et:𝚛𝚎𝚏𝚝𝚢𝚙𝚎  el∗:𝚟𝚎𝚌(𝚎𝚡𝚙𝚛) => {𝗍𝗒𝗉𝖾 𝑒𝑡,𝗂𝗇𝗂𝗍 el∗,𝗆𝗈𝖽𝖾 𝖽𝖾𝖼𝗅𝖺𝗋𝖺𝗍𝗂𝗏𝖾}
         public ReferenceType referenceType;
-        public Expression[] expressionsArray;
+        public Expression[] expressionArray;
 
-        public Value7(ReferenceType referenceType, Expression[] expressionsArray) {
+        public Value7(ReferenceType referenceType, Expression[] expressionArray) {
             this.referenceType = referenceType;
-            this.expressionsArray = expressionsArray;
+            this.expressionArray = expressionArray;
         }
         @Override
         public String dump() {
-            return "0x07 " + referenceType.dump() + " [" + Stream.of(expressionsArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
+            return "0x07 " + referenceType.dump() + " [" + Stream.of(expressionArray).map(Expression::dump).collect(Collectors.joining(",")) + "]";
         }
 
         @Override
@@ -306,6 +345,9 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
+            for (Expression actions : expressionArray) {
+                checkExpression(info, actions);
+            }
             throw new ModuleException("how to valid?");
         }
     }

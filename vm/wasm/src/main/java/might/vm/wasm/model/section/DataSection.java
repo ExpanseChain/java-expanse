@@ -3,10 +3,13 @@ package might.vm.wasm.model.section;
 import might.common.numeric.I32;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.structure.ModuleInstance;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.module.ModuleException;
+import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.MemoryIndex;
+import might.vm.wasm.model.type.ValueType;
 import might.vm.wasm.util.NumberTransform;
 import might.vm.wasm.util.Slice;
 
@@ -24,6 +27,22 @@ public class DataSection implements Valid {
 
     public static abstract class Value implements Dump, Valid {
         public abstract void initMemory(ModuleInstance mi);
+        protected static void checkExpression(ModuleInfo info, Expression expression) {
+            // 表达式要检查一下
+            ValueType vt = null;
+            for (Action action : expression) {
+                switch (action.getInstruction()) {
+                    case I32_CONST:
+                        vt = ValueType.I32;
+                        break;
+                    case GLOBAL_GET: break;
+                    default: throw new DecodeException("data init expression error.");
+                }
+            }
+            if (vt != ValueType.I32) {
+                throw new DecodeException("data init expression error.");
+            }
+        }
     }
 
     public static class Value0 extends Value {
@@ -51,7 +70,7 @@ public class DataSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
-            expression.valid(info, 0, 0);
+            checkExpression(info, expression);
         }
     }
     public static class Value1 extends Value {
@@ -107,11 +126,10 @@ public class DataSection implements Valid {
             // 检查memory
             int mi = memoryIndex.unsigned().intValue();
             Slice.checkArrayIndex(mi);
-            int max = info.memorySections.size();
-            if (max <= mi) {
+            if (info.memoryCount <= mi) {
                 throw new ModuleException("can not find memory by index: " + mi);
             }
-            expression.valid(info, 0, 0);
+            checkExpression(info, expression);
         }
     }
 

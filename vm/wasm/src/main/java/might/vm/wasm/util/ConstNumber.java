@@ -27,5 +27,7 @@ public class ConstNumber {
 
     public static final int MEMORY_PAGE_SIZE      = 1024 * 64;  // 65536B 标准中每个内存页64KB
     public static final int MEMORY_MAX_PAGE_COUNT = 1024 * 64;  // 65536页 标准中最大页面数 最大4G内存
+//    public static final long TABLE_MAX_CAPACITY = 1024L * 1024 * 1024 * 4;  // 32位无符号最大数字
+    public static final int TABLE_MAX_CAPACITY = 1024 * 1024 * 1024;  // 限制到1/4大概10亿，Java麻烦的地方在于数组是有符号整型
 
 }
