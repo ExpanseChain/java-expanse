@@ -3,7 +3,7 @@ package might.vm.wasm.model.section;
 import might.common.numeric.I16;
 import might.common.numeric.I32;
 import might.vm.wasm.error.Assertions;
-import might.vm.wasm.error.module.ModuleException;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.util.ModuleConfig;
 
 /**
@@ -30,7 +30,7 @@ public class Version {
 
         // 版本怎么检查？
         if (!config.checkVersion(main, sub)) {
-            throw new ModuleException("version is not acceptable: " + i32.toHexString());
+            throw new DecodeException("version is not acceptable: " + i32.toHexString());
         }
     }
 

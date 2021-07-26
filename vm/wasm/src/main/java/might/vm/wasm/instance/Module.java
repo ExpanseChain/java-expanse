@@ -7,6 +7,7 @@ import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.OperandStack;
 import might.vm.wasm.core.structure.*;
 import might.vm.wasm.error.execute.ExecutionException;
+import might.vm.wasm.error.instance.InstanceException;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
@@ -63,7 +64,7 @@ public class Module implements ModuleInstance {
                 case 0x03: // GLOBAL
                     EXPORTS.put(exportSection.name, globals.get(d.index.unsigned().intValue())); break;
                 default:
-                    throw new ModuleException("what a tag: " + d.tag);
+                    throw new InstanceException("what a tag: " + d.tag);
             }
 
         }

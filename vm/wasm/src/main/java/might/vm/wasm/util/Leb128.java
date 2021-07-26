@@ -2,7 +2,7 @@ package might.vm.wasm.util;
 
 import might.common.numeric.NumericUtil;
 import might.vm.wasm.error.Assertions;
-import might.vm.wasm.error.module.ModuleException;
+import might.vm.wasm.error.decode.DecodeException;
 
 import static might.vm.wasm.util.NumberTransform.*;
 
@@ -51,11 +51,11 @@ public class Leb128 {
                 // 如果应当是最后一个字节
                 if ((b & 0x80) != 0) {
                     // 已经最后一个字节 第一位标识符不应该是1 如果是1表示后面还有，不应该
-                    throw new ModuleException("integer representation too long");
+                    throw new DecodeException("integer representation too long");
                 }
                 if (b >> (size - i * 7) > 0) {
                     // 已经最后一个字节 移除需要的数字位，剩下的应该全是0
-                    throw new ModuleException("integer too large");
+                    throw new DecodeException("integer too large");
                 }
             }
 
@@ -75,7 +75,7 @@ public class Leb128 {
             }
         }
 
-        throw new ModuleException("unexpected end of section or function");
+        throw new DecodeException("read leb128 number failed.");
     }
 
 
@@ -99,13 +99,13 @@ public class Leb128 {
                 // 如果应当是最后一个字节
                 if ((b&0x80) != 0) {
                     // 已经最后一个字节 第一位标识符不应该是1 如果是1表示后面还有，不应该
-                    throw new ModuleException("integer representation too long");
+                    throw new DecodeException("integer representation too long");
                 }
                 if (((b & 0x40) == 0 && b >> (size - i * 7 - 1) != 0) ||
                     ((b & 0x40) != 0 && ((b | 0xFFFFFF80) >> (size - i * 7 - 1)) != -1)) {
                     // 0b0100_0000 末位的第2位是符号位 如果是0 则 排出需要的位 剩下的都应该是0
                     // 0b0100_0000 末位的第2位是符号位 如果是1 则 排出需要的位 剩下的都是必须都是1
-                    throw new ModuleException("integer too large");
+                    throw new DecodeException("integer too large");
                 }
             }
 
@@ -130,7 +130,7 @@ public class Leb128 {
             }
         }
 
-        throw new ModuleException("unexpected end of section or function");
+        throw new DecodeException("read leb128 number failed.");
     }
 
 }

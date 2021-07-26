@@ -1,5 +1,6 @@
 package might.vm.wasm.instruction.dump;
 
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
@@ -26,6 +27,11 @@ public class DumpBlock implements Dump {
         sb.append("end");
 
         return sb.toString();
+    }
+
+    public void valid(ModuleInfo info, int parameters, long locals) {
+        blockType.valid(info);
+        expression.valid(info, parameters, locals);
     }
 
 }

@@ -1,5 +1,8 @@
 package might.vm.wasm.instruction.control;
 
+import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
@@ -8,8 +11,6 @@ import might.vm.wasm.instruction.dump.DumpBlock;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.section.FunctionType;
 import might.vm.wasm.model.type.BlockType;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 public class Block implements Operate {
 
@@ -18,6 +19,14 @@ public class Block implements Operate {
         BlockType blockType = reader.readBlockType();
         Expression expression = reader.readExpression();
         return new DumpBlock(blockType, expression);
+    }
+
+    @Override
+    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+        Assertions.requireTrue(null != args);
+        Assertions.requireTrue(args instanceof DumpBlock);
+        DumpBlock b = (DumpBlock) args;
+        b.valid(info, parameters, locals);
     }
 
     @Override

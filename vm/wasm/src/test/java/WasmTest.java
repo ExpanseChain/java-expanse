@@ -44,17 +44,17 @@ public class WasmTest {
 ////                "ch05_num.wasm",
 //                "ch05_num2.wasm",
 //                "ch05_param.wasm",
-
-//                "ch06_mem.wasm",
+//
+////                "ch06_mem.wasm",
 //                "ch06_mem2.wasm",
-
+//
 //                "ch07_fib.wasm",
 ////                "ch07_global.wasm",
 //                "ch07_global2.wasm",
 //                "ch07_local.wasm",
 //                "ch07_max.wasm",
 //                "ch07_sum.wasm",
-
+//
 //                "ch08_cmp.wasm",
 //                "ch08_fac.wasm",
 //                "ch08_sum.wasm",
@@ -68,7 +68,7 @@ public class WasmTest {
 //                "ch08_eg7_br_if.wasm",
 //                "ch08_eg8_br_table.wasm",
 //                "ch08_eg9_return.wasm",
-
+//
 //                "ch09_calc.wasm",
 
         };

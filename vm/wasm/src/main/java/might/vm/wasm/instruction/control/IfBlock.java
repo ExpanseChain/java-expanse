@@ -1,5 +1,8 @@
 package might.vm.wasm.instruction.control;
 
+import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
@@ -8,8 +11,6 @@ import might.vm.wasm.instruction.dump.DumpIfBlock;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.section.FunctionType;
 import might.vm.wasm.model.type.BlockType;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 import static might.vm.wasm.util.ConstNumber.EXPRESSION_ELSE;
 
@@ -27,6 +28,19 @@ public class IfBlock implements Operate {
             }
         }
         return new DumpIfBlock(blockType, expression, expression2);
+    }
+
+    @Override
+    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+        Assertions.requireTrue(null != args);
+        Assertions.requireTrue(args instanceof DumpIfBlock);
+
+        DumpIfBlock ifBlock = (DumpIfBlock) args;
+
+        ifBlock.expression1.valid(info, parameters, locals);
+        if (null != ifBlock.expression2) {
+            ifBlock.expression2.valid(info, parameters, locals);
+        }
     }
 
     @Override

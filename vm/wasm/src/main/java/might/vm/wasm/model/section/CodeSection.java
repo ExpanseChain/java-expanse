@@ -2,8 +2,10 @@ package might.vm.wasm.model.section;
 
 import might.common.numeric.I32;
 import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Local;
+import might.vm.wasm.model.index.TypeIndex;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -11,14 +13,21 @@ import java.util.stream.Stream;
 
 public class CodeSection implements Valid {
 
+    public final int index;               // 本代码在函数段的序号，再通过函数段指向函数签名段获得参数长度
     public final I32 size;                // 代码大小
     public final Local[] locals;          // 本地变量组
     public final Expression expression;   // 代码的表达式
+    public final long localsLength;
 
-    public CodeSection(I32 size, Local[] locals, Expression expression) {
+    public CodeSection(int index, I32 size, Local[] locals, Expression expression) {
+        this.index = index;
         this.size = size;
         this.locals = locals;
         this.expression = expression;
+
+        long length = 0;
+        for (Local local : locals) { length += local.size.unsigned().longValue(); }
+        this.localsLength = length;
     }
 
     @Override
@@ -49,7 +58,12 @@ public class CodeSection implements Valid {
 
     @Override
     public void valid(ModuleInfo info) {
-        expression.valid(info);
+        if (info.functionSections.size() <= index) {
+            throw new DecodeException("can not find function type index by index: " + index);
+        }
+        TypeIndex ti = info.functionSections.get(index);
+        FunctionType ft = info.typeSections.get(ti);
+        expression.valid(info, ft.parameters.length, localsLength);
     }
 
 }

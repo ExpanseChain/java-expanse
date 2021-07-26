@@ -1,6 +1,7 @@
 package might.vm.wasm.model.section;
 
 import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.describe.ImportDescribe;
 
@@ -50,7 +51,7 @@ public class ImportSection implements Valid {
                         .append(", sig=").append(describe.value.toString());
                 break;
             default:
-                throw new ModuleException("what a tag: " + describe.tag.value());
+                throw new DecodeException("what a tag: " + describe.tag.value());
         }
 
         return sb.toString();

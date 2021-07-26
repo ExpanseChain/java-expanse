@@ -2,14 +2,13 @@ package might.vm.wasm.instruction;
 
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.model.section.Valid;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Expression implements Dump, Iterable<Action>, Valid {
+public class Expression implements Dump, Iterable<Action> {
 
     private final Action[] actions;
 
@@ -35,8 +34,10 @@ public class Expression implements Dump, Iterable<Action>, Valid {
         return Arrays.stream(actions).iterator();
     }
 
-    @Override
-    public void valid(ModuleInfo info) {
-        // TODO 表达式怎么验证？
+    public void valid(ModuleInfo info, int parameters, long locals) {
+        for (Action a : actions) {
+            a.getInstruction().valid(info, a.getArgs(), parameters, locals);
+        }
     }
+
 }

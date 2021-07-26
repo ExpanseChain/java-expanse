@@ -1,6 +1,7 @@
 package might.vm.wasm.model.section;
 
 import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.describe.ExportDescribe;
 
@@ -35,6 +36,7 @@ public class ExportSection implements Valid {
             case 0x03: // GLOBAL
                 sb.append("global[").append(index).append("]: sig=").append(describe.index.unsigned()); break;
             default:
+                throw new DecodeException("what a tag: " + describe.tag.value());
         }
         sb.append(" name=").append(name);
 

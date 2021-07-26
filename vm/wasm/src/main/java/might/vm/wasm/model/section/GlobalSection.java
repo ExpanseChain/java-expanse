@@ -29,7 +29,7 @@ public class GlobalSection implements Valid {
     @Override
     public void valid(ModuleInfo info) {
         // 表达式要检查一下
-        init.valid(info);
+        init.valid(info, 0,0);
     }
 
 }

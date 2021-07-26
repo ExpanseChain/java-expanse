@@ -3,6 +3,7 @@ package might.vm.wasm.core;
 import might.common.numeric.I32;
 import might.common.numeric.I64;
 import might.vm.wasm.error.Assertions;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
@@ -70,17 +71,17 @@ public class WasmReader {
 
             // 编号顺序检查
             if (sectionId > SECTION_ID_DATA_COUNT) {
-                throw new ModuleException(String.format("malformed section id: %d", sectionId));
+                throw new DecodeException(String.format("malformed section id: %d", sectionId));
             }
             if (sectionId <= previousSectionId) {
                 switch (previousSectionId) {
                     case SECTION_ID_DATA_COUNT:
                         if (SECTION_ID_CODE <= sectionId) { break; }
-                        throw new ModuleException(String.format("junk after last section, id: %d", sectionId));
+                        throw new DecodeException(String.format("junk after last section, id: %d", sectionId));
                     case SECTION_ID_CODE:
                     case SECTION_ID_DATA: break;
                     default:
-                        throw new ModuleException(String.format("junk after last section, id: %d", sectionId));
+                        throw new DecodeException(String.format("junk after last section, id: %d", sectionId));
                 }
             }
 
@@ -94,17 +95,40 @@ public class WasmReader {
 
             switch (sectionId) {
                 case SECTION_ID_TYPE: moduleInfo.typeSections = this.readTypeSections().valid(moduleInfo); break;
-                case SECTION_ID_IMPORT: moduleInfo.importSections = this.readImportSections().valid(moduleInfo); break;
-                case SECTION_ID_FUNCTION: moduleInfo.functionSections = this.readFunctionSections().valid(moduleInfo); break;
-                case SECTION_ID_TABLE: moduleInfo.tableSections = this.readTableSections().valid(moduleInfo); break;
-                case SECTION_ID_MEMORY: moduleInfo.memorySections = this.readMemorySections().valid(moduleInfo); break;
-                case SECTION_ID_GLOBAL: moduleInfo.globalSections = this.readGlobalSections().valid(moduleInfo); break;
+                case SECTION_ID_IMPORT:
+                    moduleInfo.importSections = this.readImportSections().valid(moduleInfo);
+
+                    moduleInfo.importFunctionCount = moduleInfo.importSections.stream().filter(i -> i.describe.tag == PortTag.FUNCTION).count();
+                    moduleInfo.importTableCount = moduleInfo.importSections.stream().filter(i -> i.describe.tag == PortTag.TABLE).count();
+                    moduleInfo.importMemoryCount = moduleInfo.importSections.stream().filter(i -> i.describe.tag == PortTag.MEMORY).count();
+                    moduleInfo.importGlobalCount = moduleInfo.importSections.stream().filter(i -> i.describe.tag == PortTag.GLOBAL).count();
+
+                    moduleInfo.functionCount = moduleInfo.importFunctionCount;
+                    moduleInfo.tableCount = moduleInfo.importTableCount;
+                    moduleInfo.memoryCount = moduleInfo.importMemoryCount;
+                    moduleInfo.globalCount = moduleInfo.importGlobalCount;
+                    break;
+                case SECTION_ID_FUNCTION:
+                    moduleInfo.functionSections = this.readFunctionSections().valid(moduleInfo);
+                    moduleInfo.functionCount += moduleInfo.functionSections.size();
+                    break;
+                case SECTION_ID_TABLE:
+                    moduleInfo.tableSections = this.readTableSections().valid(moduleInfo);
+                    moduleInfo.tableCount = moduleInfo.tableSections.size();
+                    break;
+                case SECTION_ID_MEMORY:
+                    moduleInfo.memorySections = this.readMemorySections().valid(moduleInfo);
+                    moduleInfo.memoryCount = moduleInfo.memorySections.size();
+                    break;
+                case SECTION_ID_GLOBAL:
+                    moduleInfo.globalSections = this.readGlobalSections().valid(moduleInfo);
+                    moduleInfo.globalCount = moduleInfo.globalSections.size();
+                    break;
                 case SECTION_ID_EXPORT: moduleInfo.exportSections = this.readExportSections().valid(moduleInfo); break;
                 case SECTION_ID_START:
                     moduleInfo.startFunctionIndex = FunctionIndex.of(readLeb128U32());
                     // 启动函数检查
-                    long importCount = moduleInfo.importSections.stream().filter(i -> i.describe.value instanceof ImportDescribe.Function).count();
-                    int i = (int) (moduleInfo.startFunctionIndex.unsigned().longValue() - importCount);
+                    int i = (int) (moduleInfo.startFunctionIndex.unsigned().longValue() - moduleInfo.importFunctionCount);
                     Slice.checkArrayIndex(i);
                     if (i < 0 || moduleInfo.functionSections.size() <= i) {
                         throw new ModuleException("can not find start function by index: " + moduleInfo.startFunctionIndex.unsigned().toString());
@@ -117,9 +141,15 @@ public class WasmReader {
                 case SECTION_ID_ELEMENT: moduleInfo.elementSections = this.readElementSections().valid(moduleInfo); break;
                 case SECTION_ID_DATA_COUNT:
                     moduleInfo.dataCountIndex = DataCountIndex.of(readLeb128U32());
-                    // data count 不需要验证 除非有限制大小
+                    // TODO data count 不知道怎么使用
                     break;
-                case SECTION_ID_CODE: moduleInfo.codeSections = this.readCodeSections().valid(moduleInfo); break;
+                case SECTION_ID_CODE:
+                    moduleInfo.codeSections = this.readCodeSections().valid(moduleInfo);
+                    if (moduleInfo.functionSections.size() != moduleInfo.codeSections.size()) {
+                        // 本模块函数个数和代码部分不匹配
+                        throw new DecodeException("function sections size != code sections size");
+                    }
+                    break;
                 case SECTION_ID_DATA: moduleInfo.dataSections = this.readDataSections().valid(moduleInfo); break;
             }
 
@@ -136,7 +166,7 @@ public class WasmReader {
 
     private void drop(int length) {
         if (length > data.length) {
-            throw new ModuleException("no more bytes. Incorrect module.");
+            throw new DecodeException("no more bytes. Incorrect module.");
         }
         byte[] d = new byte[data.length - length];
         System.arraycopy(data, length, d, 0, d.length);
@@ -149,7 +179,7 @@ public class WasmReader {
 
     public byte readByte(boolean remove) {
         if (data.length < 1) {
-            throw new ModuleException("no more bytes. Incorrect module.");
+            throw new DecodeException("no more bytes. Incorrect module.");
         }
         byte b = data[0];
         if (remove) { drop(1); }
@@ -158,7 +188,7 @@ public class WasmReader {
 
     public I32 readU32() {
         if (data.length < 4) {
-            throw new ModuleException("no more bytes. Incorrect module.");
+            throw new DecodeException("no more bytes. Incorrect module.");
         }
         I32 u32 = I32.valueOf(new byte[]{data[3], data[2], data[1], data[0]});
         drop(4);
@@ -272,7 +302,7 @@ public class WasmReader {
             case 0x03: // GLOBAL
                 value = new ImportDescribe.Global(readGlobalType()); break;
             default:
-                throw new ModuleException("what a tag: " + tag.value());
+                throw new DecodeException("what a tag: " + tag.value());
         }
         return new ImportDescribe(tag, value);
     }
@@ -391,7 +421,7 @@ public class WasmReader {
             case 0x05: value = new ElementSection.Value5(ReferenceType.of(readByte()), readExpressions()); break;
             case 0x06: value = new ElementSection.Value6(TableIndex.of(readLeb128U32()), readExpression(), ReferenceType.of(readByte()), readExpressions()); break;
             case 0x07: value = new ElementSection.Value7(ReferenceType.of(readByte()), readExpressions()); break;
-            default: throw new ModuleException("what a tag: " + tag);
+            default: throw new DecodeException("what a tag: " + tag);
         }
 
         return new ElementSection(tag, value);
@@ -429,7 +459,7 @@ public class WasmReader {
             System.arraycopy(this.data, 0, data, 0, s);
             drop(s);
             WasmReader reader = new WasmReader(data);
-            codeSections.append(new CodeSection(size, reader.readLocals(), reader.readExpression()));
+            codeSections.append(new CodeSection(i, size, reader.readLocals(), reader.readExpression()));
         }
         return codeSections;
     }
@@ -439,6 +469,7 @@ public class WasmReader {
         Local[] locals = new Local[Slice.checkArrayIndex(n)];
         for (int i = 0; i < locals.length; i++) {
             I32 size = readLeb128U32();
+            Slice.checkArrayIndex(size.unsigned().intValue());
             locals[i] = new Local(size, ValueType.of(this.readByte()));
         }
         return locals;
@@ -464,7 +495,7 @@ public class WasmReader {
             case 0x00: value = new DataSection.Value0(readExpression(), readBytes()); break;
             case 0x01: value = new DataSection.Value1(readBytes()); break;
             case 0x02: value = new DataSection.Value2(MemoryIndex.of(readLeb128U32()), readExpression(), readBytes()); break;
-            default: throw new ModuleException("what a tag: " + tag);
+            default: throw new DecodeException("what a tag: " + tag);
         }
 
         return new DataSection(tag, value);
@@ -478,7 +509,7 @@ public class WasmReader {
         byte end = readByte(false);
         if (end != EXPRESSION_END && end != EXPRESSION_ELSE) {
             // 读取完表达式后，末尾应该有结尾
-            throw new ModuleException(String.format("invalid expr end: %d", end));
+            throw new DecodeException(String.format("invalid expr end: %d", end));
         }
         if (end == EXPRESSION_END) {
             readByte(); // 如果是else留给IfBlock处理
@@ -532,7 +563,7 @@ public class WasmReader {
                     // 5 => i64.trunc_sat_f32_u
                     // 6 => i64.trunc_sat_f64_s
                     // 7 => i64.trunc_sat_f64_u
-                    default: throw new ModuleException("what ?");
+                    default: throw new DecodeException("what ?");
                 }
                 break;
         }
@@ -569,7 +600,7 @@ public class WasmReader {
     private byte readZero() {
         byte zero = readByte();
         if (zero != 0) {
-            throw new ModuleException(String.format("zero flag expected, got %d", zero));
+            throw new DecodeException(String.format("zero flag expected, got %d", zero));
         }
         return 0x0;
     }

@@ -1,22 +1,39 @@
 package might.vm.wasm.instruction.control;
 
 import might.common.numeric.ISize;
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
+import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.Local;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.section.CodeSection;
+import might.vm.wasm.util.Slice;
 
 public class Call implements Operate {
 
     @Override
     public Dump read(WasmReader reader) {
         return reader.readFunctionIndex();
+    }
+
+    @Override
+    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+        Assertions.requireTrue(null != args);
+        Assertions.requireTrue(args instanceof FunctionIndex);
+
+        FunctionIndex fi = (FunctionIndex) args;
+
+        int index = fi.unsigned().intValue();
+        Slice.checkArrayIndex(index);
+        if (info.functionCount <= index) {
+            throw new ModuleException("can not find function by index: " + index);
+        }
     }
 
     @Override

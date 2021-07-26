@@ -1,17 +1,24 @@
 package might.vm.wasm.instruction.numeric.i32;
 
+import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.instruction.dump.DumpI32;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
 
 public class I32Const implements Operate {
 
     @Override
     public Dump read(WasmReader reader) {
         return new DumpI32(reader.readLeb128S32());
+    }
+
+    @Override
+    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+        Assertions.requireTrue(null != args);
+        Assertions.requireTrue(args instanceof DumpI32);
     }
 
     @Override

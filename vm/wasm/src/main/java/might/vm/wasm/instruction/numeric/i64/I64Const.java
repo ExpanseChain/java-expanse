@@ -1,5 +1,6 @@
 package might.vm.wasm.instruction.numeric.i64;
 
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.instruction.dump.DumpI64;
@@ -12,6 +13,12 @@ public class I64Const implements Operate {
     @Override
     public Dump read(WasmReader reader) {
         return new DumpI64(reader.readLeb128S64());
+    }
+
+    @Override
+    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+        Assertions.requireTrue(null != args);
+        Assertions.requireTrue(args instanceof DumpI64);
     }
 
     @Override

@@ -2,21 +2,13 @@ package might.vm.wasm.instruction.memory;
 
 import might.common.numeric.I16;
 import might.common.numeric.I32;
-import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
-import might.vm.wasm.instruction.Operate;
 import might.vm.wasm.instruction.dump.DumpMemory;
 import might.vm.wasm.model.Dump;
 import might.vm.wasm.model.index.MemoryIndex;
 
-public class I64Load16U implements Operate {
-
-    @Override
-    public Dump read(WasmReader reader) {
-        return new DumpMemory(reader.readLeb128U32(), reader.readLeb128U32());
-    }
-
+public class I64Load16U implements LoadOperate {
     @Override
     public void operate(ModuleInstance mi, Dump args) {
         Assertions.requireNonNull(args);

@@ -1,14 +1,7 @@
 package might.vm.wasm.instruction.memory;
 
-import might.vm.wasm.instruction.Operate;
-import might.vm.wasm.model.Dump;
-import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.instruction.UnreadOperate;
 
-public class MemoryFill implements Operate {
-
-    @Override
-    public Dump read(WasmReader reader) {
-        return null;
-    }
+public class MemoryFill implements UnreadOperate {
 
 }

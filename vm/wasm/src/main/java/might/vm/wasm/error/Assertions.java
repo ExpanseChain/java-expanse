@@ -1,25 +1,25 @@
 package might.vm.wasm.error;
 
-import might.vm.wasm.error.assertion.AssertionTrueException;
-import might.vm.wasm.error.assertion.AssertionTypeException;
+import might.vm.wasm.error.decode.DecodeException;
+import might.vm.wasm.error.execute.ExecutionException;
 
 public class Assertions {
 
     public static void requireType(Object o, Class<?> c) {
         if (o.getClass() != c) {
-            throw new AssertionTypeException("o is not " + c.getName());
+            throw new ExecutionException("o is not " + c.getName());
         }
     }
 
     public static void requireNonNull(Object v) {
         if (null == v) {
-            throw new NullPointerException("can not be null");
+            throw new ExecutionException("can not be null");
         }
     }
 
     public static void requireTrue(boolean value) {
         if (!value) {
-            throw new AssertionTrueException("must be true");
+            throw new DecodeException("must be true");
         }
     }
 

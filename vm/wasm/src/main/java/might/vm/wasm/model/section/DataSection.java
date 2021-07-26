@@ -51,7 +51,7 @@ public class DataSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
-            expression.valid(info);
+            expression.valid(info, 0, 0);
         }
     }
     public static class Value1 extends Value {
@@ -111,7 +111,7 @@ public class DataSection implements Valid {
             if (max <= mi) {
                 throw new ModuleException("can not find memory by index: " + mi);
             }
-            expression.valid(info);
+            expression.valid(info, 0, 0);
         }
     }
 

@@ -3,7 +3,7 @@ package might.vm.wasm.model;
 import might.common.numeric.I32;
 import might.common.numeric.I64;
 import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.error.WasmException;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.model.type.ValueType;
 
 /**
@@ -38,7 +38,7 @@ public class Local {
             case 0x70: for (long i = 0; i < size; i++) { mi.pushI64(I64.valueOf(0)); } break;
             case 0x6F: for (long i = 0; i < size; i++) { mi.pushI64(I64.valueOf(0)); } break;
             default:
-                throw new WasmException("what a type?");
+                throw new DecodeException("what a type?");
         }
     }
 

@@ -1,9 +1,12 @@
 package might.vm.wasm.model.type;
 
 import might.common.numeric.I64;
+import might.vm.wasm.core.ModuleInfo;
+import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.model.Type;
+import might.vm.wasm.model.section.Valid;
 
-public class BlockType implements Type {
+public class BlockType implements Type, Valid {
 
     public final ValueType type;
 
@@ -27,6 +30,19 @@ public class BlockType implements Type {
     @Override
     public String dump() {
         return name();
+    }
+
+    @Override
+    public void valid(ModuleInfo info) {
+        if (null == type) {
+            // 验证是否有对应函数签名 s33
+
+            int max = info.typeSections.size();
+
+            if (max <= s33.signed().longValue()) {
+                throw new DecodeException("can not find function type by s33: " + s33.signed().longValue());
+            }
+        }
     }
 
 }

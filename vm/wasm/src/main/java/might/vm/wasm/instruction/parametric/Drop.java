@@ -1,16 +1,10 @@
 package might.vm.wasm.instruction.parametric;
 
-import might.vm.wasm.instruction.Operate;
-import might.vm.wasm.model.Dump;
 import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.core.WasmReader;
+import might.vm.wasm.instruction.UnreadOperate;
+import might.vm.wasm.model.Dump;
 
-public class Drop implements Operate {
-
-    @Override
-    public Dump read(WasmReader reader) {
-        return null;
-    }
+public class Drop implements UnreadOperate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {

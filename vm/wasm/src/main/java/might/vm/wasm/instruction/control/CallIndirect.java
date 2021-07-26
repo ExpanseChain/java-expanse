@@ -1,6 +1,7 @@
 package might.vm.wasm.instruction.control;
 
 import might.common.numeric.I32;
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.core.structure.ModuleInstance;
@@ -19,6 +20,13 @@ public class CallIndirect implements Operate {
     @Override
     public Dump read(WasmReader reader) {
         return new DumpCallIndirect(reader.readTypeIndex(), reader.readTableIndex());
+    }
+
+    @Override
+    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+        Assertions.requireTrue(null != args);
+        Assertions.requireTrue(args instanceof DumpCallIndirect);
+        // 还要检查什么？
     }
 
     @Override

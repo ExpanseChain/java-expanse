@@ -1,12 +1,12 @@
 package might.vm.wasm.core;
 
 import might.vm.wasm.core.structure.ModuleInstance;
+import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.model.index.DataCountIndex;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.TypeIndex;
 import might.vm.wasm.model.section.*;
 import might.vm.wasm.model.tag.FunctionTypeTag;
-import might.vm.wasm.model.tag.PortTag;
 import might.vm.wasm.model.type.BlockType;
 import might.vm.wasm.model.type.ValueType;
 import might.vm.wasm.nav.function.NativeInstance;
@@ -40,6 +40,14 @@ public class ModuleInfo {
     public ValidSlice<DataSection> dataSections = new ValidSlice<>();         // 11 数据
 
     public final Set<String> EXPORT_NAMES = new HashSet<>(); // 导出模块名称记录
+    public long importFunctionCount = 0;  // 导入函数个数
+    public long importTableCount = 0;     // 导入表个数
+    public long importMemoryCount = 0;    // 导入内存个数
+    public long importGlobalCount = 0;    // 导入全局变量个数
+    public long functionCount = 0;  // 函数个数
+    public long tableCount = 0;     // 表个数
+    public long memoryCount = 0;    // 内存个数
+    public long globalCount = 0;    // 全局变量个数
 
     ModuleInfo() {}
 
@@ -60,22 +68,22 @@ public class ModuleInfo {
 
         sb.append("Function[").append(functionSections.size()).append("]:").append("\n");
         for (int i = 0; i < functionSections.size(); i++) {
-            sb.append("  ").append(functionSections.get(i).dump(i)).append("\n");
+            sb.append("  ").append(functionSections.get(i).dump((int)(importFunctionCount + i))).append("\n");
         }
 
         sb.append("Table[").append(tableSections.size()).append("]:").append("\n");
         for (int i = 0; i < tableSections.size(); i++) {
-            sb.append("  ").append(tableSections.get(i).dump(i)).append("\n");
+            sb.append("  ").append(tableSections.get(i).dump((int)(importTableCount + i))).append("\n");
         }
 
         sb.append("Memory[").append(memorySections.size()).append("]:").append("\n");
         for (int i = 0; i < memorySections.size(); i++) {
-            sb.append("  ").append(memorySections.get(i).dump(i)).append("\n");
+            sb.append("  ").append(memorySections.get(i).dump((int)(importMemoryCount + i))).append("\n");
         }
 
         sb.append("Global[").append(globalSections.size()).append("]:").append("\n");
         for (int i = 0; i < globalSections.size(); i++) {
-            sb.append("  ").append(globalSections.get(i).dump(i)).append("\n");
+            sb.append("  ").append(globalSections.get(i).dump((int)(importGlobalCount + i))).append("\n");
         }
 
         sb.append("Export[").append(exportSections.size()).append("]:").append("\n");
@@ -87,20 +95,19 @@ public class ModuleInfo {
 
         sb.append("Element[").append(elementSections.size()).append("]:").append("\n");
         for (int i = 0; i < elementSections.size(); i++) {
-            sb.append("  ").append(elementSections.get(i).dump(i).replace("\n", "\n  ")).append("\n");
+            sb.append("  ").append(elementSections.get(i).dump((int)(importTableCount + i)).replace("\n", "\n  ")).append("\n");
         }
 
         sb.append("DataCount: ").append(null == dataCountIndex ? "none" : dataCountIndex.unsigned().toString()).append("\n");
 
-        int importFunctionCount = (int) importSections.stream().filter(i -> i.describe.tag == PortTag.FUNCTION).count();
         sb.append("Code[").append(codeSections.size()).append("]:").append("\n");
         for (int i = 0; i < codeSections.size(); i++) {
-            sb.append("  ").append(codeSections.get(i).dump(importFunctionCount + i)).append("\n");
+            sb.append("  ").append(codeSections.get(i).dump((int)(importFunctionCount + i))).append("\n");
         }
 
         sb.append("Data[").append(dataSections.size()).append("]:").append("\n");
         for (int i = 0; i < dataSections.size(); i++) {
-            sb.append("  ").append(dataSections.get(i).dump(i)).append("\n");
+            sb.append("  ").append(dataSections.get(i).dump((int)(importMemoryCount + i))).append("\n");
         }
 
         sb.append("Custom[").append(customSections.size()).append("]:").append("\n");
@@ -130,6 +137,7 @@ public class ModuleInfo {
                 case 0x6F: // EXTERN_REFERENCE
                     return new FunctionType(FunctionTypeTag.BLOCK_TYPE, new ValueType[0], new ValueType[]{ValueType.EXTERN_REFERENCE});
                 default:
+                    throw new ExecutionException("what a tag: " + blockType.type.value());
             }
         }
         return typeSections.get(blockType.s33.signed().intValue());

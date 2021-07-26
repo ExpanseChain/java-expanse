@@ -1,17 +1,11 @@
 package might.vm.wasm.instruction.parametric;
 
 import might.common.numeric.ISize;
-import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.core.structure.ModuleInstance;
-import might.vm.wasm.instruction.Operate;
+import might.vm.wasm.instruction.UnreadOperate;
 import might.vm.wasm.model.Dump;
 
-public class Select implements Operate {
-
-    @Override
-    public Dump read(WasmReader reader) {
-        return null;
-    }
+public class Select implements UnreadOperate {
 
     @Override
     public void operate(ModuleInstance mi, Dump args) {

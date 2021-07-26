@@ -1,5 +1,6 @@
 package might.vm.wasm.instruction;
 
+import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
@@ -263,6 +264,10 @@ public enum Instruction {
             }
         }
         throw new ModuleException("unknown code: 0x" + toHex(value));
+    }
+
+    public void valid(ModuleInfo info, Dump args, int parameters, long locals) {
+        operate.valid(info, args, parameters, locals);
     }
 
 }

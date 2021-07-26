@@ -1,5 +1,6 @@
 package might.vm.wasm.core;
 
+import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.util.Slice;
 
@@ -12,6 +13,9 @@ public class ControlStack {
     }
 
     public ControlFrame pop() {
+        if (frames.size() == 0) {
+            throw new ExecutionException("frame stack is empty");
+        }
         return frames.remove(frames.size() - 1);
     }
 

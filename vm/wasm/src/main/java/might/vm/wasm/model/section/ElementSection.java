@@ -7,7 +7,6 @@ import might.vm.wasm.error.execute.ExecutionException;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.model.Dump;
-import might.vm.wasm.model.describe.ImportDescribe;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.TableIndex;
 import might.vm.wasm.model.type.ReferenceType;
@@ -71,15 +70,13 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
-            expression.valid(info);
+            expression.valid(info, 0,0);
 
             // 计算函数集合大小
-            long max = info.importSections.stream().filter(i -> i.describe.value instanceof ImportDescribe.Function).count();
-            max += info.functionSections.size();
             for (int i = 0; i < functionIndices.length; i++) {
                 int j = functionIndices[i].unsigned().intValue();
                 Slice.checkArrayIndex(j);
-                if (max <= j) {
+                if (info.functionCount <= j) {
                     throw new ModuleException("can not find function by index: " + j);
                 }
             }
@@ -215,9 +212,9 @@ public class ElementSection implements Valid {
 
         @Override
         public void valid(ModuleInfo info) {
-            expression.valid(info);
+            expression.valid(info, 0, 0);
             for (Expression actions : expressionArray) {
-                actions.valid(info);
+                actions.valid(info, 0, 0);
             }
         }
     }
