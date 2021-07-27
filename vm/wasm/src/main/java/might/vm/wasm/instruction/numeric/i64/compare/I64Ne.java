@@ -11,7 +11,7 @@ public class I64Ne implements UnreadOperate {
     public void operate(ModuleInstance mi, Dump args) {
         I64 v2 = mi.popI64();
         I64 v1 = mi.popI64();
-        mi.pushBool(v1.notEquals(v2));
+        mi.pushBool(!v1.equals(v2));
     }
 
 }

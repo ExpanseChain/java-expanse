@@ -11,7 +11,7 @@ public class I32Ne implements UnreadOperate {
     public void operate(ModuleInstance mi, Dump args) {
         I32 v2 = mi.popI32();
         I32 v1 = mi.popI32();
-        mi.pushBool(v1.notEquals(v2));
+        mi.pushBool(!v1.equals(v2));
     }
 
 }

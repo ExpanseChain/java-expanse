@@ -143,10 +143,6 @@ public class ISize {
         return unsigned().compareTo(o.unsigned()) == 0;
     }
 
-    public boolean notEquals(ISize o) {
-        return unsigned().compareTo(o.unsigned()) != 0;
-    }
-
 
     public boolean lessThanU(ISize o) {
         return unsigned().compareTo(o.unsigned()) < 0;
