@@ -10,7 +10,6 @@ import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.dump.DumpMemory;
-import might.vm.wasm.model.GasLimit;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.GlobalIndex;
 import might.vm.wasm.model.index.MemoryIndex;
@@ -42,11 +41,6 @@ public class NativeInstance implements ModuleInstance {
 
     @Override
     public ISize[] invoke(String name, ISize... args) {
-        throw new ExecutionException("not for native module");
-    }
-
-    @Override
-    public ISize[] invoke(GasLimit gasLimit, String name, ISize... args) {
         throw new ExecutionException("not for native module");
     }
 
