@@ -7,6 +7,7 @@ import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.dump.DumpMemory;
+import might.vm.wasm.model.GasLimit;
 import might.vm.wasm.model.index.FunctionIndex;
 import might.vm.wasm.model.index.GlobalIndex;
 import might.vm.wasm.model.index.MemoryIndex;
@@ -31,6 +32,11 @@ public interface ModuleInstance {
      * 直接调用导出的函数
      */
     ISize[] invoke(String name, ISize... args);
+
+    /**
+     * 调用函数 限制指令执行次数
+     */
+    ISize[] invoke(GasLimit gasLimit, String name, ISize... args);
 
 
     // =================== 操作数栈操作 ===================

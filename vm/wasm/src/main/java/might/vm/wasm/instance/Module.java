@@ -3,12 +3,15 @@ package might.vm.wasm.instance;
 import might.common.numeric.*;
 import might.vm.wasm.core.*;
 import might.vm.wasm.core.structure.*;
+import might.vm.wasm.error.WasmException;
 import might.vm.wasm.error.execute.ExecutionException;
+import might.vm.wasm.error.execute.OutOfGasException;
 import might.vm.wasm.error.instance.InstanceException;
 import might.vm.wasm.instruction.Action;
 import might.vm.wasm.instruction.Expression;
 import might.vm.wasm.instruction.Instruction;
 import might.vm.wasm.instruction.dump.DumpMemory;
+import might.vm.wasm.model.GasLimit;
 import might.vm.wasm.model.describe.ExportDescribe;
 import might.vm.wasm.model.describe.ImportDescribe;
 import might.vm.wasm.model.index.*;
@@ -33,6 +36,11 @@ public class Module implements ModuleInstance {
     protected int frameOffset;                                      // 如果是函数调用，记录函数可用部分的起始位置
 
     private Map<String, Object> EXPORTS = null;                     // 导出内容缓存
+
+    private Map<Instruction, Long> gasMapping; // 指令gas限制
+    private long gasLimit; // 当前执行最大gas限制
+    private long gasCount; // 当前指令执行gas统计
+
 
     private Module(ModuleInfo moduleInfo) {
         this.moduleInfo = moduleInfo;
@@ -72,17 +80,38 @@ public class Module implements ModuleInstance {
 
     @Override
     public ISize[] invoke(String name, ISize... args) {
+        return this.invoke(null, name, args);
+    }
+
+    @Override
+    public ISize[] invoke(GasLimit gasLimit, String name, ISize... args) {
         Object member = getMember(name);
         if (member instanceof Function) {
             Function f = (Function) member;
 
             f.type().checkParameters(args);
 
+            if (null != gasLimit) {
+                if (null == gasMapping) {
+                    throw new WasmException("no gas mapping");
+                }
+                this.gasLimit = gasLimit.gasLimit;
+            } else {
+                this.gasLimit = 0;
+            }
+            this.gasCount = 0;
+
             // 启动一个新的函数，清除栈
             this.clearOperandStack();
             this.clearControlStack();
 
-            return f.call(args);
+            ISize[] results = f.call(args);
+
+            if (null != gasLimit) {
+                gasLimit.gasCount = this.gasCount;
+            }
+
+            return results;
         }
         throw new ExecutionException("can not find function: " + name);
     }
@@ -393,7 +422,20 @@ public class Module implements ModuleInstance {
     @Override
     public void executeAction(Action action) {
 //        System.out.println(action.getInstruction().name + " " + (null == action.getArgs() ? "" : action.getArgs().dump()));
+        if (0 < gasLimit) {
+            checkGas(action.getInstruction());
+        }
         action.getInstruction().operate(this, action.getArgs());
+    }
+
+    private void checkGas(Instruction instruction) {
+        long gas = gasMapping.get(instruction);
+//        System.out.printf("%s\t\t gas: %d  limit: %d now: %d%n",
+//                instruction.name, gas, gasLimit, gasCount);
+        gasCount += gas;
+        if (gasLimit < gasCount) {
+            throw new OutOfGasException(String.format("gas limit(%d) < gas count(%d)", gasLimit, gasCount));
+        }
     }
 
     @Override
@@ -567,6 +609,8 @@ public class Module implements ModuleInstance {
         module.execStartFunction();
 
 //        System.out.println();
+
+        module.gasMapping = config.getGasMapping();
 
         return module;
     }
