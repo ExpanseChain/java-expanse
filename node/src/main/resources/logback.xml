@@ -6,7 +6,7 @@
         </encoder>
         <file>log.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>.logs/%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>logs/%d{yyyy-MM-dd}.log.gz</fileNamePattern>
         </rollingPolicy>
     </appender>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

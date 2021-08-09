@@ -4,5 +4,13 @@ jar {
 }
 
 dependencies {
+    // 基本日志
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'org.apache.logging.log4j:log4j-to-slf4j:2.11.1'
+
     compile project(':common')
+
+    // 引入区块链的具体实现
+    compile project(':might')
+
 }

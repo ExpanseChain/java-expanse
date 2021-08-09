@@ -1,10 +1,10 @@
-rootProject.name = 'might'
+rootProject.name = 'java-might'
 
 include ':common:util' // 一些基本工具
 include ':common:numeric' // 需要用到的数字类型
 
-// 各种虚拟机
-include ':vm:wasm' // wasm
+// 独立模块
+include ':module:vm:wasm' // wasm 虚拟机
 
 include ':frame' // 区块链基本运行框架
 
@@ -13,6 +13,6 @@ include ':mode' // 基本特性的实现
 include ':mirror:bitcoin' // 实现比特币
 include ':mirror:ethereum' // 实现以太坊
 
-include ':might:pow' // 元
+include ':might' // 元
 
 include ':node' // 节点启动
