@@ -1,11 +1,19 @@
 package might.mirror.bitcoin;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
+import might.common.util.HexUtil;
 import might.frame.ErrorBlockChain;
+import might.frame.error.genesis.GenesisBlockException;
 import might.frame.storage.Storage;
 import might.mode.storage.leveldb.LevelDBStorage;
 
+import java.nio.charset.StandardCharsets;
+
+@Slf4j
 public class BitcoinBlockChain extends ErrorBlockChain {
+
+    private static final byte[] GENESIS_BLOCK_HEADER = "genesis.block.header".getBytes(StandardCharsets.UTF_8);
 
     private Storage configStorage;
     private Storage headerStorage;
@@ -20,13 +28,25 @@ public class BitcoinBlockChain extends ErrorBlockChain {
     @Override
     public void initGenesis(JSONObject genesisConfig, String dataDir) {
         initStorage(dataDir);
+
+        // 清除数据
+        headerStorage.clear();
+        transactionStorage.clear();
+
         // do other thing
+
     }
 
     @Override
     public void initConfig(JSONObject config, String dataDir) {
         initStorage(dataDir);
-        // do other thing
+
+        byte[] genesisBlockHeader = configStorage.read(GENESIS_BLOCK_HEADER);
+        if (null == genesisBlockHeader) {
+            throw new GenesisBlockException("genesis block has not initial");
+        }
+        log.info("genesis block header -> 0x{}", HexUtil.toHex(genesisBlockHeader));
+
     }
 
 
