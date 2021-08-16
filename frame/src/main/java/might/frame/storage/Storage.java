@@ -25,4 +25,21 @@ public interface Storage {
         return data;
     }
 
+    /**
+     * 删除数据
+     */
+    default void delete(byte[] key) {
+        write(key, null);
+    }
+
+    /**
+     * 清除所有存储
+     */
+    void clear();
+
+    /**
+     * 关闭 已经关闭的不能再操作
+     */
+    void close();
+
 }
