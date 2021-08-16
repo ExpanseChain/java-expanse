@@ -1,6 +1,6 @@
 package might.vm.wasm.core.structure;
 
-import might.common.numeric.I32;
+import expanse.common.numeric.I32;
 import might.vm.wasm.model.section.TableType;
 
 public interface Table {

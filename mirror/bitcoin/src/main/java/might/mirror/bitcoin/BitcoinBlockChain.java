@@ -2,7 +2,7 @@ package might.mirror.bitcoin;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import might.common.util.HexUtil;
+import expanse.common.util.HexUtil;
 import might.frame.ErrorBlockChain;
 import might.frame.error.genesis.GenesisBlockException;
 import might.frame.storage.Storage;

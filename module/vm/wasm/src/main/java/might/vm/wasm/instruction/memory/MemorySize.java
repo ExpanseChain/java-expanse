@@ -1,6 +1,6 @@
 package might.vm.wasm.instruction.memory;
 
-import might.common.numeric.I32;
+import expanse.common.numeric.I32;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.instruction.UnreadOperate;
 import might.vm.wasm.model.Dump;

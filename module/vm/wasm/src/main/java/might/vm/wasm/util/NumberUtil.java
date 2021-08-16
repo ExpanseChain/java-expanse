@@ -1,7 +1,7 @@
 package might.vm.wasm.util;
 
-import might.common.numeric.I32;
-import might.common.numeric.I64;
+import expanse.common.numeric.I32;
+import expanse.common.numeric.I64;
 
 import java.math.BigInteger;
 

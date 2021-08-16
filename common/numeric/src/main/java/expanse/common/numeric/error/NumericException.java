@@ -1,4 +1,4 @@
-package might.common.numeric.error;
+package expanse.common.numeric.error;
 
 public class NumericException extends RuntimeException {
 

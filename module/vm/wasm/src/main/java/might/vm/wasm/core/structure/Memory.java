@@ -1,7 +1,7 @@
 package might.vm.wasm.core.structure;
 
-import might.common.numeric.I32;
-import might.common.numeric.I64;
+import expanse.common.numeric.I32;
+import expanse.common.numeric.I64;
 import might.vm.wasm.model.section.MemoryType;
 
 public interface Memory {

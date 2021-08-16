@@ -1,5 +1,6 @@
 package might.vm.wasm.core.structure;
 
+import expanse.common.numeric.*;
 import might.common.numeric.*;
 import might.vm.wasm.core.ControlFrame;
 import might.vm.wasm.core.ModuleInfo;

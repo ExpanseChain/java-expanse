@@ -1,6 +1,6 @@
 package might.vm.wasm.core.structure;
 
-import might.common.numeric.ISize;
+import expanse.common.numeric.ISize;
 import might.vm.wasm.model.section.CodeSection;
 import might.vm.wasm.model.section.FunctionType;
 

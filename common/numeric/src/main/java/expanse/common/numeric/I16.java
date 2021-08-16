@@ -1,6 +1,6 @@
-package might.common.numeric;
+package expanse.common.numeric;
 
-import might.common.numeric.error.NumericValueException;
+import expanse.common.numeric.error.NumericValueException;
 
 import java.util.Arrays;
 

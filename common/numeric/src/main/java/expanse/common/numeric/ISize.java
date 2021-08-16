@@ -1,12 +1,12 @@
-package might.common.numeric;
+package expanse.common.numeric;
 
-import might.common.numeric.error.NumericNullException;
-import might.common.numeric.error.NumericValueException;
+import expanse.common.numeric.error.NumericNullException;
+import expanse.common.numeric.error.NumericValueException;
 
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import static might.common.numeric.NumericUtil.*;
+import static expanse.common.numeric.NumericUtil.*;
 
 /**
  * 整型数字 以字节表示的数字

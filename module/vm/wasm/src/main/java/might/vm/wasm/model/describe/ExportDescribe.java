@@ -1,6 +1,6 @@
 package might.vm.wasm.model.describe;
 
-import might.common.numeric.I32;
+import expanse.common.numeric.I32;
 import might.vm.wasm.model.tag.PortTag;
 
 public class ExportDescribe {

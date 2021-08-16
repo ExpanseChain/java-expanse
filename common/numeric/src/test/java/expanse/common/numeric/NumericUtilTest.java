@@ -1,7 +1,7 @@
-package might.common.numeric;
+package expanse.common.numeric;
 
-import might.common.numeric.error.NumericNullException;
-import might.common.numeric.error.NumericValueException;
+import expanse.common.numeric.error.NumericNullException;
+import expanse.common.numeric.error.NumericValueException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

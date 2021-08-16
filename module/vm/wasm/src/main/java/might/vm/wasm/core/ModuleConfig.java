@@ -1,6 +1,6 @@
 package might.vm.wasm.core;
 
-import might.common.numeric.I16;
+import expanse.common.numeric.I16;
 import might.vm.wasm.core.structure.ModuleInstance;
 
 /**

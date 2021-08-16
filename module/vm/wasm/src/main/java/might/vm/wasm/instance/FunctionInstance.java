@@ -1,6 +1,6 @@
 package might.vm.wasm.instance;
 
-import might.common.numeric.ISize;
+import expanse.common.numeric.ISize;
 import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;

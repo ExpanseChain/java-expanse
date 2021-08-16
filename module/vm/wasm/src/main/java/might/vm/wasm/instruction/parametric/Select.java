@@ -1,6 +1,6 @@
 package might.vm.wasm.instruction.parametric;
 
-import might.common.numeric.ISize;
+import expanse.common.numeric.ISize;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.instruction.UnreadOperate;
 import might.vm.wasm.model.Dump;

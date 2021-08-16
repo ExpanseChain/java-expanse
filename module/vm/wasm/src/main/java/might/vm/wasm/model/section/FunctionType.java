@@ -1,8 +1,8 @@
 package might.vm.wasm.model.section;
 
-import might.common.numeric.I32;
-import might.common.numeric.I64;
-import might.common.numeric.ISize;
+import expanse.common.numeric.I32;
+import expanse.common.numeric.I64;
+import expanse.common.numeric.ISize;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.execute.ExecutionException;

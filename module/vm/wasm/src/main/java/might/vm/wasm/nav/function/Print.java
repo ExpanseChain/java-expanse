@@ -1,6 +1,6 @@
 package might.vm.wasm.nav.function;
 
-import might.common.numeric.ISize;
+import expanse.common.numeric.ISize;
 import might.vm.wasm.core.structure.Function;
 import might.vm.wasm.model.section.FunctionType;
 import might.vm.wasm.model.tag.FunctionTypeTag;

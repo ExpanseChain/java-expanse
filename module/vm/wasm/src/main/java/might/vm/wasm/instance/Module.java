@@ -1,5 +1,6 @@
 package might.vm.wasm.instance;
 
+import expanse.common.numeric.*;
 import might.common.numeric.*;
 import might.vm.wasm.core.*;
 import might.vm.wasm.core.structure.*;

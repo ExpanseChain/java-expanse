@@ -1,7 +1,7 @@
 package might.vm.wasm.core;
 
-import might.common.numeric.I32;
-import might.common.numeric.I64;
+import expanse.common.numeric.I32;
+import expanse.common.numeric.I64;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.error.decode.DecodeException;
 import might.vm.wasm.error.module.ModuleException;

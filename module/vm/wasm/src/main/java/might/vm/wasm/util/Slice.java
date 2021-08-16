@@ -1,6 +1,6 @@
 package might.vm.wasm.util;
 
-import might.common.numeric.I32;
+import expanse.common.numeric.I32;
 import might.vm.wasm.error.module.IndexOutOfBoundsException;
 
 import java.util.ArrayList;

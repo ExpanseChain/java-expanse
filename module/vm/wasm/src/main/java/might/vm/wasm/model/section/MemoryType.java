@@ -1,6 +1,6 @@
 package might.vm.wasm.model.section;
 
-import might.common.numeric.I32;
+import expanse.common.numeric.I32;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.error.module.ModuleException;
 import might.vm.wasm.model.Limits;

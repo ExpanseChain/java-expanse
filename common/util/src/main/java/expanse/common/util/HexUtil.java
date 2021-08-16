@@ -1,4 +1,4 @@
-package might.common.util;
+package expanse.common.util;
 
 public class HexUtil {
 

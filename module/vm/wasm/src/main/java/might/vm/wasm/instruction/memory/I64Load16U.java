@@ -1,7 +1,7 @@
 package might.vm.wasm.instruction.memory;
 
-import might.common.numeric.I16;
-import might.common.numeric.I32;
+import expanse.common.numeric.I16;
+import expanse.common.numeric.I32;
 import might.vm.wasm.core.structure.ModuleInstance;
 import might.vm.wasm.error.Assertions;
 import might.vm.wasm.instruction.dump.DumpMemory;

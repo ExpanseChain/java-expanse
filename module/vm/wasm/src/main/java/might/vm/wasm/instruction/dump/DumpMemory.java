@@ -1,6 +1,6 @@
 package might.vm.wasm.instruction.dump;
 
-import might.common.numeric.I32;
+import expanse.common.numeric.I32;
 import might.vm.wasm.model.Dump;
 
 public class DumpMemory implements Dump {

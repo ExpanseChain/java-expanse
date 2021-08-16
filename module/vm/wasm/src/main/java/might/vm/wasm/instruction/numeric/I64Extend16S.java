@@ -1,6 +1,6 @@
 package might.vm.wasm.instruction.numeric;
 
-import might.common.numeric.I16;
+import expanse.common.numeric.I16;
 import might.vm.wasm.core.ModuleInfo;
 import might.vm.wasm.core.WasmReader;
 import might.vm.wasm.core.structure.ModuleInstance;

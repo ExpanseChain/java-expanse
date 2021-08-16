@@ -1,5 +1,6 @@
 package might.vm.wasm.core;
 
+import expanse.common.numeric.*;
 import might.common.numeric.*;
 import might.vm.wasm.error.module.OperandTypeException;
 import might.vm.wasm.util.Slice;

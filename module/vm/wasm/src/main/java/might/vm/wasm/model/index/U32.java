@@ -1,6 +1,6 @@
 package might.vm.wasm.model.index;
 
-import might.common.numeric.I32;
+import expanse.common.numeric.I32;
 import might.vm.wasm.model.Dump;
 
 class U32 extends I32 implements Dump {
