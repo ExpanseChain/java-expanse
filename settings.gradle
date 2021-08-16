@@ -1,4 +1,4 @@
-rootProject.name = 'java-might'
+rootProject.name = 'java-expanse'
 
 include ':common:util' // 一些基本工具
 include ':common:numeric' // 需要用到的数字类型
@@ -16,6 +16,6 @@ include ':mode:storage:memory'  // memory存储
 include ':mirror:bitcoin' // 实现比特币
 include ':mirror:ethereum' // 实现以太坊
 
-include ':might' // 元
+include ':expanse' // 元
 
 include ':node' // 节点启动

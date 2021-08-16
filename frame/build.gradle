@@ -6,6 +6,6 @@ jar {
 dependencies {
     compile project(':common:util')
 
-    compile 'com.alibaba:fastjson:1.2.76'
+    compile 'com.alibaba:fastjson:1.2.78'
 
 }
