@@ -10,6 +10,9 @@ include ':frame' // 区块链基本运行框架
 
 include ':mode' // 基本特性的实现
 
+include ':mode:storage:leveldb' // leveldb存储
+include ':mode:storage:memory'  // memory存储
+
 include ':mirror:bitcoin' // 实现比特币
 include ':mirror:ethereum' // 实现以太坊
 
