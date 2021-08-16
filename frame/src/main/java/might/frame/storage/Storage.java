@@ -42,4 +42,9 @@ public interface Storage {
      */
     void close();
 
+    /**
+     * 是否包含
+     */
+    boolean has(byte[] key);
+
 }
