@@ -1,4 +1,4 @@
-package might.frame.storage.error;
+package expanse.frame.storage.error;
 
 /**
  * 存储空间已满 不能继续存储

@@ -1,4 +1,4 @@
-package might.frame.consensus;
+package expanse.frame.consensus;
 
 /**
  * 共识接口

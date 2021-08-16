@@ -1,4 +1,4 @@
-package might.node.error;
+package expanse.node.error;
 
 import expanse.frame.error.BlockChainException;
 

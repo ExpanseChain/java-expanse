@@ -1,4 +1,4 @@
-package might.frame.storage.error;
+package expanse.frame.storage.error;
 
 /**
  * 存储key不支持 null 和 长度为0的字节数组

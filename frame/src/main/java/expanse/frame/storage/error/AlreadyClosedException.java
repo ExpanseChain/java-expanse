@@ -1,4 +1,4 @@
-package might.frame.storage.error;
+package expanse.frame.storage.error;
 
 public class AlreadyClosedException extends StorageException {
     public AlreadyClosedException(String message) {

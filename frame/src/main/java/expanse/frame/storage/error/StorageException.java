@@ -1,6 +1,6 @@
-package might.frame.storage.error;
+package expanse.frame.storage.error;
 
-import might.frame.error.BlockChainException;
+import expanse.frame.error.BlockChainException;
 
 /**
  * 存储功能相关

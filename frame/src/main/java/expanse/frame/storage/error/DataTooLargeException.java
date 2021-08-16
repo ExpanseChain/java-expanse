@@ -1,4 +1,4 @@
-package might.frame.storage.error;
+package expanse.frame.storage.error;
 
 /**
  * 写入数据太大 无法保存

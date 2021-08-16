@@ -1,6 +1,6 @@
-package might.frame.error.genesis;
+package expanse.frame.error.genesis;
 
-import might.frame.error.BlockChainException;
+import expanse.frame.error.BlockChainException;
 
 public class GenesisBlockException extends BlockChainException {
     public GenesisBlockException(String message) {

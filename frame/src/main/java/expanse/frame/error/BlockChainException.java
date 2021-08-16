@@ -1,4 +1,4 @@
-package might.frame.error;
+package expanse.frame.error;
 
 import lombok.extern.slf4j.Slf4j;
 
