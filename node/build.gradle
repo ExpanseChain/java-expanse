@@ -8,6 +8,7 @@ dependencies {
 
     // 引入区块链的具体实现
     compile project(':might')
+    compile project(':mirror:bitcoin')
 
     implementation 'org.yaml:snakeyaml:1.29'
     implementation 'com.alibaba:fastjson:1.2.76'

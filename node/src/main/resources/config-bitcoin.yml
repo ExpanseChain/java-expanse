@@ -1,0 +1,3 @@
+blockChainClass: might.mirror.bitcoin.BitcoinBlockChain # 启动的节点类型
+
+

@@ -26,13 +26,18 @@ public class BlockChainLoader {
     private String configFileName = "config.yml";
 
     public void loadArgs(String [] args) {
-        for (int i = 0; i < args.length; i++) {
-            switch (args[i]) {
-                case "--genesis": genesisFileName = args[checkIndex(args, i)]; initGenesis = true; break;
-                case "--data": dataDir = args[checkIndex(args, i)]; break;
-                case "--config": configFileName = args[checkIndex(args, i)]; break;
-                default:
-                    throw new WrongArgsException(String.format("confuse arg: %s.", args[i]));
+        for (String arg : args) {
+            if (arg.startsWith("--genesis=")) {
+                genesisFileName = arg.replaceFirst("--genesis=", "");
+                initGenesis = true;
+            } else if (arg.startsWith("--data=")) {
+                dataDir = arg.replaceFirst("--data=", "");
+                ;
+            } else if (arg.startsWith("--config=")) {
+                configFileName = arg.replaceFirst("--config=", "");
+                ;
+            } else {
+                throw new WrongArgsException(String.format("confuse arg: %s.", arg));
             }
         }
 
@@ -43,13 +48,9 @@ public class BlockChainLoader {
         }
         log.info("data dir: {}", dataDir);
         checkDir(dataDir);
-    }
-
-    private static int checkIndex(String[] args, int i) {
-        if (args.length <= i + 1) {
-            throw new WrongArgsException(String.format("arg %s must has value.", args[i]));
+        if (!dataDir.endsWith(File.separator)) {
+            dataDir = dataDir + File.separator;
         }
-        return i + 1;
     }
 
     private static void checkDir(String dir) {
@@ -75,7 +76,7 @@ public class BlockChainLoader {
                 map = new Yaml().load(new FileInputStream(file));
             } else {
                 map = new Yaml()
-                        .load(NodeMain.class.getClassLoader().getResourceAsStream(fileName));
+                        .load(BlockChainLoader.class.getClassLoader().getResourceAsStream(fileName));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,6 +84,8 @@ public class BlockChainLoader {
             String message = String.format("load file %s failed.", fileName);
             throw new WrongArgsException(message);
         }
+
+        if (null == map) { return new JSONObject(); }
 
         return JSON.parseObject(JSON.toJSONString(map));
     }
@@ -122,7 +125,7 @@ public class BlockChainLoader {
             blockChain.initGenesis(getConfig(genesisFileName), dataDir);
             log.info("init genesis block successful.");
         } else {
-            blockChain.initConfig(getConfig(genesisFileName), dataDir);
+            blockChain.initConfig(config, dataDir);
         }
 
         return blockChain;
