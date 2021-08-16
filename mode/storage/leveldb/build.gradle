@@ -1,0 +1,9 @@
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    compile project(':frame')
+    implementation 'org.iq80.leveldb:leveldb:0.12'
+}
