@@ -1,11 +1,9 @@
 package util;
 
-import might.vm.wasm.instruction.Instruction;
+import expanse.vm.wasm.instruction.Instruction;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static might.vm.wasm.instruction.Instruction.*;
 
 public class GasMapping {
 
