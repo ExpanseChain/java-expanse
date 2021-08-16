@@ -32,4 +32,9 @@ public class MemoryStorage extends SimpleStorage {
         // do nothing
     }
 
+    @Override
+    protected boolean has0(byte[] key) {
+        return map.containsKey(key);
+    }
+
 }

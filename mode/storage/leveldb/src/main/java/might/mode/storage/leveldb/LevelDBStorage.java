@@ -56,4 +56,9 @@ public class LevelDBStorage extends SimpleStorage {
         }
     }
 
+    @Override
+    protected boolean has0(byte[] key) {
+        return null != db.get(key);
+    }
+
 }
